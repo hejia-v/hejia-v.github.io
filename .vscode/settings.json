@@ -1,0 +1,8 @@
+{
+    "files.exclude": {
+        "node_modules": true,
+        ".deploy_git": true,
+        ".vscode": true,
+        "public": true
+    }
+}
