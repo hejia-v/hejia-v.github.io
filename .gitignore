@@ -8,6 +8,5 @@ public/
 /source/images
 /source/_posts/images
 /themes/even
-/themes/next
 package-lock.json
 yarn.lock

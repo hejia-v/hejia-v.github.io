@@ -103,6 +103,8 @@ https://otakism.com
 http://www.chunqiuyiyu.com
 http://blog.oniuo.com
 
+注意：站点配置和主题配置里不能重复定义字段，否则会报错
+
 ## 添加图片
 
 hexo博客中的图片通常使用七牛云存储来托管。
@@ -111,4 +113,8 @@ hexo博客中的图片通常使用七牛云存储来托管。
 
 TODO: 需要写个脚本处理本地预览和发布时的图片路径。
 
+
+
 hexo clean && hexo generate && hexo server
+
+
