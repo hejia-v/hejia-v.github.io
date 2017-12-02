@@ -99,43 +99,73 @@ search:
   limit: '10000'
 
 # Markdown-it config
-## Docs: https://github.com/celsomiranda/hexo-renderer-markdown-it/wiki
-markdown:
-  render:
-    html: true
-    xhtmlOut: false
-    breaks: false
-    linkify: true
-    typographer: false
-    quotes: '“”‘’'
-  plugins:
-    - markdown-it-abbr
-    - markdown-it-footnote
-    - markdown-it-ins
-    - markdown-it-sub
-    - markdown-it-sup
-  anchors:
-    level: 2
-    collisionSuffix: 'v'
-    permalink: false
-    permalinkClass: header-anchor
-    permalinkSymbol: ¶
+# Docs: https://github.com/celsomiranda/hexo-renderer-markdown-it/wiki
+# markdown:
+  # render:
+    # html: true
+    # xhtmlOut: false
+    # breaks: false
+    # linkify: true
+    # typographer: false
+    # quotes: '“”‘’'
+  # plugins:
+    # - markdown-it-abbr
+    # - markdown-it-footnote
+    # - markdown-it-ins
+    # - markdown-it-sub
+    # - markdown-it-sup
+  # anchors:
+    # level: 2
+    # collisionSuffix: 'v'
+    # permalink: false
+    # permalinkClass: header-anchor
+    # permalinkSymbol: ¶
 
 
 #---------------------------------
-
-menu:
-  home: /
-  archives: /archives
-  tags: /tags
-  categories: /categories
-  about: /about
-
 social:
   GitHub: https://github.com/hejia-v
+  Weibo: http://weibo.com
 
-# Favicon
-favicon: /favicon.ico
+social_icons:
+  enable: true
+  Weibo: weibo
 
 # Specify the date when the site was setup
 since: 2017
+
+menu:
+  home: / || home
+  about: /about/ || user
+  tags: /tags/ || tags
+  categories: /categories/ || th
+  archives: /archives/ || archive
+
+# model 模型名称 默认值: z16
+# width 宽度 默认值: 150
+# height 高度 默认值： 300
+# className <canvas> 元素的类名 默认值： live2d
+# id <canvas> 元素的id 默认值： live2dcanvas
+# bottom <canvas> 元素的底部偏移 默认值： -20 如果嫌模型位置不正确 可以调整这个参数
+live2d:
+  model: wanko
+  # model: Gantzert_Felixander
+  # model: Epsilon2.1
+  # model: haru
+  # model: miku
+  # model: ni-j
+  # model: nico
+  # model: nito
+  # model: nipsilon
+  # model: nietzsche
+  # model: shizuku
+  # model: tsumiki
+  # model: wanko
+  # model: z16
+  # model: hibiki
+  # model: koharu
+  # model: haruto
+  # model: Unitychan
+  # model: tororo
+  # model: hijiki
+  bottom: -30

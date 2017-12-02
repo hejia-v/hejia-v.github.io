@@ -5,8 +5,10 @@ db.json
 node_modules/
 public/
 .deploy*/
-/source/images
-/source/_posts/images
+#/source/images
+#/source/_posts/images
 /themes/even
 package-lock.json
 yarn.lock
+/tmp
+tool/data

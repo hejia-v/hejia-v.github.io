@@ -117,4 +117,54 @@ TODO: 需要写个脚本处理本地预览和发布时的图片路径。
 
 hexo clean && hexo generate && hexo server
 
+草稿
+
+# 新建草稿
+hexo new draft <title>
+# 发布草稿为post
+hexo publish draft <title>
+
+
+hexo generate #使用 Hexo 生成静态文件快速而且简单
+hexo generate --watch #监视文件变动
+hexo clean #清除缓存 网页正常情况下可以忽略此条命令
+
+圆形头像
+
+生成博文是执行 hexo g && gulp 就会根据 gulpfile.js 中的配置，对 public 目录中的静态资源文件进行压缩。
+
+修改内容区域的宽度
+编辑主题的 source/css/_variables/custom.styl 文件，新增变量：
+
+// 修改成你期望的宽度
+$content-desktop = 700px
+
+// 当视窗超过 1600px 后的宽度
+$content-desktop-large = 900px
+
+
+更换Hexo的markdown渲染引擎，hexo-renderer-kramed引擎是在默认的渲染引擎hexo-renderer-marked的基础上修改了一些bug，两者比较接近，也比较轻量级。
+
+1
+2
+npm uninstall hexo-renderer-marked --save
+npm install hexo-renderer-kramed --save
+执行上面的命令即可，先卸载原来的渲染引擎，再安装新的。
+
+然后，跟换引擎后行间公式可以正确渲染了，但是这样还没有完全解决问题，行内公式的渲染还是有问题，因为hexo-renderer-kramed引擎也有语义冲突的问题。接下来到博客根目录下，找到node_modules\kramed\lib\rules\inline.js，把第11行的escape变量的值做相应的修改：
+
+1
+2
+//  escape: /^\\([\\`*{}\[\]()#$+\-.!_>])/,
+  escape: /^\\([`*\[\]()#$+\-.!_>])/,
+这一步是在原基础上取消了对\\,\{,\}的转义(escape)。
+同时把第20行的em变量也要做相应的修改。
+
+1
+2
+//  em: /^\b_((?:__|[\s\S])+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,
+  em: /^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,
+重新启动hexo（先clean再generate）,问题完美解决。哦，如果不幸还没解决的话，看看是不是还需要在使用的主题中配置mathjax开关。
+
+http://xudongyang.coding.me/math-in-hexo/
 
