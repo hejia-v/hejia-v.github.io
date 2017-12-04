@@ -6,7 +6,7 @@ tags: shader
 categories: shader
 ---
 
-HLSL是unity推荐的shader语言，HLSL和Cg很相似。这里整理了一下网络上收集到的相关资料，方便自己学习和查询。
+HLSL是[unity推荐](https://docs.unity3d.com/Manual/SL-ShadingLanguage.html)的shader语言，HLSL和Cg很相似。这里整理了一下网络上收集到的相关资料，方便自己学习和查询。
 
 ## HLSL固有函数
 Intrinsic Functions (DirectX HLSL)
