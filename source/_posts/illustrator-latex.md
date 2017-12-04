@@ -8,6 +8,8 @@ categories: tool
 
 Adobe Illustrator 是一款强大的矢量图形软件，当我们在里面做好图形后，可能需要在里面插入一些数学符号或者数学公式什么的，这时一般考虑使用 Latex 来输出这些特殊文本。下面介绍一下如何在 Illustrator 中使用 Latex 。
 
+<!--more-->
+
 ## 安装 LaTeX
 LaTeX 有很多发行版，在[这里](http://latex.org/know-how/latex-distributions)可以查看到。我在windows环境下使用的是 [MikTeX](https://miktex.org/)，在[这里](https://miktex.org/download)下载了安装包后，按照正常的Windows软件安装流程进行安装，途中可能会提示安装一些依赖，按照提示进行操作即可。
 
