@@ -4,7 +4,7 @@
 
 # Site
 title: 雪落马蹄的博客
-subtitle:
+subtitle: 风雪夜归人
 description:
 author: 雪落马蹄
 language: zh-Hans
@@ -141,6 +141,7 @@ menu:
   categories: /categories/ || th
   archives: /archives/ || archive
 
+# https://github.com/EYHN/hexo-helper-live2d
 # model 模型名称 默认值: z16
 # width 宽度 默认值: 150
 # height 高度 默认值： 300
@@ -169,3 +170,4 @@ live2d:
   # model: tororo
   # model: hijiki
   bottom: -30
+  position: left

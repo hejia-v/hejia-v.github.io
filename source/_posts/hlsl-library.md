@@ -1,5 +1,5 @@
 ---
-title: HLSL 笔记
+title: HLSL 常用函数
 date: 2017-12-01 08:15:02
 updated: 2017-12-01 08:15:02
 tags: shader
