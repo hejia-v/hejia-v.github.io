@@ -8,7 +8,7 @@ subtitle: 风雪夜归人
 description:
 author: 雪落马蹄
 language: zh-Hans
-avatar: http://ozy76jm8o.bkt.clouddn.com/blog/images/avater-1.png
+avatar: http://ozy76jm8o.bkt.clouddn.com/blog/images/avater-2.png
 timezone: Asia/Shanghai
 
 # URL
@@ -125,7 +125,7 @@ search:
 #---------------------------------
 social:
   GitHub: https://github.com/hejia-v
-  Weibo: http://weibo.com
+  # Weibo: http://weibo.com
 
 social_icons:
   enable: true

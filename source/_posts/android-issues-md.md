@@ -15,7 +15,7 @@ categories: android
 <a href="https://zh.wikipedia.org/wiki/JAR_(文件格式)">JAR</a>文件即 Java Archive File，是 Java 的一种文档格式。JAR 文件实际上就是 ZIP 文件，使用`unzip xxx.jar -d dest/`命令即可解压。
 
 `jar`命令的说明如下：
-![1](/images/android-issues-1.png)
+![1](http://ozy76jm8o.bkt.clouddn.com/blog/images/android-issues-1.png)
 
 下面是jar命令的一些常用用法：
 1. 显示jar包
@@ -41,7 +41,7 @@ jar xvf hello.jar   # 解压hello.jar至当前目录
 2. 找到解压出来的RSA文件。
 3. 将终端切到RSA文件所在的目录, 在命令行输入 `keytool -printcert -file ./***.RSA` ，即可获取sha1签名和md5指纹。
 具体操作如图
-![2](/images/android-issues-2.png)
+![2](http://ozy76jm8o.bkt.clouddn.com/blog/images/android-issues-2.png)
 
 ## apktool的使用
 解包和打包
@@ -68,8 +68,8 @@ apktool d foo.jar
 
 具体操作如图
 
-![3](/images/android-issues-3.png)
-![4](/images/android-issues-4.png)
+![3](http://ozy76jm8o.bkt.clouddn.com/blog/images/android-issues-3.png)
+![4](http://ozy76jm8o.bkt.clouddn.com/blog/images/android-issues-4.png)
 
 
 ### 修改apk里面的内容

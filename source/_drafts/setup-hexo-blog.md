@@ -127,6 +127,8 @@ hexo publish draft <title>
 
 hexo generate #使用 Hexo 生成静态文件快速而且简单
 hexo generate --watch #监视文件变动
+hexo generate --watch --draft
+hexo generate --watch
 hexo clean #清除缓存 网页正常情况下可以忽略此条命令
 
 圆形头像

@@ -47,15 +47,9 @@ git config --global https.proxy 'socks5://127.0.0.1:1080'
 git config --global --unset http.proxy
 git config --global --unset https.proxy
 ```
-可查看一下git的配置
+可以查看一下git的配置
 ```
 git config --global -l
-```
-
-如果下载时走的是ssh协议，还需要配置ssh代理，即配置.ssh/config （确保安装了 NetCat）
-```
-Host github.com bitbucket.org
-    ProxyCommand            nc -x 127.0.0.1:1080 %h %p
 ```
 
 为了避免路径中有空格造成的烦恼，建议目录使用符号链接，例如
@@ -65,7 +59,7 @@ mklink /D C:\CUDA "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA"
 
 ### 检测gpu是否开启
 在python的交互环境下，输入如下代码，可以查看有哪些设备
-```
+```python
 from tensorflow.python.client import device_lib
 print(device_lib.list_local_devices())
 ```
