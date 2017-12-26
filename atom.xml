@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>雪落马蹄的博客</title>
+  
+  <subtitle>风雪夜归人</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://hejia-v.github.io/"/>
+  <updated>2017-12-16T13:14:19.000Z</updated>
+  <id>https://hejia-v.github.io/</id>
+  
+  <author>
+    <name>雪落马蹄</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>windows上安装tensorflow</title>
+    <link href="https://hejia-v.github.io/2017/12/16/install-tensorflow/"/>
+    <id>https://hejia-v.github.io/2017/12/16/install-tensorflow/</id>
+    <published>2017-12-16T13:14:19.000Z</published>
+    <updated>2017-12-16T13:14:19.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;访问-tensorflow-官网&quot;&gt;&lt;a href=&quot;#访问-tensorflow-官网&quot; class=&quot;headerlink&quot; title=&quot;访问 tensorflow 官网&quot;&gt;&lt;/a&gt;访问 tensorflow 官网&lt;/h3&gt;&lt;p&gt;方法一: 直接访问 &lt;a href=&quot;https://tensorflow.google.cn&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://tensorflow.google.cn&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="ml" scheme="https://hejia-v.github.io/categories/ml/"/>
+    
+    
+      <category term="ml" scheme="https://hejia-v.github.io/tags/ml/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在illustrator中使用latex公式</title>
+    <link href="https://hejia-v.github.io/2017/12/04/illustrator-latex/"/>
+    <id>https://hejia-v.github.io/2017/12/04/illustrator-latex/</id>
+    <published>2017-12-03T23:39:43.000Z</published>
+    <updated>2017-12-03T23:39:43.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Adobe Illustrator 是一款强大的矢量图形软件，当我们在里面做好图形后，可能需要在里面插入一些数学符号或者数学公式什么的，这时一般考虑使用 Latex 来输出这些特殊文本。下面介绍一下如何在 Illustrator 中使用 Latex 。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="tool" scheme="https://hejia-v.github.io/categories/tool/"/>
+    
+    
+      <category term="tool" scheme="https://hejia-v.github.io/tags/tool/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一个简单的BP神经网络的实现</title>
+    <link href="https://hejia-v.github.io/2017/12/02/bp-neural-network/"/>
+    <id>https://hejia-v.github.io/2017/12/02/bp-neural-network/</id>
+    <published>2017-12-02T04:47:09.000Z</published>
+    <updated>2017-12-02T04:47:09.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;不详述神经网络模型，只记录一下实现BP神经网络时的推导过程。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="ml" scheme="https://hejia-v.github.io/categories/ml/"/>
+    
+    
+      <category term="ml" scheme="https://hejia-v.github.io/tags/ml/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>android开发中的一些经验</title>
+    <link href="https://hejia-v.github.io/2017/12/01/android-issues-md/"/>
+    <id>https://hejia-v.github.io/2017/12/01/android-issues-md/</id>
+    <published>2017-12-01T13:45:05.000Z</published>
+    <updated>2017-12-01T13:45:05.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;记录一下android开发中的一些经验，本文将持续更新。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="android" scheme="https://hejia-v.github.io/categories/android/"/>
+    
+    
+      <category term="android" scheme="https://hejia-v.github.io/tags/android/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>HLSL 常用函数</title>
+    <link href="https://hejia-v.github.io/2017/12/01/hlsl-library/"/>
+    <id>https://hejia-v.github.io/2017/12/01/hlsl-library/</id>
+    <published>2017-12-01T00:15:02.000Z</published>
+    <updated>2017-12-01T00:15:02.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;HLSL是&lt;a href=&quot;https://docs.unity3d.com/Manual/SL-ShadingLanguage.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;unity推荐&lt;/a&gt;的shader语言，HLSL和Cg很相似。这里整理了一下网络上收集到的相关资料，方便自己学习和查询。&lt;/p&gt;
+&lt;h2 id=&quot;HLSL固有函数&quot;&gt;&lt;a href=&quot;#HLSL固有函数&quot; class=&quot;headerlink&quot; title=&quot;HLSL固有函数&quot;&gt;&lt;/a&gt;HLSL固有函数&lt;/h2&gt;&lt;p&gt;Intrinsic Functions (DirectX HLSL)&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="shader" scheme="https://hejia-v.github.io/categories/shader/"/>
+    
+    
+      <category term="shader" scheme="https://hejia-v.github.io/tags/shader/"/>
+    
+  </entry>
+  
+</feed>

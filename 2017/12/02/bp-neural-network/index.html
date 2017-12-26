@@ -1,0 +1,1612 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180x180.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+
+
+
+
+  <meta name="keywords" content="ml," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雪落马蹄的博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="不详述神经网络模型，只记录一下实现BP神经网络时的推导过程。">
+<meta name="keywords" content="ml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个简单的BP神经网络的实现">
+<meta property="og:url" content="https://hejia-v.github.io/2017/12/02/bp-neural-network/index.html">
+<meta property="og:site_name" content="雪落马蹄的博客">
+<meta property="og:description" content="不详述神经网络模型，只记录一下实现BP神经网络时的推导过程。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/learn-ml-2.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/learn-ml-3.png">
+<meta property="og:updated_time" content="2017-12-02T04:47:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一个简单的BP神经网络的实现">
+<meta name="twitter:description" content="不详述神经网络模型，只记录一下实现BP神经网络时的推导过程。">
+<meta name="twitter:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/learn-ml-2.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":0,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hejia-v.github.io/2017/12/02/bp-neural-network/"/>
+
+
+
+
+
+  <title>一个简单的BP神经网络的实现 | 雪落马蹄的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">雪落马蹄的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">风雪夜归人</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hejia-v.github.io/2017/12/02/bp-neural-network/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雪落马蹄">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/avater-1.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪落马蹄的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">一个简单的BP神经网络的实现</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-02T12:47:09+08:00">
+                2017-12-02
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-12-02T12:47:09+08:00">
+                2017-12-02
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ml/" itemprop="url" rel="index">
+                    <span itemprop="name">ml</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>不详述神经网络模型，只记录一下实现BP神经网络时的推导过程。</p>
+<a id="more"></a>
+<h2 id="输入值和输出值"><a href="#输入值和输出值" class="headerlink" title="输入值和输出值"></a>输入值和输出值</h2><p>输入值是一个维度是n的特征向量，记作 $x=(x_1,x_2,\ldots,x_n)$。一个数据集里一般有多个样本，假定有m个样本，则将这数据集记作 $X = (x^{(1)},x^{(2)},\ldots,x^{(m)})$ 。</p>
+<p>输出值一般是一个数值，用于表示属于哪个类别。对于m个样本，输出值的集合记作 $y=(y^{(1)}, y^{(2)}, \ldots, y^{(m)})$ 。</p>
+<p>输入层的节点个数取决于输入的特征向量的维度。</p>
+<p>输出层的节点个数取决于拥有的类别个数。如果只有2类，则可以只用一个输出节点用于预测0或1。</p>
+<p>隐藏层的节点越多，则越复杂的函数可以fit到。但是这样做的代价也比较大，首先，会增大训练参数和进行预测的计算量。其次，大量的参数也容易导致过拟合。  需要根据具体情况选择节点的个数。</p>
+<p>有一个经验公式可以确定隐含层节点数目，如下</p>
+<script type="math/tex; mode=display">
+h=\sqrt{m+n} + a</script><p>其中h为隐含层节点数目，m为输入层节点数目，n为输出层节点数目，a为1~10之间的调节常数。</p>
+<h2 id="正向传播"><a href="#正向传播" class="headerlink" title="正向传播"></a>正向传播</h2><blockquote>
+<p>这里约定上标 (i) 为样本在样本集中的序号，上标 [i] 为神经网络的层的序号，下标 [i] 为网络中某一层的节点的序号，log的底数默认是e。</p>
+</blockquote>
+<p>神经网络使用正向传播进行预测。</p>
+<p>对于一个3层的神经网络，可以这样计算预测值 $\hat y$ ：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+& z^{[1]} = xW^{[1]}+ b^{[1]} \\
+& a^{[1]} = \sigma (z^{[1]}) \\
+& z^{[2]} = a^{[1]}W^{[2]} + b^{[2]} \\
+& a^{[2]} = \hat y = softmax (z^{[2]}) \\
+\end{align}</script><p>神经网络里的计算都需要进行向量化，具体来说</p>
+<p>对于第1层的输入值和输出值</p>
+<script type="math/tex; mode=display">
+X =   \begin{pmatrix}
+        x_1^{(1)} & x_2^{(1)} & \cdots & x_n^{(1)} \\
+        x_1^{(2)} & x_2^{(2)} & \cdots & x_n^{(2)} \\
+        \vdots     & \vdots    & \ddots & \vdots \\
+        x_1^{(m)} & x_2^{(m)} & \cdots & x_n^{(m)} \\
+        \end{pmatrix} = \begin{pmatrix}
+        x^{(1)} \\
+        x^{(2)} \\
+        \vdots \\
+        x^{(m)} \\
+        \end{pmatrix} , \qquad y = \begin{pmatrix}
+        y^{(1)} \\
+        y^{(2)} \\
+        \vdots \\
+        y^{(m)} \\
+        \end{pmatrix}</script><p>第2层</p>
+<p>假设第2层有u个节点，则这层的权重和偏置为</p>
+<script type="math/tex; mode=display">
+W^{[1]} = \begin{pmatrix}
+        w_{1[1]} & w_{1[2]} & \cdots & w_{1[u]} \\
+        w_{2[1]} & w_{2[2]} & \cdots & w_{2[u]} \\
+        \vdots     & \vdots    & \ddots & \vdots \\
+        w_{n[1]} & w_{n[2]} & \cdots & w_{n[u]} \\
+        \end{pmatrix} 
+        = \begin{pmatrix}
+        w_{[1]} & w_{[2]} &  \ldots & w_{[u]} 
+        \end{pmatrix} , \qquad 
+b^{[1]} = \begin{pmatrix}
+        b_{[1]} & b_{[2]} & \ldots & b_{[u]} \end{pmatrix}</script><p>根据矩阵的分块的性质</p>
+<script type="math/tex; mode=display">
+\begin{align}
+XW^{[1]} &= \begin{pmatrix}
+        x^{(1)} \\ x^{(2)} \\ \vdots \\ x^{(m)} \\
+        \end{pmatrix}
+    \begin{pmatrix}
+        w_{[1]} & w_{[2]} &  \ldots & w_{[u]} 
+        \end{pmatrix} = 
+AB = \begin{pmatrix}
+        A_{11} \\ A_{21} \\ \vdots \\ A_{m1} \\
+        \end{pmatrix}  \begin{pmatrix}
+        B_{11} & B_{12} & \ldots & B_{1u} \\
+        \end{pmatrix} \\
+       & = \begin{pmatrix}
+        C_{11} & C_{12} & \cdots & C_{1u} \\
+        C_{21} & C_{22} & \cdots & C_{2u} \\
+        \vdots     & \vdots    & \ddots & \vdots \\
+        C_{m1} & C_{m2} & \cdots & C_{mu} \\
+        \end{pmatrix} 
+        = \begin{pmatrix}
+        A_{11}B_{11} & A_{11}B_{12} & \cdots & A_{11}B_{1u} \\
+        A_{21}B_{11} & A_{21}B_{12} & \cdots & A_{21}B_{1u} \\
+        \vdots     & \vdots    & \ddots & \vdots \\
+        A_{m1}B_{11} & A_{m1}B_{12} & \cdots & A_{m1}B_{1u} \\
+        \end{pmatrix}  \\
+        & =  \begin{pmatrix}
+        x^{(1)}w_{[1]} & x^{(1)}w_{[2]} & \cdots & x^{(1)}w_{[u]} \\
+        x^{(2)}w_{[1]} & x^{(2)}w_{[2]} & \cdots & x^{(2)}w_{[u]} \\
+        \vdots     & \vdots    & \ddots & \vdots \\
+        x^{(m)}w_{[1]} & x^{(m)}w_{[2]} & \cdots & x^{(m)}w_{[u]} \\
+        \end{pmatrix}
+\end{align}</script><p>参考numpy中的boardcast，则有</p>
+<script type="math/tex; mode=display">
+\begin{align}
+z^{[1]} &= XW^{[1]} + boardcast\ (b^{[1]}) =  \begin{pmatrix}
+        x^{(1)}w_{[1]} + b_{[1]} & x^{(1)}w_{[2]} + b_{[2]} & \cdots & x^{(1)}w_{[u]} + b_{[u]} \\
+        x^{(2)}w_{[1]} + b_{[1]} & x^{(2)}w_{[2]} + b_{[2]} & \cdots & x^{(2)}w_{[u]} + b_{[u]} \\
+        \vdots     & \vdots    & \ddots & \vdots \\
+        x^{(m)}w_{[1]} + b_{[1]} & x^{(m)}w_{[2]} + b_{[2]} & \cdots & x^{(m)}w_{[u]} + b_{[u]} \\
+        \end{pmatrix} \\
+        & =  \begin{pmatrix}
+        z_{[1]}^{(1)} & z_{[2]}^{(1)} & \cdots & z_{[u]}^{(1)} \\
+        z_{[1]}^{(2)} & z_{[2]}^{(2)} & \cdots & z_{[u]}^{(2)} \\
+        \vdots     & \vdots    & \ddots & \vdots \\
+        z_{[1]}^{(m)} & z_{[2]}^{(m)} & \cdots & z_{[u]}^{(m)} \\
+        \end{pmatrix}
+\end{align}</script><script type="math/tex; mode=display">
+a^{[1]} =  \begin{pmatrix}
+        \sigma(z_{[1]}^{(1)}) & \sigma(z_{[2]}^{(1)}) & \cdots & \sigma(z_{[u]}^{(1)}) \\
+        \sigma(z_{[1]}^{(2)}) & \sigma(z_{[2]}^{(2)}) & \cdots & \sigma(z_{[u]}^{(2)}) \\
+        \vdots     & \vdots    & \ddots & \vdots \\
+        \sigma(z_{[1]}^{(m)}) & \sigma(z_{[2]}^{(m)}) & \cdots & \sigma(z_{[u]}^{(m)}) \\
+        \end{pmatrix}</script><p>以上的计算方式可以推广到多层神经网络中的任一隐藏层，对于第$l$层，将 $X$ 类比成 $a^{[l-1]}$ ， $W^{[1]}$ 类比成 $W^{[l]}$ ， $b^{[1]}$ 类比成 $b^{[l]}$ ， $z^{[1]}$ 类比成 $z^{[l]}$ ， $a^{[1]}$ 类比成 $a^{[l]}$ ，就可以了。</p>
+<p>对于输出层，因为我们希望网络输出各个分类的概率，所以将输出层的激活函数选为<a href="https://en.wikipedia.org/wiki/Softmax_function" target="_blank" rel="noopener">softmax</a> 。softmax 是一种简便的将原始评分转换成概率的方法。可以将 softmax 看做 logistic 函数的在多分类下的推广。</p>
+<script type="math/tex; mode=display">
+a^{[2]} =  softmax (z^{[2]}) = \begin{pmatrix}
+        softmax(z^{[2](1)}) \\ softmax(z^{[2](2)}) \\ \vdots \\ softmax(z^{[2](m)}) \\
+        \end{pmatrix}</script><h3 id="权重和偏置的初始化"><a href="#权重和偏置的初始化" class="headerlink" title="权重和偏置的初始化"></a>权重和偏置的初始化</h3><p>权重 w 不能全部置为0，这样会导致每个层的所有节点的计算都是相同的。如果激活函数使用sigmoid或者tanh，随机出来的 w 最好小一点，一般乘以0.01。因为如果 w 比较大，通过激活函数计算出来的值会落到接近1的位置，导致学习速度变慢。</p>
+<p>偏置 b 可以全部初始化为0，但是推荐初始值不为0。</p>
+<h3 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h3><ul>
+<li><a href="https://en.wikipedia.org/wiki/Hyperbolic_function#Tanh" target="_blank" rel="noopener">tanh</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Sigmoid_function" target="_blank" rel="noopener">sigmoid function</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Rectifier_(neural_networks)" target="_blank" rel="noopener">ReLUs</a></li>
+</ul>
+<h3 id="softmax"><a href="#softmax" class="headerlink" title="softmax"></a>softmax</h3><p><a href="https://en.wikipedia.org/wiki/Softmax_function" target="_blank" rel="noopener">softmax</a> 又称为归一化指数函数，是广义上的 logistic 函数。假设k 维向量 $z$ 的各项是任意实数，使用 softmax 对 $z$ 进行“压缩”处理后，压缩后的向量 $\sigma (z)$ 的每一项的值在 [0, 1] 之间，所有项之和等于1。函数公式如下</p>
+<script type="math/tex; mode=display">
+\sigma (z)_j = \frac {e^{z_j}}{ \sum_{k=1}^K e^{z_k} } \quad  for\ j = 1, \ldots, K.</script><p>一个简单的例子如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">z = np.array([<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>, <span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>])</span><br><span class="line">exp_scores = np.exp(z)</span><br><span class="line">probs = exp_scores / np.sum(exp_scores)  <span class="comment"># 应用 softmax</span></span><br></pre></td></tr></table></figure>
+<p>在神经网络的输出层中，有C个分类，对于给定的输入 $z$ ，每个分类的概率可以表示为：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+    P(t=1|z) \\ P(t=2|z) \\ \vdots \\ P(t=C|z) \\
+\end{bmatrix} = \frac {1}{ \sum_{k=1}^C e^{z_k} } \begin{bmatrix}
+    e^{z_1} \\ e^{z_2} \\ \vdots \\ e^{z_C} \\
+\end{bmatrix}</script><p>其中，$P(t=c|z)$ 表示，在给定输入$z$时，该输入数据是$c$分类的概率。</p>
+<p>对于 softmax 函数</p>
+<script type="math/tex; mode=display">
+a_j = \frac {e^{z_j}}{ \sum_{k=1}^K e^{z_k} } \quad  for\ j = 1, \ldots, K.</script><p>softmax 函数的求导过程比较特别，分如下2种情况。这是因为i = j 时，$z_i$ 与 $z_j$ 是同一个变量，按偏导数的定义，将多元函数关于一个自变量求偏导数时，就将其余的自变量看成常数，因此需要分2种情况处理。</p>
+<script type="math/tex; mode=display">
+\begin{align}
+&if \ j=i \\
+&\qquad \frac{ \partial a_j }{ \partial z_i } = \frac{ \partial }{ \partial z_i } \Bigl( \frac {e^{z_j}}{ \sum_{k=1}^K e^{z_k} } \Bigr)
+= \frac { (e^{z_j})^\prime \cdot \sum_k e^{z_k} - e^{z_j} \cdot e^{z_j} } { \Bigl( \sum_k e^{z_k} \Bigr)^2 }
+= \frac { e^{z_j} } { \sum_k e^{z_k} } - \frac { e^{z_j} } { \sum_k e^{z_k} } \cdot \frac { e^{z_j} } { \sum_k e^{z_k} }
+= a_j ( 1-a_j )
+\\
+&if \ j \neq i \\
+&\qquad \frac{ \partial a_j }{ \partial z_i } = \frac{ \partial }{ \partial z_i } \Bigl( \frac {e^{z_j}}{ \sum_{k=1}^K e^{z_k} } \Bigr)
+= \frac { 0 \cdot \sum_k e^{z_k} - e^{z_j} \cdot e^{z_i} } { \Bigl( \sum_k e^{z_k} \Bigr)^2 }
+= - \frac { e^{z_j} } { \sum_k e^{z_k} } \cdot \frac { e^{z_i} } { \sum_k e^{z_k} }
+= -a_j a_i
+\end{align}</script><h2 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h2><p>反向传播主要思想是：<br>（1）将训练集数据输入到输入层，经过隐藏层，最后达到输出层并输出结果，这是前向传播过程；<br>（2）由于输出层的输出结果与实际结果有误差，则计算估计值与实际值之间的误差，并将该误差从输出层向隐藏层反向传播，直至传播到输入层；<br>（3）在反向传播的过程中，根据误差调整各种参数的值；不断迭代上述过程，直至收敛。</p>
+<h3 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h3><p>我们把定义估计值与实际值之间误差(单个样本)的函数叫作误差损失(loss)函数，代价(cost)函数是各个样本的loss函数的平均。</p>
+<p>如果误差损失函数采用二次代价函数 ，在实际中，如果误差越大，参数调整的幅度可能更小，训练更缓慢。使用交叉熵代价函数替换二次代价函数，可以解决学习缓慢的问题。</p>
+<blockquote>
+<p>示性函数：$1\{\cdot\}$<br>取值规则为：$1\{值为真的表达式\}=1$ ，$1\{值为假的表达式\}=0$ 。举例来说，表达式 $1\{2+2=4\}$的值为1，$1\{1+1=5\}$的值为 0。</p>
+</blockquote>
+<p>在分类问题中，交叉熵代价函数与对数似然代价函数在形式上是基本一致的。</p>
+<p>对于输出层的softmax激活函数，假设有m个样本，k个类别，将$p(x)$记为$1\{ y^{(i)} = j \}$，$q(x)$记为softmax函数的输出值</p>
+<p>则根据交叉熵公式，</p>
+<script type="math/tex; mode=display">
+H(p,q) = - \sum_x p(x)log\ q(x)</script><p>可以得到交叉熵代价函数为：</p>
+<script type="math/tex; mode=display">
+J(\theta) = -\frac{1}{m} \Biggl[ \sum_{i=1}^m  \biggl[ \sum_{j=1}^k 1\{ y^{(i)} = j \} \ log \frac{e^{\theta_j^T x^{(i)}}}{ \sum_{l=1}^k e^{ \theta_l^T x^{(i)} } }  \biggl] \Biggl]</script><p>从似然函数的角度分析，记$h_{\theta j}(x)= \frac{e^{\theta_j^T x}}{ \sum_{l=1}^k e^{ \theta_l^T x } }$  (h一般是hypothesis的缩写)，在一个样本中，对于输入x的分类结果为j的概率为</p>
+<script type="math/tex; mode=display">
+P(y=j|x; \theta) = h_{\theta j} (x)^{ 1\{ y = j \}  }</script><p>将所有分类的概率综合起来，则有：</p>
+<script type="math/tex; mode=display">
+P(y|x; \theta) = \prod_{j=1}^k h_{\theta j} (x)^{ 1\{ y = j \}  }</script><p>取似然函数为：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+L(\theta) &= \prod_{i=1}^m P(y^{(i)} | x^{(i)}; \theta) \\
+&= \prod_{i=1}^m \biggl[ \prod_{j=1}^k h_{\theta j} (x^{(i)})^{1\{ y^{(i)} = j \}} \biggl]
+\end{align}</script><p>对数似然函数为：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+l(\theta) &= log\ L(\theta) \\
+&= \sum_{i=1}^m \biggl[ \sum_{j=1}^k 1\{ y^{(i)} = j \} \ log\ h_{\theta j} (x^{(i)})  \biggl]
+\end{align}</script><p>最大似然估计就是要求得使$l(\theta)$取最大值时的$\theta$ 。一般将它乘上一个负系数<strong>-1/m</strong>，即：</p>
+<script type="math/tex; mode=display">
+J(\theta) = - \frac{1}{m} l(\theta)</script><p>则$J(\theta)$取最小值时的$\theta$为要求的最佳参数。这也就是上面的交叉熵代价函数。</p>
+<blockquote>
+<ol>
+<li>log MN = log M + log N</li>
+<li>很多文献里对数都没标底数，这说明可以取任意底数，一般取e或2，取不同的底数时，对数值只相差了一个常数系数，对算法不会有影响。</li>
+</ol>
+</blockquote>
+<p>相关的具体分析参考如下链接：</p>
+<ul>
+<li><a href="http://deeplearning.stanford.edu/wiki/index.php/Softmax%E5%9B%9E%E5%BD%92" target="_blank" rel="noopener">Softmax回归</a></li>
+<li><a href="http://ufldl.stanford.edu/tutorial/supervised/SoftmaxRegression/" target="_blank" rel="noopener">Softmax Regression</a></li>
+<li><a href="http://www.jianshu.com/p/8eb17fa41164" target="_blank" rel="noopener">Softmax分类函数</a></li>
+<li><a href="https://github.com/peterroelants/peterroelants.github.io/blob/master/notebooks/neural_net_implementation/neural_network_implementation_intermezzo02.ipynb" target="_blank" rel="noopener">neural_network_implementation_intermezzo02</a></li>
+<li><a href="http://neuralnetworksanddeeplearning.com/chap3.html" target="_blank" rel="noopener">Improving the way neural networks learn</a></li>
+<li><a href="http://blog.csdn.net/u014313009/article/details/51043064" target="_blank" rel="noopener">交叉熵代价函数</a></li>
+</ul>
+<h3 id="交叉熵代价函数-cross-entropy-loss"><a href="#交叉熵代价函数-cross-entropy-loss" class="headerlink" title="交叉熵代价函数 cross-entropy loss"></a>交叉熵代价函数 <a href="https://en.wikipedia.org/wiki/Cross_entropy#Cross-entropy_error_function_and_logistic_regression" target="_blank" rel="noopener">cross-entropy loss</a></h3><h4 id="二次代价函数的不足"><a href="#二次代价函数的不足" class="headerlink" title="二次代价函数的不足"></a>二次代价函数的不足</h4><p>考察一下二次代价函数</p>
+<script type="math/tex; mode=display">
+C = \frac {1}{2n} \sum_x \| y(x) - a^L(x) \|^2</script><p>其中，C表示代价，x表示样本，y表示实际值，a表示输出值，n表示样本的总数。为简单起见，以一个样本为例进行说明，此时二次代价函数为：</p>
+<script type="math/tex; mode=display">
+C = \frac {(y-a)^2}{2}</script><p>在用梯度下降法(gradient descent) 调整权重w和偏置b的过程中，w和b的梯度推导如下：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+&\frac { \partial C }{ \partial w } = (a - y)\sigma^\prime(z) x \\
+&\frac { \partial C }{ \partial b } = (a - y)\sigma^\prime(z) \\
+\end{align}</script><p>可以看出，w和b的梯度跟激活函数的梯度成正比，激活函数的梯度越大，w和b的大小调整得越快，训练收敛得就越快。而神经网络常用的激活函数为sigmoid函数或tanh函数，观察这些激活函数的图像，当初始的代价（误差）越大时，梯度（导数）越小，训练的速度越慢。这与我们的期望不符，即不能错误越大，改正的幅度越大，从而学习得越快。</p>
+<h4 id="交叉熵代价函数"><a href="#交叉熵代价函数" class="headerlink" title="交叉熵代价函数"></a>交叉熵代价函数</h4><p>为了克服二次代价函数学习缓慢的缺点，引入了交叉熵代价函数：</p>
+<script type="math/tex; mode=display">
+C = - \frac{1}{n} \sum_x [yln\ a + (1-y)ln(1-a)]</script><p>其中，x表示样本，n表示样本的总数。重新计算参数w的梯度：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\frac{\partial C}{\partial w_j} &= -\frac{1}{n} \sum_x \Bigl( \frac{y}{\sigma(z)} -\frac{(1-y)}{1-\sigma(z)} \Bigr) \frac{\partial \sigma(z)}{\partial w_j} \\
+&= -\frac{1}{n} \sum_x \Bigl( \frac{y}{\sigma(z)} -\frac{(1-y)}{1-\sigma(z)} \Bigr) \sigma^\prime(z)x_j \\
+&= \frac{1}{n} \sum_x  \frac{ \sigma^\prime(z)x_j }{\sigma(z) (1-\sigma(z))} (\sigma(z)-y) \\
+&= \frac{1}{n} \sum_x  x_j (\sigma(z)-y) \\
+\end{align}</script><p>其中，w的梯度公式中原来的 $\sigma^\prime(z)$ 被消掉了；另外，该梯度公式中的 $\sigma(z)-y$ 表示输出值与实际值之间的误差。所以，当误差越大，梯度就越大，参数w调整得越快，训练速度也就越快。同理可得，b的梯度为：</p>
+<script type="math/tex; mode=display">
+\frac{\partial C}{\partial b} = \frac{1}{n} \sum_x (\sigma(z)-y)</script><h4 id="交叉熵代价函数的来源"><a href="#交叉熵代价函数的来源" class="headerlink" title="交叉熵代价函数的来源"></a>交叉熵代价函数的来源</h4><p>用交叉熵代替二次代价函数的想法源自哪里？</p>
+<p>以偏置b的梯度计算为例</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\frac{\partial C}{\partial b} &= \frac{\partial C}{\partial a} \cdot \frac{\partial a}{\partial z} \cdot \frac{\partial z}{\partial b} \\
+&= \frac{\partial C}{\partial a} \cdot \sigma^\prime(z) \cdot \frac{\partial (wx+b)}{\partial b} \\
+&= \frac{\partial C}{\partial a} \cdot \sigma^\prime(z) \\
+&= \frac{\partial C}{\partial a} \cdot a(1-a) \\
+\end{align}</script><p>而二次代价函数推导出来的b的梯度公式为：</p>
+<script type="math/tex; mode=display">
+\frac { \partial C }{ \partial b } = (a - y)\sigma^\prime(z)</script><p>为了消掉该公式中的 $\sigma^\prime(z)$ ，需要找到一个代价函数使得：</p>
+<script type="math/tex; mode=display">
+\frac { \partial C }{ \partial b } = (a - y)</script><p>即</p>
+<script type="math/tex; mode=display">
+\frac { \partial C }{ \partial a } \cdot a(1-a) = (a - y)</script><p>对方程进行关于a的积分，可得：</p>
+<script type="math/tex; mode=display">
+C = -[yln\ a + (1-y)ln(1-a)] + constant</script><p>其中constant是积分常量。这是一个单独训练样本X对代价函数的贡献。为了得到整个的代价函数，还需要对所有的训练样本进行平均，可得：</p>
+<script type="math/tex; mode=display">
+C = -\frac{1}{n} \sum_x [yln\ a + (1-y)ln(1-a)] + constant</script><p>而这就是前面的交叉熵代价函数。</p>
+<p>在分类问题中，交叉熵其实就是对数似然函数的最大化。</p>
+<p>关于交叉熵的更多内容，参考以下链接：</p>
+<ul>
+<li><a href="http://blog.csdn.net/rtygbwwwerr/article/details/50778098" target="_blank" rel="noopener">交叉熵（Cross-Entropy）</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Cross_entropy" target="_blank" rel="noopener">Cross entropy</a></li>
+<li><a href="http://shuokay.com/2017/06/23/cross-entropy/" target="_blank" rel="noopener">怎样理解 Cross Entropy</a></li>
+<li><a href="http://blog.csdn.net/hguisu/article/details/27305435" target="_blank" rel="noopener">信息论的熵</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Entropy_(information_theory)" target="_blank" rel="noopener">Entropy</a></li>
+</ul>
+<h3 id="反向传播算法"><a href="#反向传播算法" class="headerlink" title="反向传播算法"></a>反向传播算法</h3><blockquote>
+<p>求导的链式法则 (<a href="https://en.wikipedia.org/wiki/Chain_rule" target="_blank" rel="noopener">Chain rule</a>)：<br>表达式：$(f(g(x)))^\prime = f^\prime (g(x)) g^\prime (x)$<br>其他形式：$\frac {dy}{dx} = \frac {dy}{dz} \cdot \frac {dz}{dx}$</p>
+</blockquote>
+<p>求$J(W, b)$的最小值可以使用梯度下降法，根据梯度下降法可得$W$和$b$的更新过程：</p>
+<script type="math/tex; mode=display">
+W^{[l]}_{[i]j} := W^{[l]}_{[i]j} - \alpha \frac{\partial}{\partial \ W^{[l]}_{[i]j}} J(W, b) \\
+b^{[l]}_{[i]} := b^{[l]}_{[i]} - \alpha \frac{\partial}{\partial \ b^{[l]}_{[i]}} J(W, b)</script><p>其中，$\alpha$为学习步长，$W^{[l]}_{[i]j}$为第l层的第i个节点的权重第j个分量，$b^{[l]}_{[i]}$为第l层的第i个节点的偏置。</p>
+<h4 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h4><p>输出层的激活函数采用的是softmax函数。根据前文，输出层的误差采用交叉熵代价函数来衡量，即：</p>
+<script type="math/tex; mode=display">
+x^{(i)} = a ^{[1](i)}\\
+z_{[j]}^{[2](i)} = x^{(i)}W_{[j]}^{[2]} + b_{[j]}^{[2]}  \\
+a_{[j]}^{[2](i)} = \frac{e^{z_{[j]}^{[2](i)}}}{ \sum_{k=1}^K e^{ z_{[k]}^{[2](i)} } }   \\
+J(W, b) = -\frac{1}{m} \Biggl[ \sum_{i=1}^m  \biggl[ \sum_{j=1}^k 1\{ y^{(i)} = j \} \ log \ a_{[j]}^{[2](i)}  \biggl] \Biggl]</script><p>其中，依照前文约定，下标 [j] 为第$j$个节点的序号，上标 (i) 为样本在样本集中的序号。</p>
+<p>输出层的第$l$个节点的权重$W_{[l]}$的第$t$个分量，求导(梯度)为：(为了简化公式，没有加上标$[2]$，a和z没有加上标$(i)$)</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\frac{\partial}{\partial \ W_{[l]t}} J(W, b) &= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ \frac{\partial}{\partial \ W_{[l]t}} \biggl[ \sum_{j=1}^k 1\{ y^{(i)} = j \} \ log\ a_{[j]}  \biggl] \biggl] \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ \frac{\partial}{\partial \ z_{[l]}} \biggl[ \sum_{j=1}^k 1\{ y^{(i)} = j \} \ log\ a_{[j]}  \biggl] \biggl] \cdot \frac{\partial \ z_{[l]}}{\partial \ W_{[l]t}} \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ \frac{\partial}{\partial \ z_{[l]}} \biggl[ \sum_{j=1}^k 1\{ y^{(i)} = j \} \ log\ a_{[j]}  \biggl] \biggl] \cdot x^{(i)}_t \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ \frac{\partial}{\partial \ z_{[l]}} \biggl( 1\{ y^{(i)} = l \} \ log\ a_{[l]}  \biggl) +  \frac{\partial}{\partial \ z_{[l]}} \biggl( \sum_{j=1,j \neq l}^k 1\{ y^{(i)} = j \} \ log\ a_{[j]} \biggr) \biggl] \cdot x^{(i)}_t \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ 1\{ y^{(i)} = l \} \biggl( \frac{\partial \ (log\ a_{[l]}) }{\partial \ a_{[l]}} \cdot \frac{\partial \ a_{[l]}}{\partial \ z_{[l]}} \biggl) +  \biggl( \sum_{j=1,j \neq l}^k 1\{ y^{(i)} = j \} \cdot \frac{\partial \ (log\ a_{[j]}) }{\partial \ a_{[j]}} \cdot \frac{\partial \ a_{[j]}}{\partial \ z_{[l]}} \biggr)  \biggl] \cdot x^{(i)}_t \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ 1\{ y^{(i)} = l \} \biggl( \frac{1}{a_{[l]}} \cdot a_{[l]} ( 1-a_{[l]} ) \biggl) +  \biggl( \sum_{j=1,j \neq l}^k 1\{ y^{(i)} = j \} \cdot \frac{1}{a_{[j]}} \cdot (-a_{[j]} a_{[l]}) \biggr)  \biggl] \cdot x^{(i)}_t \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ 1\{ y^{(i)} = l \} \cdot ( 1-a_{[l]} ) - \sum_{j=1,j \neq l}^k 1\{ y^{(i)} = j \} \cdot a_{[l]} \biggl] \cdot x^{(i)}_t \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ 1\{ y^{(i)} = l \} - 1\{ y^{(i)} = l \} \cdot a_{[l]} - \sum_{j=1,j \neq l}^k 1\{ y^{(i)} = j \} \cdot a_{[l]} \biggl] \cdot x^{(i)}_t \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ 1\{ y^{(i)} = l \} - a_{[l]} \cdot \sum_{j=1}^k 1\{ y^{(i)} = j \} \biggl] \cdot x^{(i)}_t \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl( 1\{ y^{(i)} = l \} - a_{[l]} \biggl) \cdot x^{(i)}_t \Biggl] \\
+\end{align}</script><p>输出层的第$l$个节点的偏置$b_{[l]}$的求导(梯度)为：(为了简化公式，没有加上标$[2]$，a和z没有加上标$(i)$)</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\frac{\partial}{\partial \ b_{[l]}} J(W, b) &= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ \frac{\partial}{\partial \ b_{[l]}} \biggl[ \sum_{j=1}^k 1\{ y^{(i)} = j \} \ log\ a_{[j]}  \biggl] \biggl] \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ \frac{\partial}{\partial \ z_{[l]}} \biggl[ \sum_{j=1}^k 1\{ y^{(i)} = j \} \ log\ a_{[j]}  \biggl] \biggl] \cdot \frac{\partial \ z_{[l]}}{\partial \ b_{[l]}} \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ \frac{\partial}{\partial \ z_{[l]}} \biggl( 1\{ y^{(i)} = l \} \ log\ a_{[l]}  \biggl) +  \frac{\partial}{\partial \ z_{[l]}} \biggl( \sum_{j=1,j \neq l}^k 1\{ y^{(i)} = j \} \ log\ a_{[j]} \biggr) \biggl] \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ 1\{ y^{(i)} = l \} \biggl( \frac{\partial \ (log\ a_{[l]}) }{\partial \ a_{[l]}} \cdot \frac{\partial \ a_{[l]}}{\partial \ z_{[l]}} \biggl) +  \biggl( \sum_{j=1,j \neq l}^k 1\{ y^{(i)} = j \} \cdot \frac{\partial \ (log\ a_{[j]}) }{\partial \ a_{[j]}} \cdot \frac{\partial \ a_{[j]}}{\partial \ z_{[l]}}  \biggr)  \biggl] \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ 1\{ y^{(i)} = l \} \biggl( \frac{1}{a_{[l]}} \cdot a_{[l]} ( 1-a_{[l]} ) \biggl) +  \biggl( \sum_{j=1,j \neq l}^k 1\{ y^{(i)} = j \} \cdot \frac{1}{a_{[j]}} \cdot (-a_{[j]} a_{[l]}) \biggr)  \biggl] \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ 1\{ y^{(i)} = l \} \cdot ( 1-a_{[l]} ) - \sum_{j=1,j \neq l}^k 1\{ y^{(i)} = j \} \cdot a_{[l]} \biggl] \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ 1\{ y^{(i)} = l \} - 1\{ y^{(i)} = l \} \cdot a_{[l]} - \sum_{j=1,j \neq l}^k 1\{ y^{(i)} = j \} \cdot a_{[l]} \biggl] \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ 1\{ y^{(i)} = l \} - a_{[l]} \cdot \sum_{j=1}^k 1\{ y^{(i)} = j \} \biggl] \Biggl] \\
+&= -\frac{1}{m} \Biggl[ \sum_{i=1}^m \biggl[ 1\{ y^{(i)} = l \} - a_{[l]} \biggl] \Biggl] \\
+\end{align}</script><p>在很多的文献中，会把上式记成如下形式，其中上标(i)表示是第i个样本：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\delta_{[l]}^{[2](i)} &= \frac{\partial \ E^{(i)} }{\partial \ z_{[l]}^{[2](i)}} = \frac{\partial}{ \partial \ z_{[l]}^{[2](i)} } \biggl[- \sum_{j=1}^k 1\{ y^{(i)} = j \} \ log\ a_{[j]}^{[2](i)}  \biggl]  = a_{[l]}^{[2](i)} - 1\{ y^{(i)} = l \} \\
+\frac{\partial}{\partial \ W_{[l]t}^{[2]}} J(W, b) &= \frac{\partial  }{\partial \ W_{[l]t}^{[2]} } (\frac{1}{m} \sum_{i=1}^m E^{(i)})  
+= \frac{1}{m} \sum_{i=1}^m ( \frac{\partial \ E^{(i)} }{\partial \ z_{[l]}^{[2](i)}} \cdot \frac{\partial \ z_{[l]}^{[2](i)}}{\partial \ W_{[l]t}^{[2]}} )       
+=  \frac{1}{m} \sum_{i=1}^m ( \delta_{[l]}^{[2](i)} \cdot a_t^{[1](i)} )       \\
+\frac{\partial}{\partial \ b_{[l]}^{[2]}} J(W, b) &= \frac{\partial  }{\partial \ b_{[l]}^{[2]} } (\frac{1}{m} \sum_{i=1}^m E^{(i)})  
+= \frac{1}{m} \sum_{i=1}^m ( \frac{\partial \ E^{(i)} }{\partial \ z_{[l]}^{[2](i)}} \cdot \frac{\partial \ z_{[l]}^{[2](i)}}{\partial \ b_{[l]}^{[2]}} )       
+=  \frac{1}{m} \sum_{i=1}^m  \delta_{[l]}^{[2](i)}        \\
+\end{align}</script><blockquote>
+<ol>
+<li>这里log的底数用的是e</li>
+<li>这里的x指的是输出层的上一层的输出</li>
+<li>关于$\delta$的原文是：for each node $i$ in layer $l$, we would like to compute an “error term” $\delta^{(l)}$ that measures how much that node was “responsible” for any errors in our output ，链接在<a href="http://ufldl.stanford.edu/tutorial/supervised/MultiLayerNeuralNetworks/" target="_blank" rel="noopener">这里</a></li>
+</ol>
+</blockquote>
+<h4 id="隐藏层"><a href="#隐藏层" class="headerlink" title="隐藏层"></a>隐藏层</h4><p>隐藏层的激活函数采用的是tanh函数。</p>
+<p>先考虑只有一个隐藏层的情况，参考下面这张图片，可以发现当前层的每个节点的权重和偏置会影响下一层的各个节点</p>
+<p><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/learn-ml-2.png" alt="1"></p>
+<script type="math/tex; mode=display">
+\begin{align}
+& z^{[1]} = xW^{[1]}+ b^{[1]} \\
+& a^{[1]} = \sigma (z^{[1]}) = tanh(z^{(i)}) \\
+& z^{[2]} = a^{[1]}W^{[2]} + b^{[2]} \\
+& a^{[2]} = \hat y = softmax (z^{[2]}) \\
+\end{align}</script><script type="math/tex; mode=display">
+\begin{align}
+\frac{\partial}{\partial \ W^{[1]}_{[v]t}} J(W, b) &= \frac{\partial}{ \partial \ W^{[1]}_{[v]t} } \bigl( \frac{1}{m} \sum_{i=1}^m E^{(i)} \bigr) \\
+&= \frac{1}{m} \sum_{i=1}^m \biggl[ \frac{\partial}{ \partial \ W^{[1]}_{[v]t} } E^{(i)} \biggr] \\
+&= \frac{1}{m} \sum_{i=1}^m \biggl[ \frac{\partial \ E^{(i)}}{ \partial \ a^{[1](i)}_{[v]} } \cdot  \frac{\partial \ a^{[1](i)}_{[v]}}{\partial \ z^{[1](i)}_{[v]}} \cdot \frac{\partial \ z^{[1](i)}_{[v]}}{\partial \ W^{[1]}_{[v]t}} \biggr] \\
+&= \frac{1}{m} \sum_{i=1}^m \biggl[ ( \sum_o \biggl[ \frac{\partial \ E^{(i)} }{ \partial \ z^{[2](i)}_{[o]} } \cdot \frac{\partial \ z_{[o]}^{[2](i)} }{ \partial \ a^{[1](i)}_{[v]} } \biggr] ) \cdot \frac{\partial \ a^{[1](i)}_{[v]}}{\partial \ z^{[1](i)}_{[v]}} \cdot \frac{\partial \ z^{[1](i)}_{[v]}}{\partial \ W^{[1]}_{[v]t}} \biggr] \quad \text{(multivariate chain rule)}\\
+&= \frac{1}{m} \sum_{i=1}^m \biggl[ ( \sum_o \biggl[ \delta_{[o]}^{[2](i)} \cdot W_{[o]v}^{[2]} \biggr] ) \cdot (1 - (z_{[v]}^{[1](i)})^2 ) \cdot x_t^{(i)} \biggr] \\
+\end{align}</script><script type="math/tex; mode=display">
+\begin{align}
+\frac{\partial}{\partial \ b^{[1]}_{[v]}} J(W, b) &= \frac{\partial}{ \partial \ b^{[1]}_{[v]} } \bigl( \frac{1}{m} \sum_{i=1}^m E^{(i)} \bigr) \\
+&= \frac{1}{m} \sum_{i=1}^m \biggl[ \frac{\partial}{ \partial \ b^{[1]}_{[v]} } E^{(i)} \biggr] \\
+&= \frac{1}{m} \sum_{i=1}^m \biggl[ \frac{\partial \ E^{(i)}}{ \partial \ a^{[1](i)}_{[v]} } \cdot  \frac{\partial \ a^{[1](i)}_{[v]}}{\partial \ z^{[1](i)}_{[v]}} \cdot \frac{\partial \ z^{[1](i)}_{[v]}}{\partial \ b^{[1]}_{[v]}} \biggr] \\
+&= \frac{1}{m} \sum_{i=1}^m \biggl[ ( \sum_o \biggl[ \frac{\partial \ E^{(i)} }{ \partial \ z^{[2](i)}_{[o]} } \cdot \frac{\partial \ z_{[o]}^{[2](i)} }{ \partial \ a^{[1](i)}_{[v]} } \biggl] ) \cdot \frac{\partial \ a^{[1](i)}_{[v]}}{\partial \ z^{[1](i)}_{[v]}} \cdot \frac{\partial \ z^{[1](i)}_{[v]}}{\partial \ b^{[1]}_{[v]}} \biggr] \quad \text{(multivariate chain rule)}\\
+&= \frac{1}{m} \sum_{i=1}^m \biggl[ ( \sum_o \biggl[ \delta_{[o]}^{[2](i)} \cdot W_{[o]v}^{[2]} \biggl] ) \cdot (1 - (z_{[v]}^{[1](i)})^2 ) \biggr] \\
+\end{align}</script><p>按照输出层的$\delta$的定义，可以定义任意一层的$\delta$，并在计算的时候将本层的$\delta$传递给下一层，从而计算各层的权重和偏置的导数。</p>
+<blockquote>
+<p>几个变量相互之间有依赖关系，这时某个变量的偏导数不能反映变化率，要表示在该变量上的变化率，应该使用该变量的全导数。变量相互独立时，偏导数可以表示变化率。</p>
+</blockquote>
+<p>参考链接：</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Total_derivative#Differentiation_with_indirect_dependencies" target="_blank" rel="noopener">Total derivative</a></li>
+<li><a href="https://www.zhihu.com/question/24827633/answer/91489990" target="_blank" rel="noopener">如何理解神经网络里面的反向传播算法</a></li>
+<li><a href="https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/" target="_blank" rel="noopener">A Step by Step Backpropagation Example</a></li>
+</ul>
+<h4 id="终止条件"><a href="#终止条件" class="headerlink" title="终止条件"></a>终止条件</h4><ul>
+<li>权重的更新低于某个阈值；</li>
+<li>预测的错误率低于某个阈值；</li>
+<li>达到预设一定的循环次数；</li>
+</ul>
+<h4 id="向量化"><a href="#向量化" class="headerlink" title="向量化"></a>向量化</h4><p>下面这张图描述了正向传播时，各变量的维度</p>
+<p><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/learn-ml-3.png" alt="1"></p>
+<p>其中$x$的横线表示$x$可以看做是由一组横向量组成的，$W$的竖线表示$W$可以看做是由一组竖向量组成的。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="反向传播的一种错误求导"><a href="#反向传播的一种错误求导" class="headerlink" title="反向传播的一种错误求导"></a>反向传播的一种错误求导</h3><p>在隐藏层的反向传播求导时，下面的求导方式是错误的：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\frac{\partial \ E^{(i)}}{ \partial \ a^{[1](i)}_{[v]} }
+&=  \sum_o \bigl[ \frac{\partial \ E_{[o]}^{(i)} }{ \partial \ z^{[2](i)}_{[o]} } \cdot \frac{\partial \ z_{[o]}^{[2](i)} }{ \partial \ a^{[1](i)}_{[v]} } \bigr]  \\
+\end{align}</script><p>原因是$z_{[o]}^{(i)[2]}$对所有的$E_{[j]}^{(i)}$都有影响，而这里只考虑了与$z_{[o]}^{(i)[2]}$相对应的$E_{[o]}^{(i)}$。</p>
+<p>输出层的求导是没问题的，因为考虑了所有的分量。</p>
+<h3 id="数学复习"><a href="#数学复习" class="headerlink" title="数学复习"></a>数学复习</h3><ol>
+<li>矩阵A(m, n)，m指行数，n指列数</li>
+<li>sigmoid函数求导</li>
+</ol>
+<script type="math/tex; mode=display">
+\begin{align}
+\sigma^\prime(z) &= \bigl( \frac{1}{1 + e^{-z}} \bigr)^\prime = (-1)(1+e^{-z})^{(-1)-1} \cdot (e^{-z})^\prime = \frac{1}{(1+e^{-z})^2} \cdot  (e^{-z}) \\
+&= \frac{1}{1+e^{-z}} \cdot \frac{e^{-z}}{1+e^{-z}} = \frac{1}{1+e^{-z}} \cdot (1-\frac{1}{1+e^{-z}}) \\
+&= \sigma(z)(1-\sigma(z))
+\end{align}</script><h3 id="使用数学软件"><a href="#使用数学软件" class="headerlink" title="使用数学软件"></a>使用数学软件</h3><p>在一些推导中，特别是矩阵的计算，想直观的看一下展开后的结果，如果完全手算，会比较费时，可以使用mathematica进行符号计算。例如，计算矩阵的相乘，在mathematica中输入以下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;u, n, m&#125; = &#123;3, 2, 5&#125;</span><br><span class="line">Array[Subscript[w, ##] &amp;, &#123;u, n&#125;] . Array[Subscript[x, ##] &amp;, &#123;n, m&#125;]</span><br></pre></td></tr></table></figure>
+<p>得到结果</p>
+<script type="math/tex; mode=display">
+\left(
+\begin{array}{ccccc}
+ w_{1,1} x_{1,1}+w_{1,2} x_{2,1} & w_{1,1} x_{1,2}+w_{1,2} x_{2,2} & w_{1,1} x_{1,3}+w_{1,2} x_{2,3} & w_{1,1} x_{1,4}+w_{1,2} x_{2,4} & w_{1,1} x_{1,5}+w_{1,2} x_{2,5} \\
+ w_{2,1} x_{1,1}+w_{2,2} x_{2,1} & w_{2,1} x_{1,2}+w_{2,2} x_{2,2} & w_{2,1} x_{1,3}+w_{2,2} x_{2,3} & w_{2,1} x_{1,4}+w_{2,2} x_{2,4} & w_{2,1} x_{1,5}+w_{2,2} x_{2,5} \\
+ w_{3,1} x_{1,1}+w_{3,2} x_{2,1} & w_{3,1} x_{1,2}+w_{3,2} x_{2,2} & w_{3,1} x_{1,3}+w_{3,2} x_{2,3} & w_{3,1} x_{1,4}+w_{3,2} x_{2,4} & w_{3,1} x_{1,5}+w_{3,2} x_{2,5} \\
+\end{array}
+\right)</script><h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>下面是3层bp神经网络的python实现，取自<a href="http://www.wildml.com/2015/09/implementing-a-neural-network-from-scratch/" target="_blank" rel="noopener">这里</a>，我做了一些修改</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_data</span><span class="params">()</span>:</span></span><br><span class="line">    np.random.seed(<span class="number">0</span>)</span><br><span class="line">    X, y = datasets.make_moons(<span class="number">200</span>, noise=<span class="number">0.20</span>)</span><br><span class="line">    <span class="keyword">return</span> X, y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize</span><span class="params">(X, y, model)</span>:</span></span><br><span class="line">    x_min, x_max = X[:, <span class="number">0</span>].min() - <span class="number">.5</span>, X[:, <span class="number">0</span>].max() + <span class="number">.5</span></span><br><span class="line">    y_min, y_max = X[:, <span class="number">1</span>].min() - <span class="number">.5</span>, X[:, <span class="number">1</span>].max() + <span class="number">.5</span></span><br><span class="line">    h = <span class="number">0.01</span></span><br><span class="line">    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),</span><br><span class="line">                         np.arange(y_min, y_max, h))</span><br><span class="line">    Z = predict(model, np.c_[xx.ravel(), yy.ravel()])</span><br><span class="line">    Z = Z.reshape(xx.shape)</span><br><span class="line">    plt.contourf(xx, yy, Z, cmap=plt.cm.Spectral)</span><br><span class="line">    plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], c=y, cmap=plt.cm.Spectral)</span><br><span class="line">    plt.show()</span><br><span class="line">    plt.title(<span class="string">"bp nn"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(model, x)</span>:</span></span><br><span class="line">    layer1, layer2 = model</span><br><span class="line">    feedforward(x, layer1)</span><br><span class="line">    feedforward(layer1.a, layer2, <span class="keyword">True</span>)</span><br><span class="line">    <span class="keyword">return</span> np.argmax(layer2.a, axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Layer</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, last_layer_dim: int, dim: int)</span>:</span></span><br><span class="line">        self.W = np.random.randn(last_layer_dim, dim) / np.sqrt(last_layer_dim)</span><br><span class="line">        self.b = np.zeros((<span class="number">1</span>, dim))</span><br><span class="line">        self.z = <span class="keyword">None</span></span><br><span class="line">        self.a = <span class="keyword">None</span></span><br><span class="line">        self.delta = <span class="keyword">None</span></span><br><span class="line">        self.dW = <span class="keyword">None</span></span><br><span class="line">        self.db = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">softmax</span><span class="params">(X)</span>:</span>  <span class="comment"># m行dim列</span></span><br><span class="line">    exp_scores = np.exp(X)</span><br><span class="line">    probs = exp_scores / np.sum(exp_scores, axis=<span class="number">1</span>, keepdims=<span class="keyword">True</span>)</span><br><span class="line">    <span class="keyword">return</span> probs</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">feedforward</span><span class="params">(x: np.ndarray, layer: Layer, is_final: bool=False)</span>:</span></span><br><span class="line">    layer.z = x.dot(layer.W) + layer.b  <span class="comment"># m行dim列</span></span><br><span class="line">    <span class="keyword">if</span> is_final:</span><br><span class="line">        layer.a = softmax(layer.z)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        layer.a = np.tanh(layer.z)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">backprop</span><span class="params">(x: np.ndarray, y: np.ndarray, layer: Layer, nextlayer: Layer, </span></span></span><br><span class="line"><span class="function"><span class="params">             num_examples: int, is_final: bool=False)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> is_final:</span><br><span class="line">        delta = layer.a</span><br><span class="line">        delta[range(num_examples), y] -= <span class="number">1</span> <span class="comment"># m行dim列, a_&#123;[l]&#125;^&#123;(i)&#125; - 1&#123;y_&#123;(i)&#125;=l&#125;</span></span><br><span class="line">        <span class="comment"># layer.dW = (x.T).dot(delta) / num_examples</span></span><br><span class="line">        <span class="comment"># layer.db = np.sum(delta, axis=0, keepdims=True) / num_examples</span></span><br><span class="line">        layer.dW = (x.T).dot(delta)</span><br><span class="line">        layer.db = np.sum(delta, axis=<span class="number">0</span>, keepdims=<span class="keyword">True</span>)</span><br><span class="line">        layer.delta = delta</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        delta = nextlayer.delta.dot(nextlayer.W.T) * (<span class="number">1</span> - np.power(layer.a, <span class="number">2</span>))  <span class="comment"># * 对应元素相乘</span></span><br><span class="line">        <span class="comment"># layer.dW = np.dot(x.T, delta) / num_examples</span></span><br><span class="line">        <span class="comment"># layer.db = np.sum(delta, axis=0, keepdims=True) / num_examples</span></span><br><span class="line">        layer.dW = np.dot(x.T, delta)</span><br><span class="line">        layer.db = np.sum(delta, axis=<span class="number">0</span>, keepdims=<span class="keyword">True</span>)</span><br><span class="line">        layer.delta = delta</span><br><span class="line">    learn_rate = <span class="number">0.01</span></span><br><span class="line">    layer.W += -learn_rate * layer.dW</span><br><span class="line">    layer.b += -learn_rate * layer.db</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build_model</span><span class="params">(X, y, nn_hdim, num_passes=<span class="number">20000</span>, print_loss=False)</span>:</span></span><br><span class="line">    num_examples = len(X)</span><br><span class="line">    np.random.seed(<span class="number">0</span>)</span><br><span class="line">    input_dim = X.shape[<span class="number">1</span>]</span><br><span class="line">    nn_output_dim = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    layer1 = Layer(input_dim, nn_hdim)</span><br><span class="line">    layer2 = Layer(nn_hdim, nn_output_dim)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, num_passes):</span><br><span class="line">        feedforward(X, layer1)</span><br><span class="line">        feedforward(layer1.a, layer2, <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">        backprop(layer1.a, y, layer2, <span class="keyword">None</span>, num_examples, <span class="keyword">True</span>)</span><br><span class="line">        backprop(X, y, layer1, layer2, num_examples)</span><br><span class="line"></span><br><span class="line">    model = [layer1, layer2]</span><br><span class="line">    <span class="keyword">return</span> model</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    X, y = generate_data()</span><br><span class="line">    start_time = time.time()</span><br><span class="line">    model = build_model(X, y, <span class="number">3</span>)</span><br><span class="line">    time_cost = time.time() - start_time</span><br><span class="line">    summary = <span class="string">f'cost: <span class="subst">&#123;time_cost&#125;</span>'</span></span><br><span class="line">    print(summary)</span><br><span class="line">    visualize(X, y, model)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ml/" rel="tag"><i class="fa fa-tag"></i> ml</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/01/android-issues-md/" rel="next" title="android开发中的一些经验">
+                <i class="fa fa-chevron-left"></i> android开发中的一些经验
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/04/illustrator-latex/" rel="prev" title="在illustrator中使用latex公式">
+                在illustrator中使用latex公式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://ozy76jm8o.bkt.clouddn.com/blog/images/avater-1.png"
+                alt="雪落马蹄" />
+            
+              <p class="site-author-name" itemprop="name">雪落马蹄</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/hejia-v" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:1464946535@qq.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com" target="_blank" title="Weibo">
+                    
+                      <i class="fa fa-fw fa-globe"></i></a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#输入值和输出值"><span class="nav-number">1.</span> <span class="nav-text">输入值和输出值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正向传播"><span class="nav-number">2.</span> <span class="nav-text">正向传播</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#权重和偏置的初始化"><span class="nav-number">2.1.</span> <span class="nav-text">权重和偏置的初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#激活函数"><span class="nav-number">2.2.</span> <span class="nav-text">激活函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#softmax"><span class="nav-number">2.3.</span> <span class="nav-text">softmax</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反向传播"><span class="nav-number">3.</span> <span class="nav-text">反向传播</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代价函数"><span class="nav-number">3.1.</span> <span class="nav-text">代价函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交叉熵代价函数-cross-entropy-loss"><span class="nav-number">3.2.</span> <span class="nav-text">交叉熵代价函数 cross-entropy loss</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#二次代价函数的不足"><span class="nav-number">3.2.1.</span> <span class="nav-text">二次代价函数的不足</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#交叉熵代价函数"><span class="nav-number">3.2.2.</span> <span class="nav-text">交叉熵代价函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#交叉熵代价函数的来源"><span class="nav-number">3.2.3.</span> <span class="nav-text">交叉熵代价函数的来源</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反向传播算法"><span class="nav-number">3.3.</span> <span class="nav-text">反向传播算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输出层"><span class="nav-number">3.3.1.</span> <span class="nav-text">输出层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隐藏层"><span class="nav-number">3.3.2.</span> <span class="nav-text">隐藏层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#终止条件"><span class="nav-number">3.3.3.</span> <span class="nav-text">终止条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#向量化"><span class="nav-number">3.3.4.</span> <span class="nav-text">向量化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">4.</span> <span class="nav-text">附录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#反向传播的一种错误求导"><span class="nav-number">4.1.</span> <span class="nav-text">反向传播的一种错误求导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数学复习"><span class="nav-number">4.2.</span> <span class="nav-text">数学复习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用数学软件"><span class="nav-number">4.3.</span> <span class="nav-text">使用数学软件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">5.</span> <span class="nav-text">代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">雪落马蹄</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('3');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+  <!--
+  <script type="text/javascript" src="/js/src/particle.js"></script>
+  <script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+  -->
+  <!-- 小红心 -->
+  <!--
+  <script type="text/javascript" src="/js/src/love.js"></script>
+  -->
+  <!--卖萌-->
+  <!--
+  <script type="text/javascript" src="/js/src/dytitle.js"></script>
+  -->
+  
+<div id="hexo-helper-live2d">
+  <canvas id="live2dcanvas" width="150" height="300"></canvas>
+</div>
+<style>
+  #live2dcanvas{
+    position: fixed;
+    width: 150px;
+    height: 300px;
+    opacity:0.7;
+    left: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -20px;
+  }
+</style>
+<script type="text/javascript" src="/live2d/device.min.js"></script>
+<script type="text/javascript">
+const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
+(function(){
+  if((typeof(device) != 'undefined') && (device.mobile())){
+    document.getElementById("live2dcanvas").style.width = '75px';
+    document.getElementById("live2dcanvas").style.height = '150px';
+  }else
+    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
+  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/wanko.model.json", 0.5);});
+})();
+</script>
+
+  <script type="text/javascript" src="/js/src/clipboard.min.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+</body>
+</html>

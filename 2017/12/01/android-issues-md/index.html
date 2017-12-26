@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180x180.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+
+
+
+
+  <meta name="keywords" content="android," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雪落马蹄的博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="记录一下android开发中的一些经验，本文将持续更新。">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="android开发中的一些经验">
+<meta property="og:url" content="https://hejia-v.github.io/2017/12/01/android-issues-md/index.html">
+<meta property="og:site_name" content="雪落马蹄的博客">
+<meta property="og:description" content="记录一下android开发中的一些经验，本文将持续更新。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/android-issues-1.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/android-issues-2.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/android-issues-3.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/android-issues-4.png">
+<meta property="og:updated_time" content="2017-12-01T13:45:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="android开发中的一些经验">
+<meta name="twitter:description" content="记录一下android开发中的一些经验，本文将持续更新。">
+<meta name="twitter:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/android-issues-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":0,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hejia-v.github.io/2017/12/01/android-issues-md/"/>
+
+
+
+
+
+  <title>android开发中的一些经验 | 雪落马蹄的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">雪落马蹄的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">风雪夜归人</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hejia-v.github.io/2017/12/01/android-issues-md/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雪落马蹄">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/avater-1.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪落马蹄的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">android开发中的一些经验</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-01T21:45:05+08:00">
+                2017-12-01
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-12-01T21:45:05+08:00">
+                2017-12-01
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>记录一下android开发中的一些经验，本文将持续更新。</p>
+<a id="more"></a>
+<h2 id="jar命令的使用"><a href="#jar命令的使用" class="headerlink" title="jar命令的使用"></a>jar命令的使用</h2><p><a href="https://zh.wikipedia.org/wiki/JAR_(文件格式)" target="_blank" rel="noopener">JAR</a>文件即 Java Archive File，是 Java 的一种文档格式。JAR 文件实际上就是 ZIP 文件，使用<code>unzip xxx.jar -d dest/</code>命令即可解压。</p>
+<p><code>jar</code>命令的说明如下：<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/android-issues-1.png" alt="1"></p>
+<p>下面是jar命令的一些常用用法：</p>
+<ol>
+<li><p>显示jar包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jar tvf hello.jar    # 查看hello.jar包的内容</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解压jar包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jar xvf hello.jar   # 解压hello.jar至当前目录</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>更多用法参考 <a href="http://blog.chinaunix.net/uid-692788-id-2681136.html" target="_blank" rel="noopener">JAR命令&amp;JAR包详解</a></p>
+<h2 id="java的反编译"><a href="#java的反编译" class="headerlink" title="java的反编译"></a>java的反编译</h2><p>很多情况下，当我们使用别人的jar包时，很有可能会遇到一些问题，这时需要了解一下jar包里到底有些什么，方便定位问题所在。jar命令只是对jar包进行了一下解包，想查看其中的代码细节，还需要进行反编译。<a href="http://jd.benow.ca" target="_blank" rel="noopener">Java Decompiler</a>是一款比较好用的反编译软件，在实际使用中，能够反编译出大部分的java代码。eclipse、android studio安装Java Decompiler插件后，在使用第三方jar库时，会减少很多烦恼。</p>
+<h2 id="获取apk的签名和MD5指纹"><a href="#获取apk的签名和MD5指纹" class="headerlink" title="获取apk的签名和MD5指纹"></a>获取apk的签名和MD5指纹</h2><p>在很多情况下，需要确认apk的签名。例如，接入渠道sdk后，sdk的初始化或者登陆、支付等功能出现了问题，就有可能是apk的SHA1签名与在渠道后台配置的SHA1签名不一致导致的。</p>
+<p>获取apk的SHA1签名的一般步骤是:</p>
+<ol>
+<li>解压apk：<code>unzip testapp.apk</code>。</li>
+<li>找到解压出来的RSA文件。</li>
+<li>将终端切到RSA文件所在的目录, 在命令行输入 <code>keytool -printcert -file ./***.RSA</code> ，即可获取sha1签名和md5指纹。<br>具体操作如图<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/android-issues-2.png" alt="2"></li>
+</ol>
+<h2 id="apktool的使用"><a href="#apktool的使用" class="headerlink" title="apktool的使用"></a>apktool的使用</h2><p>解包和打包<br><a href="https://ibotpeaches.github.io/Apktool/" target="_blank" rel="noopener">apktool</a> 是一款逆向工程工具。在<a href="https://ibotpeaches.github.io/Apktool/documentation/" target="_blank" rel="noopener">这里</a>有相关的文档。</p>
+<h3 id="基础功能"><a href="#基础功能" class="headerlink" title="基础功能"></a>基础功能</h3><ol>
+<li><p>解压apk，生成可读的AndroidManifest.xml，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apktool d testapp.apk</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解压jar</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apktool d foo.jar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>smali调试，参考<a href="https://github.com/JesusFreke/smali/wiki/smalidea" target="_blank" rel="noopener">wiki</a></p>
+</li>
+</ol>
+<h3 id="查看apk里面的java源代码"><a href="#查看apk里面的java源代码" class="headerlink" title="查看apk里面的java源代码"></a>查看apk里面的java源代码</h3><ol>
+<li>下载<a href="https://github.com/pxb1988/dex2jar" target="_blank" rel="noopener">dex2jar</a></li>
+<li>使用unzip解压apk：<code>unzip testapp.apk</code></li>
+<li>使用dex2jar将dex文件转换成jar文件</li>
+<li>使用jd-gui打开生成的classes-dex2jar.jar，就可以查看java源代码了</li>
+</ol>
+<p>具体操作如图</p>
+<p><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/android-issues-3.png" alt="3"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/android-issues-4.png" alt="4"></p>
+<h3 id="修改apk里面的内容"><a href="#修改apk里面的内容" class="headerlink" title="修改apk里面的内容"></a>修改apk里面的内容</h3><ol>
+<li>使用apktool解压apk，<code>apktool d testapp.apk</code></li>
+<li>更新so包，比如可以将release版的so替换成debug版的so</li>
+<li>更新资源文件</li>
+<li>更改smali，smali的语法可以参考<a href="http://blog.csdn.net/wdaming1986/article/details/8299996" target="_blank" rel="noopener">这篇文章</a></li>
+<li>打包回apk，打包出来的文件在apk文件夹中的dist目录下</li>
+<li>对重新打包后的apk文件进行签名<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jarsigner -verbose -keystore yourKey.keystore -storepass yourPassword path/to/apk /path/to/keystore/file</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="查看apk的一些信息"><a href="#查看apk的一些信息" class="headerlink" title="查看apk的一些信息"></a>查看apk的一些信息</h2><p>使用android studio直接打开apk包，可以快速的浏览apk中的一些信息，但是会在用户文件夹生成一个临时工程，占用c盘资源。</p>
+<h2 id="log查看"><a href="#log查看" class="headerlink" title="log查看"></a>log查看</h2><p>目前常用的获取android上面的log的方法有这些：</p>
+<ol>
+<li>直接使用logcat命令，一般是将logcat的输出重定向到文件，然后再在文件里查找需要的信息</li>
+<li>使用eclipse或者android studio的logcat窗口查看log。eclipse在非调试模式下，logcat窗口并不是很好用；android studio有一定几率连不上设备，这时很会恼火。</li>
+<li>app收集log并显示在屏幕上，由于log有可能会刷新得很快，在设备的屏幕上，想定位到具体信息并不是很方便，并且这种方式对app的性能有一定的影响。</li>
+</ol>
+<p>个人感觉比较好的方式是参考一下AirDroid，开发一个独立的app用于收集android上的log，这个app开启一个web服务，并将收集到的log输出到这个web上，在电脑上的浏览器中访问这个web，可以获取到设备上的实时log。</p>
+<h2 id="一些c-c-库在android上的编译"><a href="#一些c-c-库在android上的编译" class="headerlink" title="一些c/c++库在android上的编译"></a>一些c/c++库在android上的编译</h2><ul>
+<li>编译Boost，参考<a href="https://github.com/dec1/Boost-for-Android" target="_blank" rel="noopener">Boost-for-Android</a></li>
+<li>编译Python，参考python的<a href="https://bugs.python.org/issue30386" target="_blank" rel="noopener">issue30386</a></li>
+</ul>
+<h2 id="android-studio引用外部工程"><a href="#android-studio引用外部工程" class="headerlink" title="android studio引用外部工程"></a>android studio引用外部工程</h2><p>很多时候，库工程并不是放在项目文件夹下面，而是放在其他位置，常见的原因是想将这个库工程作为一个公共的库，在几个项目之间使用。</p>
+<p>android studio中引用外部库的方法是这样的，在项目的settings.gradle文件中添加如下语句：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include &apos;:BaiduLBS&apos;</span><br><span class="line">project(&apos;:BaiduLBS&apos;).projectDir = new File(settingsDir, &apos;../platform/android/sdk/BaiduLBS&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>即可添加相对路径在<code>../platform/android/sdk/BaiduLBS</code>处的外部库<code>BaiduLBS</code>。</p>
+<h2 id="横竖屏的问题"><a href="#横竖屏的问题" class="headerlink" title="横竖屏的问题"></a>横竖屏的问题</h2><p>当手机进行横竖屏切换，弹出键盘，窗口大小发生变化等情况发生时，activity会重新走一遍OnCreate等生命周期方法。要避免这种行为，需要在AndroidManifest.xml中，为activity添加<code>android:configChanges</code>属性，例如<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">"com.xxx.MainActivity"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:configChanges</span>=<span class="string">"orientation|keyboardHidden|screenSize"</span> &gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>这时，当有orientation、keyboardHidden、screenSize情况发生时，就不会重建activity并调用OnCreate等方法，而是调用原实例的<code>onConfigurationChanged</code>方法。</p>
+<h2 id="游戏画面只有屏幕一半"><a href="#游戏画面只有屏幕一半" class="headerlink" title="游戏画面只有屏幕一半"></a>游戏画面只有屏幕一半</h2><p>在android手机上玩游戏时，经常会遇到这样一种情况，就是不知道做了一些什么操作，屏幕上只有部分(不一定是1/2)区域有游戏画面，其余区域是黑色的。</p>
+<p>个人感觉是经过了某些操作，导致GLSurfaceView的Layout有问题。我使用下面的方法试了一下，能够很大程度的降低这种情况的发生<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 固定为横屏</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">resetGLSurfaceViewSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    DisplayMetrics dm = <span class="keyword">new</span> DisplayMetrics();</span><br><span class="line">    getWindowManager().getDefaultDisplay().getMetrics(dm);</span><br><span class="line">    <span class="keyword">int</span> w = dm.widthPixels;</span><br><span class="line">    <span class="keyword">int</span> h = dm.heightPixels;</span><br><span class="line">    Log.d(TAG, <span class="string">"屏幕的分辨率为："</span> + w + <span class="string">"*"</span> + h);</span><br><span class="line">    <span class="keyword">if</span> (w &lt;= <span class="number">0</span> || h &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    w = w &gt; h ? w : h;</span><br><span class="line">    h = w &gt; h ? h : w;</span><br><span class="line">    mGLSurfaceView.getLayoutParams().width = w;</span><br><span class="line">    mGLSurfaceView.getLayoutParams().height = h;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConfigurationChanged</span><span class="params">(Configuration newConfig)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onConfigurationChanged(newConfig);</span><br><span class="line">    resetGLSurfaceViewSize();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="多次点击app-icon的问题"><a href="#多次点击app-icon的问题" class="headerlink" title="多次点击app icon的问题"></a>多次点击app icon的问题</h2><p>如果一个游戏接入了第3方的登录模块，当打开游戏弹出第3方的登录框时，按下home键回到桌面，再次点击这个游戏的icon，期望能返回游戏，并且登录框不被清除，这时需要将游戏activity的launchMode设置为singleTop，如下<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">"com.xxx.MainActivity"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:launchMode</span>=<span class="string">"singleTop"</span> &gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"><i class="fa fa-tag"></i> android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/01/hlsl-library/" rel="next" title="HLSL 常用函数">
+                <i class="fa fa-chevron-left"></i> HLSL 常用函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/02/bp-neural-network/" rel="prev" title="一个简单的BP神经网络的实现">
+                一个简单的BP神经网络的实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://ozy76jm8o.bkt.clouddn.com/blog/images/avater-1.png"
+                alt="雪落马蹄" />
+            
+              <p class="site-author-name" itemprop="name">雪落马蹄</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/hejia-v" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:1464946535@qq.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com" target="_blank" title="Weibo">
+                    
+                      <i class="fa fa-fw fa-globe"></i></a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#jar命令的使用"><span class="nav-number">1.</span> <span class="nav-text">jar命令的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java的反编译"><span class="nav-number">2.</span> <span class="nav-text">java的反编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取apk的签名和MD5指纹"><span class="nav-number">3.</span> <span class="nav-text">获取apk的签名和MD5指纹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apktool的使用"><span class="nav-number">4.</span> <span class="nav-text">apktool的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础功能"><span class="nav-number">4.1.</span> <span class="nav-text">基础功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看apk里面的java源代码"><span class="nav-number">4.2.</span> <span class="nav-text">查看apk里面的java源代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改apk里面的内容"><span class="nav-number">4.3.</span> <span class="nav-text">修改apk里面的内容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看apk的一些信息"><span class="nav-number">5.</span> <span class="nav-text">查看apk的一些信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#log查看"><span class="nav-number">6.</span> <span class="nav-text">log查看</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些c-c-库在android上的编译"><span class="nav-number">7.</span> <span class="nav-text">一些c/c++库在android上的编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#android-studio引用外部工程"><span class="nav-number">8.</span> <span class="nav-text">android studio引用外部工程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#横竖屏的问题"><span class="nav-number">9.</span> <span class="nav-text">横竖屏的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#游戏画面只有屏幕一半"><span class="nav-number">10.</span> <span class="nav-text">游戏画面只有屏幕一半</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多次点击app-icon的问题"><span class="nav-number">11.</span> <span class="nav-text">多次点击app icon的问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">雪落马蹄</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('3');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+  <!--
+  <script type="text/javascript" src="/js/src/particle.js"></script>
+  <script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+  -->
+  <!-- 小红心 -->
+  <!--
+  <script type="text/javascript" src="/js/src/love.js"></script>
+  -->
+  <!--卖萌-->
+  <!--
+  <script type="text/javascript" src="/js/src/dytitle.js"></script>
+  -->
+  
+<div id="hexo-helper-live2d">
+  <canvas id="live2dcanvas" width="150" height="300"></canvas>
+</div>
+<style>
+  #live2dcanvas{
+    position: fixed;
+    width: 150px;
+    height: 300px;
+    opacity:0.7;
+    left: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -20px;
+  }
+</style>
+<script type="text/javascript" src="/live2d/device.min.js"></script>
+<script type="text/javascript">
+const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
+(function(){
+  if((typeof(device) != 'undefined') && (device.mobile())){
+    document.getElementById("live2dcanvas").style.width = '75px';
+    document.getElementById("live2dcanvas").style.height = '150px';
+  }else
+    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
+  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/wanko.model.json", 0.5);});
+})();
+</script>
+
+  <script type="text/javascript" src="/js/src/clipboard.min.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+</body>
+</html>

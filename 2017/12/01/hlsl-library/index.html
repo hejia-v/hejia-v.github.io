@@ -1,0 +1,2184 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180x180.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+
+
+
+
+  <meta name="keywords" content="shader," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雪落马蹄的博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="HLSL是unity推荐的shader语言，HLSL和Cg很相似。这里整理了一下网络上收集到的相关资料，方便自己学习和查询。 HLSL固有函数Intrinsic Functions (DirectX HLSL)">
+<meta name="keywords" content="shader">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HLSL 常用函数">
+<meta property="og:url" content="https://hejia-v.github.io/2017/12/01/hlsl-library/index.html">
+<meta property="og:site_name" content="雪落马蹄的博客">
+<meta property="og:description" content="HLSL是unity推荐的shader语言，HLSL和Cg很相似。这里整理了一下网络上收集到的相关资料，方便自己学习和查询。 HLSL固有函数Intrinsic Functions (DirectX HLSL)">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-01T00:15:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HLSL 常用函数">
+<meta name="twitter:description" content="HLSL是unity推荐的shader语言，HLSL和Cg很相似。这里整理了一下网络上收集到的相关资料，方便自己学习和查询。 HLSL固有函数Intrinsic Functions (DirectX HLSL)">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":0,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hejia-v.github.io/2017/12/01/hlsl-library/"/>
+
+
+
+
+
+  <title>HLSL 常用函数 | 雪落马蹄的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">雪落马蹄的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">风雪夜归人</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hejia-v.github.io/2017/12/01/hlsl-library/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雪落马蹄">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/avater-1.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪落马蹄的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">HLSL 常用函数</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-01T08:15:02+08:00">
+                2017-12-01
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-12-01T08:15:02+08:00">
+                2017-12-01
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/shader/" itemprop="url" rel="index">
+                    <span itemprop="name">shader</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>HLSL是<a href="https://docs.unity3d.com/Manual/SL-ShadingLanguage.html" target="_blank" rel="noopener">unity推荐</a>的shader语言，HLSL和Cg很相似。这里整理了一下网络上收集到的相关资料，方便自己学习和查询。</p>
+<h2 id="HLSL固有函数"><a href="#HLSL固有函数" class="headerlink" title="HLSL固有函数"></a>HLSL固有函数</h2><p>Intrinsic Functions (DirectX HLSL)</p>
+<a id="more"></a>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>用法</th>
+<th>描述</th>
+<th>Description</th>
+<th>Minimum shader model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509562" target="_blank" rel="noopener">abs</a></td>
+<td>abs(x)</td>
+<td>计算输入值的绝对值。</td>
+<td>Absolute value (per component).</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509563" target="_blank" rel="noopener">acos</a></td>
+<td>acos(x)</td>
+<td>返回输入值反余弦值。</td>
+<td>Returns the arccosine of each component of x.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509564" target="_blank" rel="noopener">all</a></td>
+<td>all(x)</td>
+<td>测试非0值。</td>
+<td>Test if all components of x are nonzero.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471350" target="_blank" rel="noopener">AllMemoryBarrier</a></td>
+<td></td>
+<td></td>
+<td>Blocks execution of all threads in a group until all memory accesses have been completed.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471351" target="_blank" rel="noopener">AllMemoryBarrierWithGroupSync</a></td>
+<td></td>
+<td></td>
+<td>Blocks execution of all threads in a group until all memory accesses have been completed and all threads in the group have reached this call.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509565" target="_blank" rel="noopener">any</a></td>
+<td>any(x)</td>
+<td>测试输入值中的任何非零值。</td>
+<td>Test if any component of x is nonzero.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/dd607357" target="_blank" rel="noopener">asdouble</a></td>
+<td></td>
+<td></td>
+<td>Reinterprets a cast value into a double.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509570" target="_blank" rel="noopener">asfloat</a></td>
+<td>asfloat(x)</td>
+<td></td>
+<td>Convert the input type to a float.</td>
+<td>4</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509571" target="_blank" rel="noopener">asin</a></td>
+<td>asin(x)</td>
+<td>返回输入值的反正弦值。</td>
+<td>Returns the arcsine of each component of x.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509572" target="_blank" rel="noopener">asint</a></td>
+<td>asint(x)</td>
+<td></td>
+<td>Convert the input type to an integer.</td>
+<td>4</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471354" target="_blank" rel="noopener">asuint</a></td>
+<td></td>
+<td></td>
+<td>Reinterprets the bit pattern of a 64-bit type to a uint.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509573" target="_blank" rel="noopener">asuint</a></td>
+<td>asuint(x)</td>
+<td></td>
+<td>Convert the input type to an unsigned integer.</td>
+<td>4</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509574" target="_blank" rel="noopener">atan</a></td>
+<td>atan(x)</td>
+<td>返回输入值的反正切值。</td>
+<td>Returns the arctangent of x.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509575" target="_blank" rel="noopener">atan2</a></td>
+<td>atan2(y, x)</td>
+<td>返回y/x的反正切值。</td>
+<td>Returns the arctangent of of two values (x,y).</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509577" target="_blank" rel="noopener">ceil</a></td>
+<td>ceil(x)</td>
+<td>返回大于或等于输入值的最小整数。</td>
+<td>Returns the smallest integer which is greater than or equal to x.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb204824" target="_blank" rel="noopener">clamp</a></td>
+<td>clamp(x, min, max)</td>
+<td>把输入值限制在[min, max]范围内。</td>
+<td>Clamps x to the range [min, max].</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb204826" target="_blank" rel="noopener">clip</a></td>
+<td>clip(x)</td>
+<td>如果输入向量中的任何元素小于0，则丢弃当前像素。</td>
+<td>Discards the current pixel, if any component of x is less than zero.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509583" target="_blank" rel="noopener">cos</a></td>
+<td>cos(x)</td>
+<td>返回输入值的余弦。</td>
+<td>Returns the cosine of x.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509584" target="_blank" rel="noopener">cosh</a></td>
+<td>cosh(x)</td>
+<td>返回输入值的双曲余弦。</td>
+<td>Returns the hyperbolic cosine of x.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471355" target="_blank" rel="noopener">countbits</a></td>
+<td></td>
+<td></td>
+<td>Counts the number of bits (per component) in the input integer.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509585" target="_blank" rel="noopener">cross</a></td>
+<td>cross(x, y)</td>
+<td>返回两个3D向量的叉积。</td>
+<td>Returns the cross product of two 3D vectors.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509586" target="_blank" rel="noopener">D3DCOLORtoUBYTE4</a></td>
+<td>D3DCOLORtoUBYTE4(x)</td>
+<td></td>
+<td>Swizzles and scales components of the 4D vector xto compensate for the lack of UBYTE4 support in some hardware.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509588" target="_blank" rel="noopener">ddx</a></td>
+<td>ddx(x)</td>
+<td>返回关于屏幕坐标x轴的偏导数。</td>
+<td>Returns the partial derivative of x with respect to the screen-space x-coordinate.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471361" target="_blank" rel="noopener">ddx_coarse</a></td>
+<td></td>
+<td></td>
+<td>Computes a low precision partial derivative with respect to the screen-space x-coordinate.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471362" target="_blank" rel="noopener">ddx_fine</a></td>
+<td></td>
+<td></td>
+<td>Computes a high precision partial derivative with respect to the screen-space x-coordinate.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509589" target="_blank" rel="noopener">ddy</a></td>
+<td>ddy(x)</td>
+<td>返回关于屏幕坐标y轴的偏导数。</td>
+<td>Returns the partial derivative of x with respect to the screen-space y-coordinate.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471364" target="_blank" rel="noopener">ddy_coarse</a></td>
+<td></td>
+<td></td>
+<td>Computes a low precision partial derivative with respect to the screen-space y-coordinate.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471365" target="_blank" rel="noopener">ddy_fine</a></td>
+<td></td>
+<td></td>
+<td>Computes a high precision partial derivative with respect to the screen-space y-coordinate.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509590" target="_blank" rel="noopener">degrees</a></td>
+<td>degrees(x)</td>
+<td>弧度到角度的转换</td>
+<td>Converts x from radians to degrees.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509591" target="_blank" rel="noopener">determinant</a></td>
+<td>determinant(m)</td>
+<td>返回输入矩阵的值。</td>
+<td>Returns the determinant of the square matrix m.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471366" target="_blank" rel="noopener">DeviceMemoryBarrier</a></td>
+<td></td>
+<td></td>
+<td>Blocks execution of all threads in a group until all device memory accesses have been completed.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471367" target="_blank" rel="noopener">DeviceMemoryBarrierWithGroupSync</a></td>
+<td></td>
+<td></td>
+<td>Blocks execution of all threads in a group until all device memory accesses have been completed and all threads in the group have reached this call.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509592" target="_blank" rel="noopener">distance</a></td>
+<td>distance(x, y)</td>
+<td>返回两个输入点间的距离。</td>
+<td>Returns the distance between two points.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509594" target="_blank" rel="noopener">dot</a></td>
+<td>dot(x, y)</td>
+<td>返回两个向量的点积。</td>
+<td>Returns the dot product of two vectors.</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471368" target="_blank" rel="noopener">dst</a></td>
+<td></td>
+<td></td>
+<td>Calculates a distance vector.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471394" target="_blank" rel="noopener">EvaluateAttributeAtCentroid</a></td>
+<td></td>
+<td></td>
+<td>Evaluates at the pixel centroid.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471395" target="_blank" rel="noopener">EvaluateAttributeAtSample</a></td>
+<td></td>
+<td></td>
+<td>Evaluates at the indexed sample location.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471396" target="_blank" rel="noopener">EvaluateAttributeSnapped</a></td>
+<td></td>
+<td></td>
+<td>Evaluates at the pixel centroid with an offset.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509595" target="_blank" rel="noopener">exp</a></td>
+<td>exp(x)</td>
+<td>返回以e为底数，输入值为指数的指数函数值。</td>
+<td>Returns the base-e exponent.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509596" target="_blank" rel="noopener">exp2</a></td>
+<td>exp2(x)</td>
+<td>返回以2为底数，输入值为指数的指数函数值。</td>
+<td>Base 2 exponent (per component).</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471397" target="_blank" rel="noopener">f16tof32</a></td>
+<td></td>
+<td></td>
+<td>Converts the float16 stored in the low-half of the uint to a float.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471399" target="_blank" rel="noopener">f32tof16</a></td>
+<td></td>
+<td></td>
+<td>Converts an input into a float16 type.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509598" target="_blank" rel="noopener">faceforward</a></td>
+<td>faceforward(n, i, ng)</td>
+<td>检测多边形是否位于正面。</td>
+<td>Returns -n * sign(dot(i, ng)).</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471400" target="_blank" rel="noopener">firstbithigh</a></td>
+<td></td>
+<td></td>
+<td>Gets the location of the first set bit starting from the highest order bit and working downward, per component.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471401" target="_blank" rel="noopener">firstbitlow</a></td>
+<td></td>
+<td></td>
+<td>Returns the location of the first set bit starting from the lowest order bit and working upward, per component.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509599" target="_blank" rel="noopener">floor</a></td>
+<td>floor(x)</td>
+<td>返回小于等于x的最大整数。</td>
+<td>Returns the greatest integer which is less than or equal to x.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509601" target="_blank" rel="noopener">fmod</a></td>
+<td>fmod(x, y)</td>
+<td>返回a / b的浮点余数。</td>
+<td>Returns the floating point remainder of x/y.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509603" target="_blank" rel="noopener">frac</a></td>
+<td>frac(x)</td>
+<td>返回输入值的小数部分。</td>
+<td>Returns the fractional part of x.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509604" target="_blank" rel="noopener">frexp</a></td>
+<td>frexp(x, exp)</td>
+<td>返回输入值的尾数和指数</td>
+<td>Returns the mantissa and exponent of x.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509608" target="_blank" rel="noopener">fwidth</a></td>
+<td>fwidth(x)</td>
+<td>返回 abs(ddx(x)) + abs(ddy(x)) 。</td>
+<td>Returns abs(ddx(x)) + abs(ddy(x))</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb943996" target="_blank" rel="noopener">GetRenderTargetSampleCount</a></td>
+<td>GetRenderTargetSampleCount()</td>
+<td></td>
+<td>Returns the number of render-target samples.</td>
+<td>4</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb943997" target="_blank" rel="noopener">GetRenderTargetSamplePosition</a></td>
+<td>GetRenderTargetSamplePosition(x)</td>
+<td></td>
+<td>Returns a sample position (x,y) for a given sample index.</td>
+<td>4</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471403" target="_blank" rel="noopener">GroupMemoryBarrier</a></td>
+<td></td>
+<td></td>
+<td>Blocks execution of all threads in a group until all group shared accesses have been completed.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471404" target="_blank" rel="noopener">GroupMemoryBarrierWithGroupSync</a></td>
+<td></td>
+<td></td>
+<td>Blocks execution of all threads in a group until all group shared accesses have been completed and all threads in the group have reached this call.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471406" target="_blank" rel="noopener">InterlockedAdd</a></td>
+<td></td>
+<td></td>
+<td>Performs a guaranteed atomic add of value to the dest resource variable.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471407" target="_blank" rel="noopener">InterlockedAnd</a></td>
+<td></td>
+<td></td>
+<td>Performs a guaranteed atomic and.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471409" target="_blank" rel="noopener">InterlockedCompareExchange</a></td>
+<td></td>
+<td></td>
+<td>Atomically compares the input to the comparison value and exchanges the result.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471410" target="_blank" rel="noopener">InterlockedCompareStore</a></td>
+<td></td>
+<td></td>
+<td>Atomically compares the input to the comparison value.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471411" target="_blank" rel="noopener">InterlockedExchange</a></td>
+<td></td>
+<td></td>
+<td>Assigns value to dest and returns the original value.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471412" target="_blank" rel="noopener">InterlockedMax</a></td>
+<td></td>
+<td></td>
+<td>Performs a guaranteed atomic max.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471413" target="_blank" rel="noopener">InterlockedMin</a></td>
+<td></td>
+<td></td>
+<td>Performs a guaranteed atomic min.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471414" target="_blank" rel="noopener">InterlockedOr</a></td>
+<td></td>
+<td></td>
+<td>Performs a guaranteed atomic or.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471415" target="_blank" rel="noopener">InterlockedXor</a></td>
+<td></td>
+<td></td>
+<td>Performs a guaranteed atomic xor.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509612" target="_blank" rel="noopener">isfinite</a></td>
+<td>isfinite(x)</td>
+<td>如果输入值为有限值则返回true，否则返回false。</td>
+<td>Returns true if x is finite, false otherwise.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509613" target="_blank" rel="noopener">isinf</a></td>
+<td>isinf(x)</td>
+<td>如何输入值为无限的则返回true。</td>
+<td>Returns true if x is +INF or -INF, false otherwise.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509614" target="_blank" rel="noopener">isnan</a></td>
+<td>isnan(x)</td>
+<td>如果输入值为NAN或QNAN则返回true。</td>
+<td>Returns true if x is NAN or QNAN, false otherwise.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509616" target="_blank" rel="noopener">ldexp</a></td>
+<td>ldexp(x, exp)</td>
+<td>frexp的逆运算，返回 x * 2 ^ exp。</td>
+<td>Returns x * 2exp</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509617" target="_blank" rel="noopener">length</a></td>
+<td>length(v)</td>
+<td></td>
+<td>Returns the length of the vector v.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509618" target="_blank" rel="noopener">lerp</a></td>
+<td>lerp(x, y, s)</td>
+<td>对输入值进行插值计算。</td>
+<td>Returns x + s(y - x).</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509619" target="_blank" rel="noopener">lit</a></td>
+<td>lit(n • l, n • h, m)</td>
+<td>返回光照向量（环境光，漫反射光，镜面高光，1）。</td>
+<td>Returns a lighting vector (ambient, diffuse, specular, 1)</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509620" target="_blank" rel="noopener">log</a></td>
+<td>log(x)</td>
+<td>返回以e为底的对数。</td>
+<td>Returns the base-e logarithm of x.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509621" target="_blank" rel="noopener">log10</a></td>
+<td>log10(x)</td>
+<td>返回以10为底的对数。</td>
+<td>Returns the base-10 logarithm of x.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509622" target="_blank" rel="noopener">log2</a></td>
+<td>log2(x)</td>
+<td>返回以2为底的对数。</td>
+<td>Returns the base-2 logarithm of x.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471418" target="_blank" rel="noopener">mad</a></td>
+<td></td>
+<td></td>
+<td>Performs an arithmetic multiply/add operation on three values.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509624" target="_blank" rel="noopener">max</a></td>
+<td>max(x, y)</td>
+<td>返回两个输入值中较大的一个。</td>
+<td>Selects the greater of x and y.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509625" target="_blank" rel="noopener">min</a></td>
+<td>min(x, y)</td>
+<td>返回两个输入值中较小的一个。</td>
+<td>Selects the lesser of x and y.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509627" target="_blank" rel="noopener">modf</a></td>
+<td>modf(x, out ip)</td>
+<td>把输入值分解为整数和小数部分。</td>
+<td>Splits the value x into fractional and integer parts.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509628" target="_blank" rel="noopener">mul</a></td>
+<td>mul(x, y)</td>
+<td>返回输入矩阵相乘的积。</td>
+<td>Performs matrix multiplication using x and y.</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509629" target="_blank" rel="noopener">noise</a></td>
+<td>noise(x)</td>
+<td></td>
+<td>Generates a random value using the Perlin-noise algorithm.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509630" target="_blank" rel="noopener">normalize</a></td>
+<td>normalize(x)</td>
+<td>返回规范化的向量，定义为 x / length(x)。</td>
+<td>Returns a normalized vector.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509636" target="_blank" rel="noopener">pow</a></td>
+<td>pow(x, y)</td>
+<td>返回输入值的指定次幂。</td>
+<td>Returns xy.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471426" target="_blank" rel="noopener">Process2DQuadTessFactorsAvg</a></td>
+<td></td>
+<td></td>
+<td>Generates the corrected tessellation factors for a quad patch.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471427" target="_blank" rel="noopener">Process2DQuadTessFactorsMax</a></td>
+<td></td>
+<td></td>
+<td>Generates the corrected tessellation factors for a quad patch.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471428" target="_blank" rel="noopener">Process2DQuadTessFactorsMin</a></td>
+<td></td>
+<td></td>
+<td>Generates the corrected tessellation factors for a quad patch.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471429" target="_blank" rel="noopener">ProcessIsolineTessFactors</a></td>
+<td></td>
+<td></td>
+<td>Generates the rounded tessellation factors for an isoline.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471430" target="_blank" rel="noopener">ProcessQuadTessFactorsAvg</a></td>
+<td></td>
+<td></td>
+<td>Generates the corrected tessellation factors for a quad patch.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471431" target="_blank" rel="noopener">ProcessQuadTessFactorsMax</a></td>
+<td></td>
+<td></td>
+<td>Generates the corrected tessellation factors for a quad patch.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471432" target="_blank" rel="noopener">ProcessQuadTessFactorsMin</a></td>
+<td></td>
+<td></td>
+<td>Generates the corrected tessellation factors for a quad patch.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471433" target="_blank" rel="noopener">ProcessTriTessFactorsAvg</a></td>
+<td></td>
+<td></td>
+<td>Generates the corrected tessellation factors for a tri patch.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471434" target="_blank" rel="noopener">ProcessTriTessFactorsMax</a></td>
+<td></td>
+<td></td>
+<td>Generates the corrected tessellation factors for a tri patch.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471435" target="_blank" rel="noopener">ProcessTriTessFactorsMin</a></td>
+<td></td>
+<td></td>
+<td>Generates the corrected tessellation factors for a tri patch.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509637" target="_blank" rel="noopener">radians</a></td>
+<td>radians(x)</td>
+<td>角度到弧度的转换。</td>
+<td>Converts x from degrees to radians.</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471436" target="_blank" rel="noopener">rcp</a></td>
+<td></td>
+<td></td>
+<td>Calculates a fast, approximate, per-component reciprocal.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509639" target="_blank" rel="noopener">reflect</a></td>
+<td>reflect(i, n)</td>
+<td>返回入射光线i对表面法线n的反射光线。</td>
+<td>Returns a reflection vector.</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509640" target="_blank" rel="noopener">refract</a></td>
+<td>refract(i, n, R)</td>
+<td>返回在入射光线i，表面法线n，折射率为eta下的折射光线v。</td>
+<td>Returns the refraction vector.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471437" target="_blank" rel="noopener">reversebits</a></td>
+<td></td>
+<td></td>
+<td>Reverses the order of the bits, per component.</td>
+<td>5</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509642" target="_blank" rel="noopener">round</a></td>
+<td>round(x)</td>
+<td>返回最接近于输入值的整数。</td>
+<td>Rounds x to the nearest integer</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509643" target="_blank" rel="noopener">rsqrt</a></td>
+<td>rsqrt(x)</td>
+<td>返回输入值平方根的倒数。</td>
+<td>Returns 1 / sqrt(x)</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509645" target="_blank" rel="noopener">saturate</a></td>
+<td>saturate(x)</td>
+<td>把输入值限制到[0, 1]之间。</td>
+<td>Clamps x to the range [0, 1]</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509649" target="_blank" rel="noopener">sign</a></td>
+<td>sign(x)</td>
+<td>计算输入值的符号。</td>
+<td>Computes the sign of x.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509651" target="_blank" rel="noopener">sin</a></td>
+<td>sin(x)</td>
+<td>计算输入值的正弦值。</td>
+<td>Returns the sine of x</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509652" target="_blank" rel="noopener">sincos</a></td>
+<td>sincos(x, out s, out c)</td>
+<td>返回输入值的正弦和余弦值。</td>
+<td>Returns the sine and cosine of x.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509653" target="_blank" rel="noopener">sinh</a></td>
+<td>sinh(x)</td>
+<td>返回x的双曲正弦。</td>
+<td>Returns the hyperbolic sine of x</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509658" target="_blank" rel="noopener">smoothstep</a></td>
+<td>smoothstep(min, max, x)</td>
+<td>返回一个在输入值之间平稳变化的插值。</td>
+<td>Returns a smooth Hermite interpolation between 0 and 1.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509662" target="_blank" rel="noopener">sqrt</a></td>
+<td>sqrt(x)</td>
+<td>返回输入值的平方根。</td>
+<td>Square root (per component)</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509665" target="_blank" rel="noopener">step</a></td>
+<td>step(a, x)</td>
+<td>返回（x &gt;= a）? 1 : 0。</td>
+<td>Returns (x &gt;= a) ? 1 : 0</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509670" target="_blank" rel="noopener">tan</a></td>
+<td>tan(x)</td>
+<td>返回输入值的正切值。</td>
+<td>Returns the tangent of x</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509671" target="_blank" rel="noopener">tanh</a></td>
+<td>tanh(x)</td>
+<td></td>
+<td>Returns the hyperbolic tangent of x</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509672" target="_blank" rel="noopener">tex1D(s, t)</a></td>
+<td></td>
+<td>1D纹理查询。</td>
+<td>1D texture lookup.</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471388" target="_blank" rel="noopener">tex1D(s, t, ddx, ddy)</a></td>
+<td></td>
+<td></td>
+<td>1D texture lookup.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509673" target="_blank" rel="noopener">tex1Dbias</a></td>
+<td>tex1Dbias(s, t)</td>
+<td></td>
+<td>1D texture lookup with bias.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509674" target="_blank" rel="noopener">tex1Dgrad</a></td>
+<td>tex1Dgrad(s, t, ddx, ddy)</td>
+<td></td>
+<td>1D texture lookup with a gradient.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509675" target="_blank" rel="noopener">tex1Dlod</a></td>
+<td>tex1Dlod(s, t)</td>
+<td></td>
+<td>1D texture lookup with LOD.</td>
+<td>3<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509676" target="_blank" rel="noopener">tex1Dproj</a></td>
+<td>tex1Dproj(s, t)</td>
+<td></td>
+<td>1D texture lookup with projective divide.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509677" target="_blank" rel="noopener">tex2D(s, t)</a></td>
+<td></td>
+<td>2D纹理查询。</td>
+<td>2D texture lookup.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471389" target="_blank" rel="noopener">tex2D(s, t, ddx, ddy)</a></td>
+<td></td>
+<td></td>
+<td>2D texture lookup.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509678" target="_blank" rel="noopener">tex2Dbias</a></td>
+<td>tex2Dbias(s, t)</td>
+<td></td>
+<td>2D texture lookup with bias.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509679" target="_blank" rel="noopener">tex2Dgrad</a></td>
+<td>tex2Dgrad(s, t, ddx, ddy)</td>
+<td></td>
+<td>2D texture lookup with a gradient.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509680" target="_blank" rel="noopener">tex2Dlod</a></td>
+<td>tex2Dlod(s, t)</td>
+<td></td>
+<td>2D texture lookup with LOD.</td>
+<td>3</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509681" target="_blank" rel="noopener">tex2Dproj</a></td>
+<td>tex2Dproj(s, t)</td>
+<td></td>
+<td>2D texture lookup with projective divide.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509682" target="_blank" rel="noopener">tex3D(s, t)</a></td>
+<td></td>
+<td>3D纹理查询。</td>
+<td>3D texture lookup.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471391" target="_blank" rel="noopener">tex3D(s, t, ddx, ddy)</a></td>
+<td></td>
+<td></td>
+<td>3D texture lookup.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509683" target="_blank" rel="noopener">tex3Dbias</a></td>
+<td>tex3Dbias(s, t)</td>
+<td></td>
+<td>3D texture lookup with bias.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509684" target="_blank" rel="noopener">tex3Dgrad</a></td>
+<td>tex3Dgrad(s, t, ddx, ddy)</td>
+<td></td>
+<td>3D texture lookup with a gradient.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509685" target="_blank" rel="noopener">tex3Dlod</a></td>
+<td>tex3Dlod(s, t)</td>
+<td></td>
+<td>3D texture lookup with LOD.</td>
+<td>3<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509686" target="_blank" rel="noopener">tex3Dproj</a></td>
+<td>tex3Dproj(s, t)</td>
+<td></td>
+<td>3D texture lookup with projective divide.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509687" target="_blank" rel="noopener">texCUBE(s, t)</a></td>
+<td></td>
+<td>立方纹理查询。</td>
+<td>Cube texture lookup.</td>
+<td>1<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/ff471392" target="_blank" rel="noopener">texCUBE(s, t, ddx, ddy)</a></td>
+<td></td>
+<td></td>
+<td>Cube texture lookup.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509688" target="_blank" rel="noopener">texCUBEbias</a></td>
+<td>texCUBEbias(s, t)</td>
+<td></td>
+<td>Cube texture lookup with bias.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509689" target="_blank" rel="noopener">texCUBEgrad</a></td>
+<td>texCUBEgrad(s, t, ddx, ddy)</td>
+<td></td>
+<td>Cube texture lookup with a gradient.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509690" target="_blank" rel="noopener">texCUBElod</a></td>
+<td></td>
+<td></td>
+<td>Cube texture lookup with LOD.</td>
+<td>3<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509691" target="_blank" rel="noopener">texCUBEproj</a></td>
+<td>texCUBEproj(s, t)</td>
+<td></td>
+<td>Cube texture lookup with projective divide.</td>
+<td>2<sup>1</sup></td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/bb509701" target="_blank" rel="noopener">transpose</a></td>
+<td>transpose(m)</td>
+<td>返回输入矩阵的转置。</td>
+<td>Returns the transpose of the matrix m.</td>
+<td>1</td>
+</tr>
+<tr>
+<td><a href="http://preview.library.microsoft.com/en-us/library/cc308065" target="_blank" rel="noopener">trunc</a></td>
+<td>trunc(x)</td>
+<td></td>
+<td>Truncates floating-point value(s) to integer value(s)</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>参考链接</p>
+<ul>
+<li><a href="http://www.cppblog.com/lai3d/archive/2008/10/23/64889.html" target="_blank" rel="noopener">每天30分钟看Shader—(1)HLSL固有函数 【Intrinsic Functions (DirectX HLSL)】</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/shader/" rel="tag"><i class="fa fa-tag"></i> shader</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/01/android-issues-md/" rel="prev" title="android开发中的一些经验">
+                android开发中的一些经验 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://ozy76jm8o.bkt.clouddn.com/blog/images/avater-1.png"
+                alt="雪落马蹄" />
+            
+              <p class="site-author-name" itemprop="name">雪落马蹄</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/hejia-v" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:1464946535@qq.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com" target="_blank" title="Weibo">
+                    
+                      <i class="fa fa-fw fa-globe"></i></a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HLSL固有函数"><span class="nav-number">1.</span> <span class="nav-text">HLSL固有函数</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">雪落马蹄</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('3');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+  <!--
+  <script type="text/javascript" src="/js/src/particle.js"></script>
+  <script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+  -->
+  <!-- 小红心 -->
+  <!--
+  <script type="text/javascript" src="/js/src/love.js"></script>
+  -->
+  <!--卖萌-->
+  <!--
+  <script type="text/javascript" src="/js/src/dytitle.js"></script>
+  -->
+  
+<div id="hexo-helper-live2d">
+  <canvas id="live2dcanvas" width="150" height="300"></canvas>
+</div>
+<style>
+  #live2dcanvas{
+    position: fixed;
+    width: 150px;
+    height: 300px;
+    opacity:0.7;
+    left: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -20px;
+  }
+</style>
+<script type="text/javascript" src="/live2d/device.min.js"></script>
+<script type="text/javascript">
+const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
+(function(){
+  if((typeof(device) != 'undefined') && (device.mobile())){
+    document.getElementById("live2dcanvas").style.width = '75px';
+    document.getElementById("live2dcanvas").style.height = '150px';
+  }else
+    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
+  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/wanko.model.json", 0.5);});
+})();
+</script>
+
+  <script type="text/javascript" src="/js/src/clipboard.min.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+</body>
+</html>
