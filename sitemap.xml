@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://hejia-v.github.io/about/index.html</loc>
+    
+    <lastmod>2017-12-27T00:18:00.164Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://hejia-v.github.io/2017/12/16/install-tensorflow/</loc>
     
     <lastmod>2017-12-16T13:14:19.000Z</lastmod>
@@ -47,13 +54,6 @@
     <loc>https://hejia-v.github.io/categories/index.html</loc>
     
     <lastmod>2017-11-28T13:30:22.419Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://hejia-v.github.io/about/index.html</loc>
-    
-    <lastmod>2017-11-28T13:30:22.418Z</lastmod>
     
   </url>
   
