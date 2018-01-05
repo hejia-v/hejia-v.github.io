@@ -23,9 +23,11 @@ unity中的着色器和材质的语言叫做ShaderLab。着色器程序是使用
 3. 将MyMaterial材质指定给cube。
 ![4](/images/unity-shader-start-4.png)
 
-3. 选中MyMaterial材质，在Inspector面板中可以看到，默认shader是standard。将创建的shader拖拽到Inspector面板的MyMaterial区域，可以修改材质所使用的的shader。
+4. 选中MyMaterial材质，在Inspector面板中可以看到，默认shader是standard。将创建的shader拖拽到Inspector面板的MyMaterial区域，可以修改材质所使用的的shader。
 ![5](/images/unity-shader-start-5.png)
 
+5. 在物体的Inspector面板中，可以看到MeshRender组件中有material和shader的设置面板，在scene和game模式下都可以设置material，切换material里的shader，设置shader的参数等。
+![6](/images/unity-shader-start-6.png)
 
 阅读下面链接，可以进一步了解unity里的shader
 - [ShaderTut1](https://docs.unity3d.com/Manual/ShaderTut1.html)
@@ -36,21 +38,12 @@ unity中的着色器和材质的语言叫做ShaderLab。着色器程序是使用
 ## 模型扩大法实现轮廓
 大概思路是使用目标物体的mesh创建一个`GameObject`，对这个新建的`GameObject`使用轮廓线shader，shader很简单，就是将模型顶点沿法线方向移动一段距离，然后设置成轮廓线颜色，最后将这个模型的正面剔除就可以了。
 
-也可以不新建GameObject，直接在原物体上使用shader进行类似的操作。
+也可以不新建GameObject，直接在原物体上使用shader进行类似的操作。这里不复制GameObject，只依靠shader实现轮廓线效果。
 
 
 
 
 ## 小提示
-1. 如果想在编辑器窗口看一下`MonoBehaviour`的运行效果，例如挂在`GameObject`上的`MonoBehaviour`类实现了一些视觉效果，想在编辑器窗口观察，给这个`MonoBehaviour`加上一个`ExecuteInEditMode` `Attribute`就可以了，例如：
-```c#
-[ExecuteInEditMode]
-public class EffectXXX : MonoBehaviour
-{
-    ...
-}
-```
-3. 实时预览shader
 2. mesh复用
 
 

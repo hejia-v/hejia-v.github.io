@@ -170,3 +170,21 @@ npm install hexo-renderer-kramed --save
 
 http://xudongyang.coding.me/math-in-hexo/
 
+
+<style type="text/css">
+h5+p{
+margin-bottom: 10px;
+font-size:14px;
+line-height: 1.5;
+}
+h5{
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding-top: 0px !important;
+}
+.doc-h5{
+font-size:16px;
+    font-weight: bold;
+}
+</style>
+

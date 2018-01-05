@@ -1,0 +1,93 @@
+{% if use_css %}
+<style type="text/css">
+.center {
+    text-align: center !important;
+}
+
+.class-doc > table:nth-child(1) {
+    margin-bottom: 5px !important;
+}
+
+.class-doc > table:nth-child(2) {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+.class-doc > table:nth-child(3) {
+    margin-top: 5px !important;
+}
+
+.text-srcpath {
+    width: 60px !important;
+}
+
+.class-member-table tr:nth-child(2n) {
+    background-color: #f9f9f9 !important;
+}
+
+.class-member-table tr:nth-child(2n+1) {
+    background-color: #fff !important;
+}
+
+.class-member-table tr:nth-child(1) {
+    background-color: #f9f9f9 !important;
+}
+</style>
+{% endif %}
+
+<div class="class-doc">
+    <table class="doc-table">
+        <tr>
+            <td class="tg-yw4l text-srcpath">文件路径</td>
+            <td class="tg-yw4l">{{ src_path }}</td>
+        </tr>
+    </table>
+
+    <table class="doc-table">
+        <tr>
+            <td class="tg-yw4l">类别</td><td class="tg-yw4l">名称</td><td class="tg-yw4l">继承</td>
+        </tr>
+        <tr>
+            <td class="tg-yw4l">{{ type }}</td><td class="tg-yw4l">{{ type_name }}</td><td class="tg-yw4l">{{ inherit }}</td>
+        </tr>
+    </table>
+
+    {% if has_field %}
+    <table class="doc-table class-member-table">
+        <tr>
+            <td class="tg-yw4l" colspan="2">字段</td>
+        </tr>
+        {% for member in members %}
+        <tr>
+            <td class="tg-yw4l">{{ member.define }}</td>
+            <td class="tg-yw4l">
+            {% for member_desc_line in member.desc %}
+                <p>{{ member_desc_line }}</p>
+            {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if has_method %}
+    <table class="doc-table class-member-table">
+        <tr>
+            <td class="tg-yw4l center" colspan="2">方法</td>
+        </tr>
+        {% for method in methods %}
+        <tr>
+            <td class="tg-yw4l" colspan="2">{{ method.define }}</td>
+        </tr>
+        <tr>
+            <td class="tg-yw4l" colspan="2">
+            {% for method_desc_line in method.desc %}
+                {{ method_desc_line }}<br/>
+            {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+</div>
