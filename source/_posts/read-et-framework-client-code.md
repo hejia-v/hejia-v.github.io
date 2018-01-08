@@ -1,9 +1,13 @@
 ---
 title: ET框架客户端源码阅读
-tags: unity
+tags:
+    - unity
+    - game
 date: 2018-01-05 21:24:35
 updated: 2018-01-05 21:24:35
 categories:
+    - unity
+    - game
 ---
 
 
