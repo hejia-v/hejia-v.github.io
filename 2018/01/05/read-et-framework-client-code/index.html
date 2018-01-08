@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180x180.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+
+
+
+
+  <meta name="keywords" content="unity," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雪落马蹄的博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="ET是一个unity的前后端框架，包含客户端和服务端两部分。采用的是组件式设计，前后端都由C#实现，并且前后端共享了部分代码，可以很方便的进行全栈开发。客户端方面的功能也比较齐全，基本包含了手游开发中使用频率比较高的各个功能。前后端都非常完整地实现了热更新，热更新机制采用的是ILRuntime，即把要热更新的C#代码当">
+<meta name="keywords" content="unity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ET框架客户端源码阅读">
+<meta property="og:url" content="https://hejia-v.github.io/2018/01/05/read-et-framework-client-code/index.html">
+<meta property="og:site_name" content="雪落马蹄的博客">
+<meta property="og:description" content="ET是一个unity的前后端框架，包含客户端和服务端两部分。采用的是组件式设计，前后端都由C#实现，并且前后端共享了部分代码，可以很方便的进行全栈开发。客户端方面的功能也比较齐全，基本包含了手游开发中使用频率比较高的各个功能。前后端都非常完整地实现了热更新，热更新机制采用的是ILRuntime，即把要热更新的C#代码当做脚本来进行热更，终于可以不用使用讨厌鬼lua了ヽ(￣▽￣)ﾉ。如果手头没有代码">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/read-et-framework-client-code-1.png">
+<meta property="og:updated_time" content="2018-01-05T13:24:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ET框架客户端源码阅读">
+<meta name="twitter:description" content="ET是一个unity的前后端框架，包含客户端和服务端两部分。采用的是组件式设计，前后端都由C#实现，并且前后端共享了部分代码，可以很方便的进行全栈开发。客户端方面的功能也比较齐全，基本包含了手游开发中使用频率比较高的各个功能。前后端都非常完整地实现了热更新，热更新机制采用的是ILRuntime，即把要热更新的C#代码当做脚本来进行热更，终于可以不用使用讨厌鬼lua了ヽ(￣▽￣)ﾉ。如果手头没有代码">
+<meta name="twitter:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/read-et-framework-client-code-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":0,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hejia-v.github.io/2018/01/05/read-et-framework-client-code/"/>
+
+
+
+
+
+  <title>ET框架客户端源码阅读 | 雪落马蹄的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">雪落马蹄的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">风雪夜归人</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hejia-v.github.io/2018/01/05/read-et-framework-client-code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雪落马蹄">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/avater-2.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪落马蹄的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">ET框架客户端源码阅读</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-05T21:24:35+08:00">
+                2018-01-05
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-05T21:24:35+08:00">
+                2018-01-05
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://github.com/egametang/ET" target="_blank" rel="noopener">ET</a>是一个unity的前后端框架，包含客户端和服务端两部分。采用的是组件式设计，前后端都由C#实现，并且前后端共享了部分代码，可以很方便的进行全栈开发。客户端方面的功能也比较齐全，基本包含了手游开发中使用频率比较高的各个功能。前后端都非常完整地实现了热更新，热更新机制采用的是<a href="https://github.com/Ourpalm/ILRuntime" target="_blank" rel="noopener">ILRuntime</a>，即把要热更新的C#代码当做脚本来进行热更，终于可以不用使用讨厌鬼lua了ヽ(￣▽￣)ﾉ。如果手头没有代码积累，ET框架是一个非常不错的选择。这个框架很对我胃口，业余抽空先看了一下客户端部分，感觉设计得挺精妙的，这里梳理一下，方便理解，以免使用该框架时没有头绪。另外也感慨一下，C#确实好用，语法很甜，使用起来，舒适度和Python差不多，同时又是强类型的，效率也不错，开发起来简直是一种享受。</p>
+<a id="more"></a>
+<h2 id="修复工程文件的bug"><a href="#修复工程文件的bug" class="headerlink" title="修复工程文件的bug"></a>修复工程文件的bug</h2><p>客户端的Hotfix工程可能存在找不到UnityEngine库的bug。这时需要修改一下ET/Unity/Hotfix/Unity.Hotfix.csproj文件。对照Unity.csproj的库引用部分的配置，修改Unity.Hotfix.csproj工程的引用配置。<br>例如将Unity.Hotfix.csproj的<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">HintPath</span>&gt;</span>C:\Apps\Unity\Editor\Data\Managed\UnityEngine.dll<span class="tag">&lt;/<span class="name">HintPath</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Reference</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">HintPath</span>&gt;</span>C:\Apps\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll<span class="tag">&lt;/<span class="name">HintPath</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Reference</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>改成<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"UnityEngine"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">HintPath</span>&gt;</span>D:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.dll<span class="tag">&lt;/<span class="name">HintPath</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Reference</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"UnityEngine.CoreModule"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">HintPath</span>&gt;</span>D:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll<span class="tag">&lt;/<span class="name">HintPath</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Reference</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"UnityEngine.UI"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">HintPath</span>&gt;</span>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll<span class="tag">&lt;/<span class="name">HintPath</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Reference</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="阅读ET客户端源码"><a href="#阅读ET客户端源码" class="headerlink" title="阅读ET客户端源码"></a>阅读ET客户端源码</h2><p>记录一下自己的阅读过程，以便将来阅读陌生项目时，有经验可供参考，并改进阅读方法。</p>
+<ol>
+<li>查看项目的文档。</li>
+<li>查看项目结构，文件及文件夹布局，凭经验粗略判断了一下核心文件，翻了一下主要文件的代码。</li>
+<li>运行了几次程序，看一下有哪些功能，了解一下程序长什么样。</li>
+<li>开始调试源码，跟随程序的运行，一步一步的跟，对程序的运行流程有一个初步的印象。由于是C#编写的，并且ide使用的是vs2017，在调试信息中经常可以看到相关连的类或结构的名字，甚至是代码文件的路径，<strong>复制变量的值</strong>，借助于vs2017的<strong>转到文件</strong>、<strong>转到符号</strong>等功能，可以迅速定位到相关位置。</li>
+<li>开始详细阅读主流程代码，关键点做下记录，以备将来查阅。</li>
+</ol>
+<h2 id="客户端demo"><a href="#客户端demo" class="headerlink" title="客户端demo"></a>客户端demo</h2><p>ET框架的客户端demo只有一个Init.unity场景，里面的内容如下图<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/read-et-framework-client-code-1.png" alt="1"><br>Init.cs就挂在名为Global的GameObject上，Init.cs是游戏逻辑的入口。</p>
+<p>启动服务器后，同时开2个客户端时，屏幕中会出现2个小人，开始时是重叠在一起的，右键可以移动小人，观察帧同步的效果。在实际测试中发现，运动出现不同步的频率还是有点高的，实际使用时需要优化。</p>
+<h2 id="主要的类"><a href="#主要的类" class="headerlink" title="主要的类"></a>主要的类</h2><p>这里列出了一些比较重要的类以及方法的说明，相当于一个大纲，方便快速理解框架结构。这里整理出的内容仅供参考，因为代码在不断变更，相关的类的功能也在变化。</p>
+<h3 id="DllHelper"><a href="#DllHelper" class="headerlink" title="DllHelper"></a>DllHelper</h3><p>路径：Scripts/helper/DllHelper.cs</p>
+<pre><code>static class DllHelper
+    + static void/Assembly LoadHotfixAssembly
+        ILRuntime模式
+            将Hotfix.dll和Hotfix.pdb读取到byte数组, 使用Init.Instance.AppDomain.LoadAssembly载入
+        普通模式
+            将Hotfix.dll和Hotfix.mdb读取到byte数组, 使用Assembly.Load加载成Assembly对象并返回
+    + static Type[] GetMonoTypes()
+            List&lt;Type&gt; types = new List&lt;Type&gt;();
+            foreach (Assembly assembly in ObjectEvents.Instance.GetAll())
+            {
+                types.AddRange(assembly.GetTypes());
+            }
+            return types.ToArray();
+    + static Type[] GetHotfixTypes()
+        ILRuntime模式
+            return appDomain.LoadedTypes.Values.Select(x =&gt; x.ReflectionType).ToArray();
+        普通模式
+            return ObjectEvents.Instance.HotfixAssembly.GetTypes()
+</code></pre><h3 id="ObjectEvents"><a href="#ObjectEvents" class="headerlink" title="ObjectEvents"></a>ObjectEvents</h3><p>路径：Scripts/base/object/ObjectEvents.cs</p>
+<pre><code>interface IObjectEvent
+    + Type Type()
+    + void Set(object value)
+
+abstract class ObjectEvent&lt;T&gt; : IObjectEvent
+    - T value
+    + T Get()
+    + Set(object v)  设置value
+    + Type Type()
+
+sealed class ObjectEvents
+    - static ObjectEvents instance  单例
+    - Assembly hotfixAssembly
+    - Dictionary&lt;string, Assembly&gt; assemblies
+    - Dictionary&lt;Type, IObjectEvent&gt; disposerEvents
+    - EQueue&lt;Disposer&gt; updates, updates2, starts, loaders, loaders2, lateUpdates, lateUpdates2
+    + void LoadHotfixDll()
+        ILRuntime模式
+            DllHelper.LoadHotfixAssembly载入Hotfix.dll
+        普通模式
+            hotfixAssembly引用DllHelper.LoadHotfixAssembly()返回的Assembly对象
+        this.Load();
+    + void Add(string name, Assembly assembly)
+        assemblies[name] = assembly;
+        遍历assemblies里的assembly的所有type, 如果具有ObjectEventAttribute特性, 且继承了IObjectEvent,
+        就创建type的实例objectEvent, 并添加进disposerEvents，即disposerEvents[objectEvent.Type()] = objectEvent;
+    + Assembly Get(string name)
+        return this.assemblies[name];
+    + Assembly[] GetAll()
+        return this.assemblies.Values.ToArray();
+    + void Add(Disposer disposer)
+        通过disposer的type从disposerEvents中获取objectEvent，
+        如果是ILoad, 就添加进loaders
+        如果是IUpdate, 就添加进updates
+        如果是IStart, 就添加进starts
+    + void Awake(Disposer disposer)  有泛型版本，用于扩展传到disposer的参数个数，但逻辑是一致的
+        Add(disposer)
+        通过disposer的type从disposerEvents中获取objectEvent，
+        IAwake iAwake = objectEvent as IAwake;
+        objectEvent.Set(disposer);
+        iAwake.Awake();
+        objectEvent相当于是一个包装器, disposer是具体做这件事的对象，objectEvent调用disposer的Awake,
+        继承接口的是objectEvent, disposer对objectEvent是已知的, disposer不用继承任何IAwake之类的接口，简化disposer的继承
+    + void Load()
+        从loaders弹出一个disposer，通过disposer的type从disposerEvents中获取objectEvent，再将disposer添加到loaders2，
+        ILoad iLoad = objectEvent as ILoad;
+        objectEvent.Set(disposer);
+        iLoad.Load(); --&gt; 通过objectEvent调用disposer里的方法，
+        重复以上操作直到loaders里的弹完为止
+        loaders和loaders2对调
+    + void Start()
+        从starts里弹出disposer
+        通过objectEvent调用disposer里的Start方法
+        流程和Load()差不多，只是从starts里弹出disposer没有被回收。
+    + void Update()
+        类似Load()
+    + void LateUpdate()
+        类似Load()
+</code></pre><h3 id="Disposer"><a href="#Disposer" class="headerlink" title="Disposer"></a>Disposer</h3><p>路径：Scripts/base/object/Disposer.cs</p>
+<pre><code>abstract class Object: ISupportInitialize
+    + virtual void BeginInit()
+    + virtual void EndInit()
+
+[BsonKnownTypes(typeof(Component))]
+abstract class Disposer : Object, IDisposable
+    - long Id
+    - bool IsFromPool
+    + Disposer()
+    + Disposer(long id)
+    + virtual void Dispose()
+</code></pre><h3 id="Component"><a href="#Component" class="headerlink" title="Component"></a>Component</h3><p>路径：Scripts/Base/Object/Component.cs</p>
+<pre><code>[BsonIgnoreExtraElements]
+abstract partial class Component: Disposer
+    - Entity Parent
+    + Component()
+    + T GetParent&lt;T&gt;() where T : Entity
+    + override void Dispose()
+</code></pre><p>路径：Scripts/Base/Object/ComponentAttribute.cs</p>
+<pre><code>[BsonKnownTypes(typeof(AConfigComponent))]
+[BsonKnownTypes(typeof(Entity))]
+partial class Component
+</code></pre><h3 id="ComponentFactory"><a href="#ComponentFactory" class="headerlink" title="ComponentFactory"></a>ComponentFactory</h3><p>路径：Scripts/Base/Object/ComponentFactory.cs</p>
+<pre><code>static class ComponentFactory
+    + Create 一组泛型函数，
+        从对象池里创建组件，并通过ObjectEvents.Instance.Awake(disposer);来Awake组件
+        这是一组泛型函数，支持传入多个参数给组件的Awake函数
+</code></pre><h3 id="EventComponent"><a href="#EventComponent" class="headerlink" title="EventComponent"></a>EventComponent</h3><p>路径：Scripts/component/EventComponent.cs</p>
+<pre><code>interface IEvent
+    + Run：一组泛型函数，支持最多6个参数，无返回值
+
+interface IEventMethod
+    + Run：一组泛型函数，支持最多4个参数，无返回值
+
+class IEventMonoMethod : IEventMethod
+    - object obj
+    + IEventMonoMethod(object obj)
+        初始化时引用一个IEvent对象obj，
+    + Run：一组泛型函数，支持最多4个参数，无返回值，让obj执行IEvent的run方法
+
+class IEventILMethod : IEventMethod
+    - ILRuntime.Runtime.Enviorment.AppDomain appDomain
+    - ILTypeInstance instance
+    - IMethod method  --&gt; ILRuntime貌似只能通过这种方式执行函数
+    - object[] param
+    + IEventILMethod(Type type, string methodName)
+        使用AppDomain获取将要调用的方法，同时appDomain.Instantiate(type.FullName)创建一个实例并赋值给instance，
+        并从type获取到method
+        注：
+        创建IEventMonoMethod和IEventILMethod的地方，在EventComponent的Load方法里，
+        在Load里是直接通过类(继承了IEvent)来创建实例的，只不过IEventMonoMethod是在构造函数外面创建IEvent实例，
+        IEventILMethod是在构造函数里面创建IEvent实例，感觉都在构造函数里面创建IEvent实例比较好，这样统一一些，不会那么奇怪
+    + Run：一组泛型函数，支持最多4个参数，无返回值
+        让obj执行IEvent的run方法，内部是通过appdomain Invoke方法，实现方法的调用
+
+class EventComponentEvent : ObjectEvent&lt;EventComponent&gt;, IAwake, ILoad
+    + void Awake()
+        调用EventComponent的Awake函数
+    + void Load()
+        调用EventComponent的Load函数
+
+class EventComponent : Component
+    - EventComponent Instance 单例
+    - Dictionary&lt;EventIdType, List&lt;IEventMethod&gt;&gt; allEvents
+    + Awake
+        Instance = this;
+        this.Load();
+    + Load
+        新建allEvents
+
+        通过DllHelper.GetMonoTypes获取types列表，遍历types，获取有EventAttribute特性的type，
+        从type获取到的EventAttribute为aEventAttribute，创建该type的实例obj，然后添加到allEvents，
+        即allEvents[(EventIdType)aEventAttribute.Type].Add(new IEventMonoMethod(obj));
+        感觉有点问题，要是type没继承IEvent，无法静态检查出来，运行时就gg了  ￣ω￣=
+
+        通过DllHelper.GetHotfixTypes获取types列表，重复上面的过程，
+        不同之处在于，在ILRuntime模式下，创建IEventILMethod而不是IEventMonoMethod
+    + Run(EventIdType type, ...)：一组泛型函数，支持最多3个参数，无返回值
+        从allEvents根据EventIdType取出IEventMethod列表，然后执行列表里的IEventMethod对象的Run方法
+</code></pre><blockquote>
+<p>因为各Component基本上都有对应的ComponentEvent，ComponentEvent的功能基本上就是调用Component的Awake,Start,Update等方法，少数ComponentEvent可能有一些额外的功能。以下部分，如果XXXComponentEvent没有特殊功能，就略过不表了。</p>
+</blockquote>
+<h3 id="UIComponent"><a href="#UIComponent" class="headerlink" title="UIComponent"></a>UIComponent</h3><p>路径：Scripts/Other/UIFactoryAttribute.cs</p>
+<pre><code>[AttributeUsage(AttributeTargets.Class)]
+class UIFactoryAttribute: Attribute
+    - int Type  --&gt; 枚举值
+    + UIFactoryAttribute(int type)
+</code></pre><p>路径：Scripts/component/UIComponent.cs</p>
+<pre><code>class class UIComponent: Component
+    - GameObject Root  --&gt; ui的根节点
+    - Dictionary&lt;UIType, IUIFactory&gt; UiTypes
+    - Dictionary&lt;UIType, UI&gt; uis
+    + void Awake()
+        this.Root = GameObject.Find(&quot;Global/UI/&quot;);
+        this.Load();
+    + void Load()
+        清空UiTypes，
+        遍历DllHelper.GetMonoTypes()获取到的types列表，获取有UIFactoryAttribute特性的type，创建type的实例factory，
+        添加到UiTypes，即this.UiTypes.Add((UIType)attribute.Type, factory);
+        attribute为从type获取的UIFactoryAttribute特性
+    + UI Create(UIType type)
+        从UiTypes中取出type类型的factory，创建出UI类型实体ui，并将ui添加到uis列表中。
+        // 设置canvas
+        string cavasName = ui.GameObject.GetComponent&lt;CanvasConfig&gt;().CanvasName;
+        ui.GameObject.transform.SetParent(this.Root.Get&lt;GameObject&gt;(cavasName).transform, false);
+    + void Dispose()
+        遍历uis并Dispose，清空uis和UiTypes
+    + void Add(UIType type, UI ui)
+    + void Remove(UIType type)
+    + void RemoveAll()
+    + UI Get(UIType type)
+    + List&lt;UIType&gt; GetUITypeList()
+</code></pre><h3 id="IUIFactory"><a href="#IUIFactory" class="headerlink" title="IUIFactory"></a>IUIFactory</h3><p>路径：Scripts/Other/IUIFactory.cs</p>
+<pre><code>interface IUIFactory
+    + UI Create(Scene scene, UIType type, GameObject parent);
+    + void Remove(UIType type);
+</code></pre><h3 id="UILoadingFactory"><a href="#UILoadingFactory" class="headerlink" title="UILoadingFactory"></a>UILoadingFactory</h3><p>路径：Scripts/UI/UILoading/Factory/UILoadingFactory.cs</p>
+<pre><code>class UILoadingFactory : IUIFactory
+    + UI Create(Scene scene, UIType type, GameObject gameObject)
+        这里只创建了加载界面，
+        资源在Resources/KV.prefab
+        从UnityEngine.Resources.Load(&#39;KV&#39;).Get&lt;GameObject&gt;(&quot;UILoading&quot;);取出界面
+        UnityEngine.Object.Instantiate 实例化界面得到对象go
+        设置go的层
+        使用go创建UI类型的实体ui
+        给ui添加UILoadingComponent组件
+    + void Remove(UIType type)
+        空
+</code></pre><h3 id="UILoadingComponent"><a href="#UILoadingComponent" class="headerlink" title="UILoadingComponent"></a>UILoadingComponent</h3><p>路径：Scripts/UI/UILoading/Component/UILoadingComponent.cs</p>
+<pre><code>UILoadingComponentEvent : ObjectEvent&lt;UILoadingComponent&gt;, IAwake, IStart
+    + void Awake()
+        获取界面的Text控件的引用，赋值给UILoadingComponent的text
+    + async void Start()
+        在一个while循环中，不断更新UILoadingComponent的text，更新下载进度的文字显示，直到下载完成为止。
+
+class UILoadingComponent : Component
+    - Text text
+</code></pre><h3 id="UI"><a href="#UI" class="headerlink" title="UI"></a>UI</h3><p>路径：Scripts/Entity/UI.cs</p>
+<pre><code>class UIEvent : ObjectEvent&lt;UI&gt;, IAwake&lt;Scene, UI, GameObject&gt;
+    + void Awake(Scene scene, UI parent, GameObject gameObject)
+
+sealed class UI: Entity
+    - Scene Scene
+    - string Name  --&gt; this.GameObject.name
+    - GameObject GameObject
+    - Dictionary&lt;string, UI&gt; children
+    + void Awake(Scene scene, UI parent, GameObject gameObject)
+        清空children
+        设置Scene和GameObject
+        gameObject.transform.SetParent(parent.GameObject.transform, false)
+    + void Dispose()
+        遍历children进行Dispose
+        UnityEngine.Object.Destroy(GameObject);
+        清空children
+    + void Add(UI ui)
+    + void Remove(string name)
+    + UI Get(string name)
+</code></pre><h3 id="ResourcesComponent"><a href="#ResourcesComponent" class="headerlink" title="ResourcesComponent"></a>ResourcesComponent</h3><p>路径：Scripts/component/ResourcesComponent.cs</p>
+<h3 id="Opcode"><a href="#Opcode" class="headerlink" title="Opcode"></a>Opcode</h3><p>enum Opcode<br>    一组网络协议号</p>
+<h3 id="MessageAttribute"><a href="#MessageAttribute" class="headerlink" title="MessageAttribute"></a>MessageAttribute</h3><p>粗略观察了一下，有MessageAttribute的type基本上都是协议包的结构体</p>
+<pre><code>class MessageAttribute: Attribute
+    - Opcode Opcode
+</code></pre><h3 id="OpcodeTypeComponent"><a href="#OpcodeTypeComponent" class="headerlink" title="OpcodeTypeComponent"></a>OpcodeTypeComponent</h3><pre><code>class OpcodeTypeComponent : Component
+    - DoubleMap&lt;Opcode, Type&gt; opcodeTypes
+    + void Awake()
+        遍历DllHelper.GetMonoTypes()，取出有MessageAttribute的type,添加到opcodeTypes
+</code></pre><h3 id="GlobalConfigComponent"><a href="#GlobalConfigComponent" class="headerlink" title="GlobalConfigComponent"></a>GlobalConfigComponent</h3><pre><code>class GlobalConfigComponent : Component
+    - GlobalConfigComponent Instance 单例
+    - GlobalProto GlobalProto
+    + void Awake()
+        资源在Assets/Res/Config/GlobalProto.txt
+        ConfigHelper.GetGlobal() 从Resources/KV.prefab取名为GlobalProto的文本，然后反序列化到GlobalProto中
+        GlobalProto.txt就是一个json文件，主要存储热更新地址和服务器地址，
+</code></pre><h3 id="NetOuterComponent"><a href="#NetOuterComponent" class="headerlink" title="NetOuterComponent"></a>NetOuterComponent</h3><pre><code>class NetOuterComponent : NetworkComponent
+    + void Awake()
+        this.Awake(NetworkProtocol.TCP);
+        this.MessagePacker = new ProtobufPacker(); 将数据压成包，压包器，采用Protobuf
+        this.MessageDispatcher = new ClientDispatcher();
+    + new void Update()
+</code></pre><h3 id="ClientDispatcher"><a href="#ClientDispatcher" class="headerlink" title="ClientDispatcher"></a>ClientDispatcher</h3><p>路径：Scripts/Base/Message/ClientDispatcher.cs</p>
+<pre><code>interface IMessageDispatcher
+    + void Dispatch(Session session, Opcode opcode, int offset, byte[] messageBytes, AMessage message)
+
+class ClientDispatcher: IMessageDispatcher
+    + void Dispatch(Session session, Opcode opcode, int offset, byte[] messageBytes, AMessage message)
+        根据message类型判断消息类型，
+        message如果是FrameMessage，那就是帧同步消息，
+            Game.Scene.GetComponent&lt;ClientFrameComponent&gt;().Add(session, frameMessage);
+        message如果是AMessage或ARequest，那就是普通消息或者是Rpc请求消息，
+            由MessageDispatherComponent处理
+</code></pre><h3 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h3><p>路径：Scripts/Entity/Session.cs</p>
+<pre><code>sealed class Session : Entity
+    - static uint RpcId
+    - NetworkComponent network
+    - AChannel channel
+    - Dictionary&lt;uint, Action&lt;object&gt;&gt; requestCallback
+    - List&lt;byte[]&gt; byteses
+    + void Awake(NetworkComponent net, AChannel c)
+        设置network和channel，清空requestCallback
+    + void Start()
+        this.StartRecv();
+    + override void Dispose()
+    + async void StartRecv()
+        一个while循环使之不断运转。
+        packet = await this.channel.Recv(); 接收包，收包的任一环节出现异常，都会导致循环停止。
+        先取出opcode,在调用RunDecompressedBytes，处理协议消息。完了之后进入下一轮循环，等待接受消息。
+    + void RunDecompressedBytes(ushort opcode, byte[] messageBytes, int offset, int count)
+        根据opcode从OpcodeTypeComponent中取出对应的协议结构体，然后将messageBytes反序列化到协议结构体中。
+        然后把协议消息发送出去，这里有判断rpc的逻辑。
+    + void CallWithAction(ARequest request, Action&lt;AResponse&gt; action)
+        rpc调用
+    + Task&lt;AResponse&gt; Call(ARequest request, bool isHotfix)
+        Rpc调用,发送一个消息,等待返回一个消息
+    + Task&lt;AResponse&gt; Call(ARequest request, bool isHotfix, CancellationToken cancellationToken)
+        Rpc调用
+    + Task&lt;Response&gt; Call&lt;Response&gt;(ARequest request) where Response : AResponse
+        Rpc调用,发送一个消息,等待返回一个消息
+    + Task&lt;Response&gt; Call&lt;Response&gt;(ARequest request, CancellationToken cancellationToken)
+        Rpc调用
+    + void Send(AMessage message)
+        发送消息
+    + void Reply&lt;Response&gt;(Response message) where Response : AResponse
+        发送消息
+    + void SendMessage(object message)
+        将协议消息发往服务器
+</code></pre><h3 id="AChannel"><a href="#AChannel" class="headerlink" title="AChannel"></a>AChannel</h3><p>路径：Scripts/Base/Network/AChannel.cs</p>
+<pre><code>enum PacketFlags
+
+enum ChannelType
+
+abstract class AChannel: IDisposable
+    - long Id
+    - ChannelType ChannelType
+    - AService service
+    - IPEndPoint RemoteAddress
+    + abstract void Send(byte[] buffer)
+    + abstract void Send(List&lt;byte[]&gt; buffers);
+    + abstract Task&lt;Packet&gt; Recv();
+    + virtual void Dispose()
+</code></pre><h3 id="MessageDispatherComponent"><a href="#MessageDispatherComponent" class="headerlink" title="MessageDispatherComponent"></a>MessageDispatherComponent</h3><p>类似EventComponent模块，分有热更版本</p>
+<pre><code>interface IMessageMethod
+    + void Run(Session session, AMessage a);
+
+class IMessageMonoMethod : IMessageMethod
+    + void Run(Session session, AMessage a)
+
+class IMessageILMethod : IMessageMethod
+    + void Run(Session session, AMessage a)
+
+class MessageDispatherComponent : Component
+    - Dictionary&lt;Opcode, List&lt;IMessageMethod&gt;&gt; handlers
+    + void Awake()
+        this.Load();
+    + void Load()
+        从DllHelper.GetMonoTypes()和DllHelper.GetHotfixTypes()获取types,
+        从中选择出带有MessageHandlerAttribute的type，添加到handlers中
+    + void Handle(Session session, MessageInfo messageInfo)
+        从handlers中找出与messageInfo.Opcode对应的IMessageMethod，运行它的Run方法
+</code></pre><h3 id="ClientFrameComponent"><a href="#ClientFrameComponent" class="headerlink" title="ClientFrameComponent"></a>ClientFrameComponent</h3><pre><code>class FrameMessage : AActorMessage
+    - int Frame
+    - List&lt;AFrameMessage&gt; Messages
+
+struct SessionFrameMessage
+    - Session Session
+    - FrameMessage FrameMessage
+
+class ClientFrameComponent: Component
+    - int Frame
+    - EQueue&lt;SessionFrameMessage&gt; Queue
+    - int count = 1
+    - int waitTime
+    - const int maxWaitTime = 40
+    + void Start()
+        UpdateAsync();
+    + void Add(Session session, FrameMessage frameMessage)
+        添加到Queue
+    + async void UpdateAsync()
+        一个while循环使之不断运转。每隔一段时间调用一次this.UpdateFrame();
+        如果队列中消息多于4个，则加速跑帧
+    + void UpdateFrame()
+        从Queue出队一个SessionFrameMessage，
+        将SessionFrameMessage.FrameMessage.Messages里的消息通过MessageDispatherComponent都发送出去
+</code></pre><h3 id="NetworkComponent"><a href="#NetworkComponent" class="headerlink" title="NetworkComponent"></a>NetworkComponent</h3><p>这个是和服务器公用的组件</p>
+<pre><code>abstract class NetworkComponent : Component
+    - AService Service
+    - AppType AppType
+    - Dictionary&lt;long, Session&gt; sessions
+    - IMessagePacker MessagePacker
+    - IMessageDispatcher MessageDispatcher
+    + void Awake(NetworkProtocol protocol)
+        根据protocol类型创建Service，有TService和KService两种
+    + void Awake(NetworkProtocol protocol, IPEndPoint ipEndPoint)
+        根据protocol类型创建Service，有TService和KService两种，
+        将ipEndPoint传给Service的构造函数，并this.StartAccept();
+    + async void StartAccept()
+        在while循环中，不断的执行await this.Accept();
+    + virtual async Task&lt;Session&gt; Accept()
+        具体功能需要调一下
+    + virtual void Remove(long id)
+        移除Session
+    + Session Get(long id)
+        获取Session
+    + virtual Session Create(IPEndPoint ipEndPoint)
+        创建一个新Session
+    + public void Update()
+        this.Service.Update();
+    + override void Dispose()
+</code></pre><p>网络方面还有TService，KService，Channel等，涉及到的东西比较多，具体的功能和流程需要在使用的时候弄清楚。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/unity/" rel="tag"><i class="fa fa-tag"></i> unity</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/03/blender-start/" rel="next" title="blender基本操作">
+                <i class="fa fa-chevron-left"></i> blender基本操作
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://ozy76jm8o.bkt.clouddn.com/blog/images/avater-2.png"
+                alt="雪落马蹄" />
+            
+              <p class="site-author-name" itemprop="name">雪落马蹄</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/hejia-v" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:1464946535@qq.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#修复工程文件的bug"><span class="nav-number">1.</span> <span class="nav-text">修复工程文件的bug</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阅读ET客户端源码"><span class="nav-number">2.</span> <span class="nav-text">阅读ET客户端源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端demo"><span class="nav-number">3.</span> <span class="nav-text">客户端demo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主要的类"><span class="nav-number">4.</span> <span class="nav-text">主要的类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DllHelper"><span class="nav-number">4.1.</span> <span class="nav-text">DllHelper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ObjectEvents"><span class="nav-number">4.2.</span> <span class="nav-text">ObjectEvents</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Disposer"><span class="nav-number">4.3.</span> <span class="nav-text">Disposer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Component"><span class="nav-number">4.4.</span> <span class="nav-text">Component</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ComponentFactory"><span class="nav-number">4.5.</span> <span class="nav-text">ComponentFactory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EventComponent"><span class="nav-number">4.6.</span> <span class="nav-text">EventComponent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UIComponent"><span class="nav-number">4.7.</span> <span class="nav-text">UIComponent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IUIFactory"><span class="nav-number">4.8.</span> <span class="nav-text">IUIFactory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UILoadingFactory"><span class="nav-number">4.9.</span> <span class="nav-text">UILoadingFactory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UILoadingComponent"><span class="nav-number">4.10.</span> <span class="nav-text">UILoadingComponent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UI"><span class="nav-number">4.11.</span> <span class="nav-text">UI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ResourcesComponent"><span class="nav-number">4.12.</span> <span class="nav-text">ResourcesComponent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Opcode"><span class="nav-number">4.13.</span> <span class="nav-text">Opcode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MessageAttribute"><span class="nav-number">4.14.</span> <span class="nav-text">MessageAttribute</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OpcodeTypeComponent"><span class="nav-number">4.15.</span> <span class="nav-text">OpcodeTypeComponent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GlobalConfigComponent"><span class="nav-number">4.16.</span> <span class="nav-text">GlobalConfigComponent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NetOuterComponent"><span class="nav-number">4.17.</span> <span class="nav-text">NetOuterComponent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ClientDispatcher"><span class="nav-number">4.18.</span> <span class="nav-text">ClientDispatcher</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Session"><span class="nav-number">4.19.</span> <span class="nav-text">Session</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AChannel"><span class="nav-number">4.20.</span> <span class="nav-text">AChannel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MessageDispatherComponent"><span class="nav-number">4.21.</span> <span class="nav-text">MessageDispatherComponent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ClientFrameComponent"><span class="nav-number">4.22.</span> <span class="nav-text">ClientFrameComponent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NetworkComponent"><span class="nav-number">4.23.</span> <span class="nav-text">NetworkComponent</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">雪落马蹄</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('3');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+  <!--
+  <script type="text/javascript" src="/js/src/particle.js"></script>
+  <script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+  -->
+  <!-- 小红心 -->
+  <!--
+  <script type="text/javascript" src="/js/src/love.js"></script>
+  -->
+  <!--卖萌-->
+  <!--
+  <script type="text/javascript" src="/js/src/dytitle.js"></script>
+  -->
+  
+<div id="hexo-helper-live2d">
+  <canvas id="live2dcanvas" width="150" height="300"></canvas>
+</div>
+<style>
+  #live2dcanvas{
+    position: fixed;
+    width: 150px;
+    height: 300px;
+    opacity:0.7;
+    left: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -20px;
+  }
+</style>
+<script type="text/javascript" src="/live2d/device.min.js"></script>
+<script type="text/javascript">
+const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
+(function(){
+  if((typeof(device) != 'undefined') && (device.mobile())){
+    document.getElementById("live2dcanvas").style.width = '75px';
+    document.getElementById("live2dcanvas").style.height = '150px';
+  }else
+    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
+  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/wanko.model.json", 0.5);});
+})();
+</script>
+
+  <script type="text/javascript" src="/js/src/clipboard.min.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+</body>
+</html>

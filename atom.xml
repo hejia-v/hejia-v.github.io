@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://hejia-v.github.io/"/>
-  <updated>2017-12-16T13:14:19.000Z</updated>
+  <updated>2018-01-05T13:24:35.000Z</updated>
   <id>https://hejia-v.github.io/</id>
   
   <author>
@@ -15,6 +15,44 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ET框架客户端源码阅读</title>
+    <link href="https://hejia-v.github.io/2018/01/05/read-et-framework-client-code/"/>
+    <id>https://hejia-v.github.io/2018/01/05/read-et-framework-client-code/</id>
+    <published>2018-01-05T13:24:35.000Z</published>
+    <updated>2018-01-05T13:24:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;https://github.com/egametang/ET&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ET&lt;/a&gt;是一个unity的前后端框架，包含客户端和服务端两部分。采用的是组件式设计，前后端都由C#实现，并且前后端共享了部分代码，可以很方便的进行全栈开发。客户端方面的功能也比较齐全，基本包含了手游开发中使用频率比较高的各个功能。前后端都非常完整地实现了热更新，热更新机制采用的是&lt;a href=&quot;https://github.com/Ourpalm/ILRuntime&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ILRuntime&lt;/a&gt;，即把要热更新的C#代码当做脚本来进行热更，终于可以不用使用讨厌鬼lua了ヽ(￣▽￣)ﾉ。如果手头没有代码积累，ET框架是一个非常不错的选择。这个框架很对我胃口，业余抽空先看了一下客户端部分，感觉设计得挺精妙的，这里梳理一下，方便理解，以免使用该框架时没有头绪。另外也感慨一下，C#确实好用，语法很甜，使用起来，舒适度和Python差不多，同时又是强类型的，效率也不错，开发起来简直是一种享受。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="unity" scheme="https://hejia-v.github.io/tags/unity/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>blender基本操作</title>
+    <link href="https://hejia-v.github.io/2018/01/03/blender-start/"/>
+    <id>https://hejia-v.github.io/2018/01/03/blender-start/</id>
+    <published>2018-01-03T13:02:51.000Z</published>
+    <updated>2018-01-03T13:02:51.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;大概在13年到14年，我曾学习和使用一段时间&lt;a href=&quot;https://www.blender.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;blender&lt;/a&gt;，感觉它的多边形建模功能极其方便，自带雕刻功能，还可以很方便的自定义Python脚本，一时间爱不释手。后来由于任务繁忙，并且也不是做这方面的，就很少使用了，于是就落下了。如今blender越来越多的被应用到手游制作流程中，即将到来的&lt;a href=&quot;https://www.blender.org/2-8/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;blender2.8&lt;/a&gt;也将带来许多极其强悍的功能，是时候重新温故一下blender了。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="tool" scheme="https://hejia-v.github.io/categories/tool/"/>
+    
+    
+      <category term="tool" scheme="https://hejia-v.github.io/tags/tool/"/>
+    
+  </entry>
   
   <entry>
     <title>windows上安装tensorflow</title>
