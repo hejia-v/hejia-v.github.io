@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://hejia-v.github.io/"/>
-  <updated>2018-01-05T13:24:35.000Z</updated>
+  <updated>2018-02-09T13:18:33.000Z</updated>
   <id>https://hejia-v.github.io/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>武侠动作手游初稿(个人向)</title>
+    <link href="https://hejia-v.github.io/2018/02/09/wuxia-act-mobile-game/"/>
+    <id>https://hejia-v.github.io/2018/02/09/wuxia-act-mobile-game/</id>
+    <published>2018-02-09T13:18:33.000Z</published>
+    <updated>2018-02-09T13:18:33.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;假日里闲来无事，回顾了一下自己掌握的知识，根据自己已有的技术储备，整理了一下开发一款武侠动作手游的方方面面。我并非专业策划，写下这篇文章，依据的是之前的开发经验和阅历，以及体验过的一些游戏，难免会有一些不合理之处，这些还恳请小伙伴们多多指教。本文并非策划文档，也不详谈技术，大致相当于一个大纲，对游戏的开发做一个总览，需要做些什么，目前能做到什么样的程度，心里先有一个底。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="game" scheme="https://hejia-v.github.io/categories/game/"/>
+    
+    
+      <category term="game" scheme="https://hejia-v.github.io/tags/game/"/>
+    
+  </entry>
   
   <entry>
     <title>ET框架客户端源码阅读</title>
@@ -29,6 +49,12 @@
     
     </summary>
     
+      <category term="unity" scheme="https://hejia-v.github.io/categories/unity/"/>
+    
+      <category term="game" scheme="https://hejia-v.github.io/categories/unity/game/"/>
+    
+    
+      <category term="game" scheme="https://hejia-v.github.io/tags/game/"/>
     
       <category term="unity" scheme="https://hejia-v.github.io/tags/unity/"/>
     

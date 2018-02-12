@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180x180.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+
+
+
+
+  <meta name="keywords" content="game," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雪落马蹄的博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="假日里闲来无事，回顾了一下自己掌握的知识，根据自己已有的技术储备，整理了一下开发一款武侠动作手游的方方面面。我并非专业策划，写下这篇文章，依据的是之前的开发经验和阅历，以及体验过的一些游戏，难免会有一些不合理之处，这些还恳请小伙伴们多多指教。本文并非策划文档，也不详谈技术，大致相当于一个大纲，对游戏的开发做一个总览，需">
+<meta name="keywords" content="game">
+<meta property="og:type" content="article">
+<meta property="og:title" content="武侠动作手游初稿(个人向)">
+<meta property="og:url" content="https://hejia-v.github.io/2018/02/09/wuxia-act-mobile-game/index.html">
+<meta property="og:site_name" content="雪落马蹄的博客">
+<meta property="og:description" content="假日里闲来无事，回顾了一下自己掌握的知识，根据自己已有的技术储备，整理了一下开发一款武侠动作手游的方方面面。我并非专业策划，写下这篇文章，依据的是之前的开发经验和阅历，以及体验过的一些游戏，难免会有一些不合理之处，这些还恳请小伙伴们多多指教。本文并非策划文档，也不详谈技术，大致相当于一个大纲，对游戏的开发做一个总览，需要做些什么，目前能做到什么样的程度，心里先有一个底。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/cel-rendering-3.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/cel-rendering-4.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/cel-rendering-2.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/dj1.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/cel-rendering-1.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/UnityChang_Line.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/cel-rendering-5.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-1.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-2.gif">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-3.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-4.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-5.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-6.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-7.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-8.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-9.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-10.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-11.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-12.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-13.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/gac1.gif">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/gac2.gif">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/gac3.gif">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/gac4.gif">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/gujianzhu-1.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/battle-1.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/table-4.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/table-1.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/table-2.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/table-3.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-14.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/nn-horses.gif">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/anim-1.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/webconsole-1.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/webconsole-2.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/webconsole-3.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/webconsole-4.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/gm-1.png">
+<meta property="og:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/icon-1.png">
+<meta property="og:updated_time" content="2018-02-09T13:18:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="武侠动作手游初稿(个人向)">
+<meta name="twitter:description" content="假日里闲来无事，回顾了一下自己掌握的知识，根据自己已有的技术储备，整理了一下开发一款武侠动作手游的方方面面。我并非专业策划，写下这篇文章，依据的是之前的开发经验和阅历，以及体验过的一些游戏，难免会有一些不合理之处，这些还恳请小伙伴们多多指教。本文并非策划文档，也不详谈技术，大致相当于一个大纲，对游戏的开发做一个总览，需要做些什么，目前能做到什么样的程度，心里先有一个底。">
+<meta name="twitter:image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/cel-rendering-3.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":0,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hejia-v.github.io/2018/02/09/wuxia-act-mobile-game/"/>
+
+
+
+
+
+  <title>武侠动作手游初稿(个人向) | 雪落马蹄的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">雪落马蹄的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">风雪夜归人</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hejia-v.github.io/2018/02/09/wuxia-act-mobile-game/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雪落马蹄">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ozy76jm8o.bkt.clouddn.com/blog/images/avater-2.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪落马蹄的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">武侠动作手游初稿(个人向)</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-09T21:18:33+08:00">
+                2018-02-09
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-02-09T21:18:33+08:00">
+                2018-02-09
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/game/" itemprop="url" rel="index">
+                    <span itemprop="name">game</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>假日里闲来无事，回顾了一下自己掌握的知识，根据自己已有的技术储备，整理了一下开发一款武侠动作手游的方方面面。我并非专业策划，写下这篇文章，依据的是之前的开发经验和阅历，以及体验过的一些游戏，难免会有一些不合理之处，这些还恳请小伙伴们多多指教。本文并非策划文档，也不详谈技术，大致相当于一个大纲，对游戏的开发做一个总览，需要做些什么，目前能做到什么样的程度，心里先有一个底。</p>
+<a id="more"></a>
+<h2 id="题材和类型"><a href="#题材和类型" class="headerlink" title="题材和类型"></a>题材和类型</h2><p>选择武侠这题材，一方面自己喜欢武侠，并且我对武侠可以说是相当的熟悉了，从小到大看过的武侠小说数不胜数，容易驾驭，比较稳，同时，能够获取到的参考和素材也相当的多；另一方面，个人认为武侠这个题材的市场还是比较广的，这从国内游戏的题材分布可以看出。</p>
+<p>选择偏动作的游戏类型，个人认为，一个优秀的即时战斗系统才可以比较好的表现出武侠里的刀光剑影、快意恩仇；自己也比较喜欢偏动作的游戏，开发3d Act一直是自己的夙愿和执念，嘿嘿。</p>
+<h2 id="世界观"><a href="#世界观" class="headerlink" title="世界观"></a>世界观</h2><p>先定下世界观设定，然后确定大致的编年史，然后定下故事线。</p>
+<p>目前我初步是这么设定的，游戏发生在一个架空的时代，时间点在唐朝之后，大概是五代时期。当然既然架空了，和历史肯定是不太一样的，这样设定的原因，一方面是对五代历史了解的人不多，方便胡乱瞎编，另一方面，五代之后的宋朝是武侠小说非常集中的时代，可以方便剧情的后续扩展。</p>
+<p>故事的起点是一次陨石坠落事件，陨石坠落事件带来了一种非常奇特的物质，在后续的剧情里，这种物质被发现是可以再生的。它的作用有这么几种：1. 赋予武侠中的内力更多的属性，这个可以参考《沧海》里的周流六劲，或者是一些超能力战斗漫画里的设定。 2. 充当游戏世界里的动力能源，甚至可以让它取代蒸汽机的作用。 3. 让游戏世界变得更加奇幻，但又说得通。</p>
+<p>文案方面，个人比较喜欢流畅一些的文笔，例如马舸的文风：</p>
+<blockquote>
+<p>二人沿山道下行，走了多时，来到一处涧桥边。那老僧眼望仙山幽美，恍如幻境，忽停步一叹，语含失望道：“我来此山，本欲一会当世‘真人’，可惜张全一修为虽高，却只能算半个‘真人’。”尚瑞生心中诧异，问道：“难道老师还当不得‘真人’二字？”那老僧摇了摇头，举目望天道：“果‘真人’者，无虚妄，无偶像，傲立天地，看破生死，蔑笑神佛。知‘因果’之无稽，洞人智之有穷。不悲不狂，永爱人生之风景；大真大痴，唯珍一世之运命。此才是人的生涯，可惜这人我看不到了！你有这样的后人，虽死亦如永生，连老衲也要羡慕了。”（《幻真缘》）</p>
+</blockquote>
+<p>温婉一点的可以这样：</p>
+<blockquote>
+<p>想到这一节，我心中已经雪亮，梁凉早就算好这一扑，我刚才岳阳楼吃饭喝茶动武，都是惯用右手，若用左手一定慢了一点而且不灵活，所以刚才故意站在左边，让右侧的我只能出左手，已是先赢了七分，更何况我生性喜洁，随随便便扑在地上，心里有所犹豫，出手自然又慢了些许，这也不能算他作弊，倒是我吃了哑巴亏。（《横吹洞萧》）</p>
+</blockquote>
+<p>不过具体的实施还是得看情况。</p>
+<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><p>客户端引擎使用Unity，开发方便，资源丰富，易于扩展，跨平台容易，好处是显而易见的。将来web端如果真崛起了，那时用的应该是webassembly之类的技术，显然Unity是可以支持的。</p>
+<p>游戏服务器采用C#语言，前后端都使用ET框架，分布式和组件式的设计十分适合本类型游戏。自己也已经实现了在C#中嵌入CPython，对于需要使用Python做算法的模块，可以直接用C#封装成组件并挂载到游戏服务器上。</p>
+<p>游戏服务器的web控制台，支付服务器，辅助服务器，分析工具，各种脚本，全部使用Python编写，毕竟在小型项目里，Python的开发效率无与伦比。</p>
+<p>如果存在性能压力比较大的地方，就使用C/C++实现，再导出到C#或Python中。</p>
+<h2 id="开发规划"><a href="#开发规划" class="headerlink" title="开发规划"></a>开发规划</h2><p>开发分三个阶段吧：原型 -&gt; 初版 -&gt; 版本迭代</p>
+<h3 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h3><p>这是项目的开荒阶段，也是最艰苦的阶段。在我看来，要完成以下几点：</p>
+<ul>
+<li>定下渲染技术，确定基本的画面基调，准备好场景和角色需要用到的范例材质和着色器。</li>
+<li>制作好至少一个通用角色，基本上要包含80%的角色特性，头发，布料，绑定，物理等都要弄好。</li>
+<li>制作好敌兵的各式基本AI行为。</li>
+<li>制作好基本的技能系统和战斗系统，需要支持pvp的1v1和pve。</li>
+<li>前后端同步进行，ET框架比较好的一点在于，某种程度上是开箱即用，全栈开发，前后端无缝结合。</li>
+</ul>
+<p>由于只是技术验证，模型和动作等使用网上流传的资源就可以了。先做出一个可玩的原型，边玩边体验边调整，逐步迭代，C#是强类型语言，重构起来也是十分轻松愉快的。原型阶段尤为重要，毕竟即时制战斗，口说无凭，只有体验了，才可以定下接下来的调整方向。这个没做好，后续的无从谈起。</p>
+<p>虽说这类游戏的demo、源码一大把，其实含金量大多数都不咋地，要做出自己的特色不那么容易，想做成自己心目中的完美效果更难，还是要有一定的妥协的，看自己的权衡和取舍吧。</p>
+<h3 id="初版"><a href="#初版" class="headerlink" title="初版"></a>初版</h3><p>这是第一个上线的版本。在原型的基础上，丰富各项游戏功能，达到一个比较高的完成度。这时也要避免同质化的问题，找到自己的定位和特色。</p>
+<h3 id="版本迭代"><a href="#版本迭代" class="headerlink" title="版本迭代"></a>版本迭代</h3><p>初版的表现不错的话，那么就要开始不断更新版本了。至少我自己就挺喜欢这类游戏的，成绩不好肯定有原因，完成度不高？画面不好？体验不好？表现力不行？战斗不爽快？数值不合理？难度不合理？卡顿？粘度太差？出现新游戏了？。。。总之，抱着做ip的心，万一成了呢，这个世界观，我觉得不错的。</p>
+<h2 id="画面风格"><a href="#画面风格" class="headerlink" title="画面风格"></a>画面风格</h2><p>画面采用卡通风格，使用 cel(赛璐璐) 渲染技术。目前市场上的崩坏3、桃源乡等二次元手游采用的都是这种风格，如图：<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/cel-rendering-3.png" alt="cel-rendering-3"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/cel-rendering-4.png" alt="cel-rendering-4"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/cel-rendering-2.png" alt="cel-rendering-2"></p>
+<p>采用这种画面风格，一方面这种画面确实好看，另一方面，避免同质化，避开和大厂的竞争。</p>
+<p>我已经研究过一段时间这种渲染技术，花了不少精力收集这方面的资料：公开的技术分享，技术博客，shader源码，paper，youtube视频，工程文件等。</p>
+<p>总体来说，实现这种卡通渲染不算难，网上的工程一大把，但这种非真实渲染技术太过tricky，画面好坏的评判主要依据的是人的主观，需要根据具体的项目进行针对性开发。</p>
+<p>毕竟画面是游戏的脸面，在我对画面的需求中，想要线条更光滑一点，而不是常见到的多边形状，勾线更细腻一点，线条更多一点，高光和阴影的层数更多一点，层次感更强一点，漫画风的感官更强烈一点，指不定还得加上后期(post process)，同时还得兼顾到手机的性能消耗。要达成这些，还需要花时间来研究。</p>
+<p>至于画风这方面，使用真人比例，《刀剑异闻录》这部漫画我比较喜欢（如下图），原画方面可以试试在<a href="https://www.mihuashi.com" target="_blank" rel="noopener">米大师</a>约稿。<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/dj1.png" alt="dj1"></p>
+<p>其实如果不是非得要按自己的想法来，现在已经有这么几个现存的方案：</p>
+<ol>
+<li><p>Asset Store的<a href="https://assetstore.unity.com/packages/vfx/shaders/realtoon-pc-mac-mobile-65518" target="_blank" rel="noopener">RealToon (PC/MAC &amp; Mobile)</a>，效果如下：<br> <img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/cel-rendering-1.png" alt="cel-rendering-1"></p>
+</li>
+<li><p><a href="https://www.psoft.co.jp/jp/product/pencil/unity/" target="_blank" rel="noopener">Pencil+ 4 for unity</a>，这个是pencil+的unity版，价格小贵，购买起来还比较麻烦，实际的性能消耗也不清楚，好像国内还没有谁在用。<br> <img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/UnityChang_Line.png" alt="UnityChang_Line"></p>
+</li>
+<li><p>Unity Chan Toon Shader，这个手头已有源码，效果如下：<br> <img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/cel-rendering-5.png" alt="cel-rendering-5"></p>
+</li>
+</ol>
+<p>总之，做的时候，看看同类产品到了什么样的水平，既不能掉队，也最好不要在细节上死磕。</p>
+<h2 id="用户界面"><a href="#用户界面" class="headerlink" title="用户界面"></a>用户界面</h2><p>用户界面主体上使用简约风格，可以参考国外单机游戏。</p>
+<p>下面这个是刺客信条ios版，可以看看：<br><a href="http://www.bilibili.com/video/av19424264/" target="_blank" rel="noopener">http://www.bilibili.com/video/av19424264/</a><br>下面这个的角色控制做得比较不错<br><a href="http://www.bilibili.com/video/av19424408/" target="_blank" rel="noopener">http://www.bilibili.com/video/av19424408/</a></p>
+<p>主界面按钮太多时，可以做一个一级按钮和一个快速按钮，按下一级按钮时呼出环形菜单，然后点击里面的按钮，进行相应操作，快速按钮自动切换成上一次点击的二级按钮，方便再次点击上次点击的按钮。</p>
+<p>提示系统需要做好一点，刺客信条ios版做得就比较好，根据当前的状态和环境，自动弹出提示和按钮。我甚至觉得吃药等类似操作的按钮都可以做成根据状态自动显示和隐藏。</p>
+<p>角色的标记，卡片的流光，技能按钮的cd，红蓝球/条等细节效果，基本上都找得到实现，无需太多担心。</p>
+<p>场景的切换需要有Camera Fade效果，UI界面需要有进场和退场的效果。UI界面在实现时会大量使用行为树，将各种效果做成行为节点，这样不用写一行代码，只需连接行为节点和修改节点参数，就可以轻松的调整UI了，极大的提升效率，如下图：<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-1.png" alt="ui-1"></p>
+<p>技能按钮暂时先参考手游通行的摆放方式，跟随战斗系统的开发，不断调整，看是使用双摇杆还是多级按钮啥的。</p>
+<p>本游戏的定位不是mmo，至少在初版不是，没有大世界，进入游戏后，玩家在一个屋子里，可以在屋子里活动，屋子里的一些物件，例如炉子，门，窗子等代表一些玩法的入口，与这些入口交互后，可进入相应的玩法。</p>
+<p>手头收集有一些UI界面，可以参考参考：<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-2.gif" alt="ui-2"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-3.png" alt="ui-3"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-4.png" alt="ui-4"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-5.png" alt="ui-5"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-6.png" alt="ui-6"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-7.png" alt="ui-7"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-8.png" alt="ui-8"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-9.png" alt="ui-9"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-10.png" alt="ui-10"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-11.png" alt="ui-11"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-12.png" alt="ui-12"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-13.png" alt="ui-13"></p>
+<h2 id="捏脸系统"><a href="#捏脸系统" class="headerlink" title="捏脸系统"></a>捏脸系统</h2><p>对于玩家自己创建的角色来说，捏脸和换装还是比较必要的。</p>
+<p>我手头有这么几个demo：<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/gac1.gif" alt="gac1"><br><!-- GAC --><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/gac2.gif" alt="gac2"><br><!-- GAC --><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/gac3.gif" alt="gac3"><br><!-- Unity5Tree --><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/gac4.gif" alt="gac4"><br><!-- The-Custom-Character-Kit --></p>
+<p>这几个demo虽然简陋，但总好过自己从零起步。将这几个demo整合起来，并根据自己的需求，进行开发，最终实现自己比较满意的效果。</p>
+<p>如果后期追求更高品质的捏脸系统，可以参考天刀的技术分享：</p>
+<ul>
+<li><a href="http://games.sina.com.cn/o/z/wuxia/2015-10-15/fxivsch3599438.shtml" target="_blank" rel="noopener">千人千面如何炼成 技术讲解捏脸系统设计原理</a></li>
+<li><a href="http://gad.qq.com/article/detail/12478" target="_blank" rel="noopener">天涯明月刀之千人千面</a></li>
+</ul>
+<p>手头有一个提取出来的天刀角色模型，面部的骨骼保留得比较完整，可以参考一下。</p>
+<h2 id="城建"><a href="#城建" class="headerlink" title="城建"></a>城建</h2><p>本游戏在初版里，场景只有一个主城，所有的剧情和玩法都发生在这个城池里。这也是为了降低成本，这些建筑的模型资源其实比较丰富的，并且也比较容易获取到，由于是卡通渲染，纹理贴图都简单了很多，如果要外包，成本应该不高。就算自己做也不算难，MC里那些玩家做出的建筑群就可以说明。建筑的很多部分都是可以程序化创建的，使用少量模板，通过blender的Python编程，可以创建出大片建筑。</p>
+<p>后期可能会做在整个城池内进行的多人玩法，比如夺宝玩法、吃鸡玩法啥的。因此在城建设计之初需要考虑一下随机地形和场景破坏，留下后续升级改进的空间。</p>
+<p>城池的设计上，可以参考这些：1. 妖猫传里的唐城。 2. 刀剑异闻录里的建筑设计。 3. 神都洛阳的微缩模型。 4. 一些概念设计。 5. 。。。。</p>
+<p>植被模型优先到asset store里找找，应该可以满足绝大多数需求，如果找不到合适的，就到网上找，实在找不到合适的，再考虑外包。</p>
+<p>场景里的一些细小物件，如箱子，幡子等，获取方式同上。</p>
+<p>我手里有几个高精度的古建模型，应该可以作为参考，以及程序化的模板：<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/gujianzhu-1.png" alt="gujianzhu-1"></p>
+<h2 id="酒馆"><a href="#酒馆" class="headerlink" title="酒馆"></a>酒馆</h2><p>其实就是扭蛋啦。至于抽啥，还没想好，有这么几个备选项：</p>
+<ol>
+<li>装备</li>
+<li>道具材料</li>
+<li>武学</li>
+<li>高手榜上的角色。美名其曰：广交豪杰，慕名拜访。抽到后有这么几个用法：<ol>
+<li>战斗时可以召唤出来，助战一段时间（有时间限制，到点后就消失）。</li>
+<li>主城多人玩法里可能会用到，利用这些高手角色的特质，完成一些任务。这个具体如何实施还没想好。</li>
+</ol>
+</li>
+</ol>
+<h2 id="剧情副本"><a href="#剧情副本" class="headerlink" title="剧情副本"></a>剧情副本</h2><h3 id="剧情关卡"><a href="#剧情关卡" class="headerlink" title="剧情关卡"></a>剧情关卡</h3><p>剧情关卡算是一个比较重要的拖游戏时长的功能。</p>
+<p>据我所知，在国内的手游中，只有最近出来的大厂的重型MMORPG（例如楚留香）才有接近端游的剧情演出，其他的手游的剧情表现形式基本上就是对话框，或者是对话框的变种。本游戏的剧情表现形式自然就是对话框类型，其实这个对话框也是可以做一些微创新的，我在Steam上就看到了不少有新意的对话框形式。</p>
+<p>就我的开发经验来看，这个剧情关卡的品质要做到普通手游的水平，并不复杂。首先，剧情部分自然就是一张Excel表了。所有剧情关卡的主配置也是一张Excel表，里面填写关卡相关的各项控制参数，例如地图配置，玩家配置，敌人配置，Boss配置，剧情配置等等。如果需要对剧情关卡做更精细的配置，那就需要做一个战斗编辑器，星际2的银河编辑器是这其中的佼佼者，不过对于本游戏来说，倒不需要这么复杂的编辑器，能够做一定程度的配置就可以了。</p>
+<h3 id="副本"><a href="#副本" class="headerlink" title="副本"></a>副本</h3><p>在我看来，多人副本能够极大的加强玩家之间的交流，做好了可以给游戏加分不少。多人副本的寿命也是比较长的，至少在端游上，有些游戏的的单个大型副本可以维持大几个月。</p>
+<p>武侠小说中的阵法和斗阵给了我不少灵感，其中一个印象比较深刻的是在萧逸的《无忧公主》中，几个阵法和斗阵比较不错，糅合真实空间和心理幻想空间，在真实世界和心理世界不断切换，心理世界里，空间不断地在撕裂（我脑补出了新鬼泣的画面，哈哈），比较出彩，可以参考参考，做成多人副本。<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/battle-1.png" alt="battle-1"></p>
+<h2 id="战斗系统"><a href="#战斗系统" class="headerlink" title="战斗系统"></a>战斗系统</h2><p>战斗系统是一个十分复杂的系统，这方面的理论与实践不是几篇文章就说得完的。这里不详述技能的设计和技术上的细节，只说说要做成什么样，以及从哪方面做。<br>&lt;&lt;&lt; ······························ 施工中 ······························ &gt;&gt;&gt;</p>
+<h2 id="导表"><a href="#导表" class="headerlink" title="导表"></a>导表</h2><p>在游戏的开发过程中，导表功能必不可少。传统的做法是，按照预先约定好的规则填写Excel表格，然后将Excel表格解析成游戏能够读取的数据文件例如csv，或者直接生成代码文件，将表格写到代码里。这个我已经用Python实现了，并且支持Excel表格里数据的无限嵌套。</p>
+<p>目前我已经实现了在Unity Editor中嵌入CPython。本项目中需要对导表流程进行改进，具体如下：</p>
+<ol>
+<li>按照预先约定好的规则填写Excel表格，表格用svn管理，放在Unity Asset文件夹外面。</li>
+<li>Unity Editor调用Python解析Excel表格，生成Unity能够方便读取的数据文件。</li>
+<li>Unity Editor读取数据文件，并根据表格数据生GUI界面。</li>
+<li>在这些GUI界面上，可以可视化调整数据，所见即所得，实时反馈在游戏窗口。</li>
+<li>点击保存按钮，将数据覆写回Excel文件，也不用担心覆写出错，毕竟版本管理嘛。</li>
+</ol>
+<p>由于客户端和服务端共用数据代码，直接在Unity Editor的GUI中调数据的好处是显而易见的，连服务器的填表工具都省了。</p>
+<p>下图是是Unity Editor里导表数据编辑界面的大概模样，最终成品要以实物为准：<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/table-4.png" alt="table-4"></p>
+<p>下图是Excel导表的大概模样，只是演示一下表格结构，实际的数据参数要复杂一些。表格里的内容是我胡乱填的，与本游戏无关。<br>道具导表<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/table-1.png" alt="table-1"><br>装备导表<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/table-2.png" alt="table-2"><br>新手指引导表<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/table-3.png" alt="table-3"></p>
+<h2 id="常用模块"><a href="#常用模块" class="headerlink" title="常用模块"></a>常用模块</h2><p>这里简单列一下游戏里常见的功能模块，看情况进行取舍吧：</p>
+<ul>
+<li>玩家名称生成</li>
+<li>改名</li>
+<li>角色信息</li>
+<li>任务</li>
+<li>邮件</li>
+<li>道具的合成分解与进化</li>
+<li>装备的合成分解与进化</li>
+<li>成就</li>
+<li>声望</li>
+<li>帮会</li>
+<li>阵营</li>
+<li>家园</li>
+<li>好友</li>
+<li>师徒</li>
+<li>。。。</li>
+</ul>
+<p>各模块之间需要合理的安排跳转链接。</p>
+<p>版本迭代时，可以开发一些自由度比较高的玩法，比如参考Besiege的设计理念，不过这个是后话了。</p>
+<h2 id="日程表"><a href="#日程表" class="headerlink" title="日程表"></a>日程表</h2><p>在一周的各天安排不同的活动，各天产出不同的材料，过期不补，这些材料是装备升级和角色提升所必需的。算是一种运营策略吧，提高留存。</p>
+<h2 id="小活动"><a href="#小活动" class="headerlink" title="小活动"></a>小活动</h2><p>做一些小游戏，当做调味剂吧，暂时列举这些：</p>
+<ul>
+<li>猜拳</li>
+<li>答题</li>
+<li>打地鼠</li>
+<li>连连看</li>
+<li>五子棋</li>
+</ul>
+<h2 id="聊天"><a href="#聊天" class="headerlink" title="聊天"></a>聊天</h2><p>语音功能，这个比较纠结，大厂的游戏中一般集成了这个功能，打本的时候比较重要，直接语音转文字，十分方便。如果要做，使用云平台的服务的话，肯定不划算，看看有没有变通的方案吧。</p>
+<p>聊天系统除了传统的功能，例如聊天，发装备链接等，可不可以微创新？例如：</p>
+<ul>
+<li>游戏内发红包，当然使用的是游戏内的货币啦。</li>
+<li>可否与微信关联？玩家A通过游戏内的聊天系统向离线的玩家B发送消息，消息被传递到玩家B的微信上。</li>
+</ul>
+<p><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/ui-14.png" alt="ui-14"></p>
+<h2 id="社交"><a href="#社交" class="headerlink" title="社交"></a>社交</h2><p>支持个人主页这个功能，然后支持留言。我更进一步的构思是这样的，搞一个游戏内的微博系统，玩家可以在里面推文，然后关注列表，动态推送，博主推荐，热门博主等功能也是一个不少。</p>
+<h2 id="助手系统"><a href="#助手系统" class="headerlink" title="助手系统"></a>助手系统</h2><p>关于新手引导，UI系统在设计的时候就要考虑引导层，强制式的，触发式的等等。</p>
+<p>游戏内需要做一个助手系统，给我印象最深的软件助手就是office2003的小别针。不过在本游戏中，助手的形象是一个人形角色，可以替换成不同的形象，与这个助手可以进行许多交互，例如获取帮助文档，打开教学指引，开启活动等等。</p>
+<p>助手系统最核心的应该就是聊天机器人，这个在GitHub上有很多开源实现，基本上都是Python实现的，应该可以用C#包装后挂载到游戏服务器上。</p>
+<p>这个助手的部分功能，是否可以只对月卡用户开放呢？可以考虑考虑。</p>
+<h2 id="机器学习"><a href="#机器学习" class="headerlink" title="机器学习"></a>机器学习</h2><p>本游戏还是以传统的游戏AI为主。但如果某些功能或特性，使用机器学习可以获得更好的效果，倒也可以试试。</p>
+<p>下面这个demo就是使用神经网络模拟四足动物倒地后的效果：<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/nn-horses.gif" alt="nn-horses"><!-- NeuralHorses --><br>可以想象，利用这种技术可以让敌兵的受击反应更具表现力。</p>
+<p>总之，还是要看具体场景，判断一下是否真的需要这种技术？是否真的有用？有没有简单的替代方案？然后再确定方案。</p>
+<h2 id="资源规划"><a href="#资源规划" class="headerlink" title="资源规划"></a>资源规划</h2><h3 id="音效"><a href="#音效" class="headerlink" title="音效"></a>音效</h3><p>暂时就拿来主义吧。</p>
+<h3 id="音乐"><a href="#音乐" class="headerlink" title="音乐"></a>音乐</h3><p>外包应该是按时长计价的吧，看情况。</p>
+<h3 id="原画"><a href="#原画" class="headerlink" title="原画"></a>原画</h3><p><a href="https://www.mihuashi.com/" target="_blank" rel="noopener">米大师</a>约稿。</p>
+<h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><p>先看看模型库里有没有合适的，贴图也根据情况判断是否需要外包，数量不会太多，一般在项目尾声换皮。</p>
+<h3 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h3><p>对于手游这种级别的动画，模型绑定和key帧，还真不一定要外包，自己就可以搞定，这类的教程youtube上数不胜数，也没啥难的，就是个体力活，真正的难点在于动作设计。</p>
+<p>对于本游戏，动画主要来自以下几个途径：</p>
+<ol>
+<li>Asset Store里获取。</li>
+<li>使用别人做好的动作库，在Blender中编写Python脚本，将这些动作应用到模型上。</li>
+<li>对其他游戏进行录屏，逐帧捕获动作画面，作为参考导入到Blender，然后对着这些参考图，摆pose，key帧。</li>
+<li>从一些影片截取动作画面，从一些武术教学图谱制作故事版，作为参考导入到Blender，然后对着这些参考图，摆pose，key帧。</li>
+</ol>
+<p>如果觉得做出的动画有些别扭，可以考虑使用差值或拟合等数学方法对动画数据进行处理，再看看效果。<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/anim-1.png" alt="anim-1"></p>
+<h3 id="特效"><a href="#特效" class="headerlink" title="特效"></a>特效</h3><ol>
+<li>Asset Store里获取。</li>
+<li>自己搞定，这方面的教程太多了，如果纹理贴图实在找不到自己想要的，自己做的效果又不太好，就把纹理贴图外包吧。</li>
+</ol>
+<h2 id="服务器控制台"><a href="#服务器控制台" class="headerlink" title="服务器控制台"></a>服务器控制台</h2><p>如果游戏上线了，服务器OP控制台还是比较重要的，不过这个不必一下子全部做完，慢慢来就可以了。</p>
+<p>Web控制台使用Python开发。kbengine已经有实现了，可以拿来参考参考。<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/webconsole-1.png" alt="webconsole-1"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/webconsole-2.png" alt="webconsole-2"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/webconsole-3.png" alt="webconsole-3"><br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/webconsole-4.png" alt="webconsole-4"></p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>游戏开发的测试过程中，通过GM指令修改游戏数据的功能必不可少：<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/gm-1.png" alt="gm-1"></p>
+<p>方便快速的的获取log也是需要考虑的。</p>
+<p>报错的邮件推送，可以看情况决定做不做。</p>
+<h2 id="渠道接入"><a href="#渠道接入" class="headerlink" title="渠道接入"></a>渠道接入</h2><p>游戏Icon，我个人偏向手绘风格，参考图如下：<br><img src="http://ozy76jm8o.bkt.clouddn.com/blog/images/act/icon-1.png" alt="icon-1"></p>
+<p>sdk的接入方面可以参考u8sdk，不过没必要那么复杂，优先考虑主流的渠道吧。</p>
+<p>支付服务器使用Python开发，这个自然不在话下。</p>
+<p>如果还有精力，可以做一下用户画像。</p>
+<h2 id="特色点与竞争力"><a href="#特色点与竞争力" class="headerlink" title="特色点与竞争力"></a>特色点与竞争力</h2><p>&lt;&lt;&lt; ······························ 施工中 ······························ &gt;&gt;&gt;</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/game/" rel="tag"><i class="fa fa-tag"></i> game</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/05/read-et-framework-client-code/" rel="next" title="ET框架客户端源码阅读">
+                <i class="fa fa-chevron-left"></i> ET框架客户端源码阅读
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://ozy76jm8o.bkt.clouddn.com/blog/images/avater-2.png"
+                alt="雪落马蹄" />
+            
+              <p class="site-author-name" itemprop="name">雪落马蹄</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/hejia-v" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:1464946535@qq.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题材和类型"><span class="nav-number">1.</span> <span class="nav-text">题材和类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#世界观"><span class="nav-number">2.</span> <span class="nav-text">世界观</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技术选型"><span class="nav-number">3.</span> <span class="nav-text">技术选型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发规划"><span class="nav-number">4.</span> <span class="nav-text">开发规划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原型"><span class="nav-number">4.1.</span> <span class="nav-text">原型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初版"><span class="nav-number">4.2.</span> <span class="nav-text">初版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本迭代"><span class="nav-number">4.3.</span> <span class="nav-text">版本迭代</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#画面风格"><span class="nav-number">5.</span> <span class="nav-text">画面风格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户界面"><span class="nav-number">6.</span> <span class="nav-text">用户界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#捏脸系统"><span class="nav-number">7.</span> <span class="nav-text">捏脸系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#城建"><span class="nav-number">8.</span> <span class="nav-text">城建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#酒馆"><span class="nav-number">9.</span> <span class="nav-text">酒馆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#剧情副本"><span class="nav-number">10.</span> <span class="nav-text">剧情副本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#剧情关卡"><span class="nav-number">10.1.</span> <span class="nav-text">剧情关卡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#副本"><span class="nav-number">10.2.</span> <span class="nav-text">副本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#战斗系统"><span class="nav-number">11.</span> <span class="nav-text">战斗系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导表"><span class="nav-number">12.</span> <span class="nav-text">导表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用模块"><span class="nav-number">13.</span> <span class="nav-text">常用模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日程表"><span class="nav-number">14.</span> <span class="nav-text">日程表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小活动"><span class="nav-number">15.</span> <span class="nav-text">小活动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聊天"><span class="nav-number">16.</span> <span class="nav-text">聊天</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#社交"><span class="nav-number">17.</span> <span class="nav-text">社交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#助手系统"><span class="nav-number">18.</span> <span class="nav-text">助手系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#机器学习"><span class="nav-number">19.</span> <span class="nav-text">机器学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#资源规划"><span class="nav-number">20.</span> <span class="nav-text">资源规划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#音效"><span class="nav-number">20.1.</span> <span class="nav-text">音效</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#音乐"><span class="nav-number">20.2.</span> <span class="nav-text">音乐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原画"><span class="nav-number">20.3.</span> <span class="nav-text">原画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型"><span class="nav-number">20.4.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动画"><span class="nav-number">20.5.</span> <span class="nav-text">动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特效"><span class="nav-number">20.6.</span> <span class="nav-text">特效</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器控制台"><span class="nav-number">21.</span> <span class="nav-text">服务器控制台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">22.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#渠道接入"><span class="nav-number">23.</span> <span class="nav-text">渠道接入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特色点与竞争力"><span class="nav-number">24.</span> <span class="nav-text">特色点与竞争力</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">雪落马蹄</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('3');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+  <!--
+  <script type="text/javascript" src="/js/src/particle.js"></script>
+  <script type="text/javascript" src="/js/src/particle.js" count="50" zindex="-2" opacity="1" color="0,104,183"></script>
+  -->
+  <!-- 小红心 -->
+  <!--
+  <script type="text/javascript" src="/js/src/love.js"></script>
+  -->
+  <!--卖萌-->
+  <!--
+  <script type="text/javascript" src="/js/src/dytitle.js"></script>
+  -->
+  
+<div id="hexo-helper-live2d">
+  <canvas id="live2dcanvas" width="150" height="300"></canvas>
+</div>
+<style>
+  #live2dcanvas{
+    position: fixed;
+    width: 150px;
+    height: 300px;
+    opacity:0.7;
+    left: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -20px;
+  }
+</style>
+<script type="text/javascript" src="/live2d/device.min.js"></script>
+<script type="text/javascript">
+const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
+(function(){
+  if((typeof(device) != 'undefined') && (device.mobile())){
+    document.getElementById("live2dcanvas").style.width = '75px';
+    document.getElementById("live2dcanvas").style.height = '150px';
+  }else
+    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
+  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/wanko.model.json", 0.5);});
+})();
+</script>
+
+  <script type="text/javascript" src="/js/src/clipboard.min.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+</body>
+</html>
