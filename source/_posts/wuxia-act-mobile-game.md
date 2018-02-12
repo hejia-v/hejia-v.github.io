@@ -104,6 +104,9 @@ http://www.bilibili.com/video/av19424408/
 
 主界面按钮太多时，可以做一个一级按钮和一个快速按钮，按下一级按钮时呼出环形菜单，然后点击里面的按钮，进行相应操作，快速按钮自动切换成上一次点击的二级按钮，方便再次点击上次点击的按钮。
 
+下图是一个环形菜单的例子：
+![ui-15](/images/act/ui-15.png)
+
 提示系统需要做好一点，刺客信条ios版做得就比较好，根据当前的状态和环境，自动弹出提示和按钮。我甚至觉得吃药等类似操作的按钮都可以做成根据状态自动显示和隐藏。
 
 角色的标记，卡片的流光，技能按钮的cd，红蓝球/条等细节效果，基本上都找得到实现，无需太多担心。
@@ -193,76 +196,63 @@ http://www.bilibili.com/video/av19424408/
 战斗系统是一个十分复杂的系统，这方面的理论与实践不是几篇文章就说得完的。这里不详述技能的设计和技术上的细节，只说说要做成什么样，以及从哪方面做。
 
 ### 做成什么样
-乐趣在于战斗
+首先定一个基调：本游戏的战斗系统需要在pvp的1v1和pve上有比较好的表现。这种做法虽然和当前的一些mmorpg太像了，但也说明了这种模式比较符合市场，当然还是要有自己特色的战斗乐趣的。
+
+原型开发时，可以直接仿制天刀楚留香的战斗系统，等原型出来了之后，再来尝试将act游戏的一些特性引入到战斗系统中来。
+
+先做剑，刀，鞭，镖这四种武器和技能，相关的灵感从影片、游戏、霹雳、书籍图谱等方面获取。
+
+剑无声团队的访谈可以听听：[摸索·成长 -《剑无生》开发记](https://www.g-cores.com/volumes/14358)
 
 
 ### 从哪方面做
-行为树主导的开发, 观察一下就知道，ai行为是节点，连节点图就行
-combat那个要手机截图
-unity\TouchKit  触摸管理可以用用
-战斗初版抄天刀，双摇杆，晶体管指令，迭代中往act靠，安全一些
+
+技能的制作方面，个人感觉应该要用行为树来做比较好。当然了，一些数值还是要填表的。具体如何实施，并取得比较好的效果，得亲自实践。
+![battle-2](/images/act/battle-2.png)
+![battle-4](/images/act/battle-4.png)
+![battle-5](/images/act/battle-5.png)
+
+智能体(Agent)的AI行为，手头有如下demo：
+到达
+![ai-arrive](/images/act/ai-arrive.gif)
+逃跑
+![ai-flee](/images/act/ai-flee.gif)
+累积
+![ai-flocking](/images/act/ai-flocking.gif)
+躲藏
+![ai-hide](/images/act/ai-hide.gif)
+干预
+![ai-interpose](/images/act/ai-interpose.gif)
+非渗透约束
+![ai-non-penetration-constraint](/images/act/ai-non-penetration-constraint.gif)
+避障
+![ai-obstacle-avoidance](/images/act/ai-obstacle-avoidance.gif)
+有偏差的追逐
+![ai-offset-pursuit](/images/act/ai-offset-pursuit.gif)
+路径跟随
+![ai-path-following](/images/act/ai-path-following.gif)
+追逐
+![ai-pursuit](/images/act/ai-pursuit.gif)
+寻找
+![ai-seek](/images/act/ai-seek.gif)
+徘徊
+![ai-wander](/images/act/ai-wander.gif)
+模拟海滩里的鱼群
+![ai-shoal](/images/act/ai-shoal.gif)
+地图的网格导航
+![ai-raven](/images/act/ai-raven.gif)
 
 
+服务器与客户端的网络同步方面，反复看了网上关于状态同步和帧同步的讨论，考虑到玩法的扩展性，感觉以状态同步为主比较好，为了优化体验，可以掺杂一些帧同步的理念在里头，有点类似于当年做的战斗本地化的超级加强版。由于客户端和服务端使用同一种语言，同一种框架，代码比较容易共享，因此使用这种方案做起来应该是可行的。
 
+相比较于ET框架，kbengine实现的业务逻辑更多一些，可以学习一下kbengine里一些业务逻辑的实现思路。
 
+网络上关于战斗系统和技能设计的资料非常多，这里就不一一列举了。
 
-
-kbe功能更完善，更多的mmo逻辑，但比较复杂，大型项目中python不如有C#，但可以参考里面的同步策略
-使用状态同步，dota2就是的，高时实是可以做的，但帧同步里的一些思想可以借用，比如实现pk录像回放等
-
-进阶功能：帮战等
-
-agent基本行为列出来
-
-技术选型
-服务器，3d体素，支持轻功
-
-nvn没想好，重点1v1排位和pve
-战斗时，幻境，鬼泣5那种
-港片的打斗
-
-特色就是1v1和cel，需要加强效果并突出
-
-战斗部分，带上ai的图
-
-剑，刀，锁链，镖
-初版时，故事的时间线比较早期
-太过奇幻的技能，以后再考虑吧
-
-Raven-- 3d server可参考这个，网格导航，目标的侦测和攻击,虽说战斗系统不同，但大多数还是相通的，毕竟大部分ai逻辑还是在server,部分ai计算由client分担，分布式，但并不是计算当前图的ai，这个需要考虑，安全性，
-项目后期，server控制台，web, 直接把这些节点图投放到web上
-
-手机 屏幕投射到pc
-
-剑无声 的采访  桃源乡
-3d主力软件 blender
-
-1v1 全天开放
-nvn 黄金时间段开放
-
-原型版本战斗的 要点列出来，技术指标，第一个可玩版本，其他的技能衔接等延后再说，更复杂的
-
-机核网采访 剑无生
-东离剑游记 剑术 特效 白光，武戏不错
-东离剑游纪 生死一剑
-霹雳 可以找到一些灵感
-
-
-天刀技能/战斗系统设
-崩坏3
-忍龙
-鬼泣
-剑网3明教绳索轻功
-技能、战斗设计，节点树，slot
-武侠剑术动作、湘潭的那个
-
-
-帧数表
-云笔记里的一些
-
-状态同步的基础上，加上帧同步的技术，有点类似当年做的战斗本地化，c/s同一种语言，可以代码共享，并且框架一致，因此做起来还是比较靠谱的。应该是可行的。
-http://blog.csdn.net/chrisfxs/article/details/73655934
-http://bbs.gameres.com/thread_335685_1_1.html
+下面是手里的几个demo：
+![battle-2](/images/act/battle-2.gif)
+![battle-3](/images/act/battle-3.gif)
+![battle-4](/images/act/battle-4.gif)
 
 ## 导表
 在游戏的开发过程中，导表功能必不可少。传统的做法是，按照预先约定好的规则填写Excel表格，然后将Excel表格解析成游戏能够读取的数据文件例如csv，或者直接生成代码文件，将表格写到代码里。这个我已经用Python实现了，并且支持Excel表格里数据的无限嵌套。
@@ -409,100 +399,9 @@ sdk的接入方面可以参考u8sdk，不过没必要那么复杂，优先考虑
 如果还有精力，可以做一下用户画像。
 
 ## 特色点与竞争力
-同质化太严重，从画面上找突破口？这是一个方向
-并不算mmo, 有部分mmo功能，没有大世界
+最近出的重型mmorpg武侠手游楚留香，很多方面都接近端游的水平了，如此高的品质，必然会挤压同题材手游的生存空间。如何避免与这些大佬重叠，以及同质化，做出自己独有的特色，是需要不断思考的。
 
-产品定位
-偏动作，
-剧情，cel,特色打斗
-楚留香没细完，但估计很接近pc mmo了
-中型，特色，
-楚留香，基本上就是手机版的天刀了
+本游戏的定位并不是严格意义的mmorpg，没有大世界，算是一个中型游戏。二次元卡通风格的画面算是本游戏的一个特色。如果战斗系统做出了自己的味道，那也算是一个特色。再一个就是做出了比较新奇的玩法。亦或者是剧情和原画爆发了，创造出了广受喜爱的角色。但这些到底有多大作用，还真不清楚。
 
-bh3都没有
-独立的小游戏，动作库
-轻型动作手游，和楚留香的差异在哪，貌似只有cel渲染
-担忧，已有同类游戏，貌似只有画风这条，但这条到底有多大作用，真不清楚
-我是这么认为，有大店，也有小店，各种各样的口味，不能说完全不能做，文案古艳一点，来一段
+我个人认为，游戏和社交软件还是有区别的。某个社交软件强大后，其他的同类产品估计都没活路。游戏对社会的渗透是没有社交软件深的，并且产品性质也不太一样，虹吸效应远不及社交软件，就算出现了一家独大的全民游戏，但是各人有各人的胃口和爱好，其余的游戏应该还是有一定生存空间的。
 
-九yin也有人玩呢，jiuyin 如何发家的
-当年coc有那么多，有些过得也挺致润的
-
-既然喜欢，那就去做吧
-避免与楚留香等重型mmo重叠，
-https://www.zybuluo.com/mdeditor#385343
-
-
-
-* [SnpM/LockstepFramework: Framework for lockstep RTS, TD, and MOBA games. Under development.](https://github.com/SnpM/LockstepFramework)
-* [尼尔机械纪元 特效 制作 - Google 搜索](https://www.google.co.jp/search?q=%E5%B0%BC%E5%B0%94%E6%9C%BA%E6%A2%B0%E7%BA%AA%E5%85%83+%E7%89%B9%E6%95%88+%E5%88%B6%E4%BD%9C&ei=fYVxWpD7C4eq0QTG1r4o&start=60&sa=N&biw=1425&bih=552)
-* [《王者荣耀》技术总监复盘回炉历程：没跨过这三座大山，就是另一款MOBA霸占市场了-GAD腾讯游戏开发者平台](http://gad.qq.com/article/detail/30902)
-* [经验：《王者荣耀》技术总监分享背后技术_18183产业频道](http://chanye.18183.com/201709/942254.html)
-* [Meet PlatinumGames’ NieR:Automata team! Part 2 | PlatinumGames Official Blog](https://www.platinumgames.com/official-blog/article/9018)
-* [ninja gaiden mechanism - Google 搜索](https://www.google.co.jp/search?q=ninja+gaiden+mechanism&ei=xuRyWqCXE4Ty8QWJ0ovACA&start=20&sa=N&biw=1425&bih=552)
-* [云风的 BLOG: 浅谈《守望先锋》中的 ECS 构架](https://blog.codingnow.com/2017/06/overwatch_ecs.html)
-* [云风的 BLOG: 游戏动作感设计初探](https://blog.codingnow.com/2009/09/action_game.html)
-* [动作手游实时PVP帧同步方案（客户端） - CSDN博客](http://blog.csdn.net/qq_27880427/article/details/52692772)
-* [(8 条消息)为什么现在没有忍者龙剑传这样的硬派ACT了？ - 知乎](https://www.zhihu.com/question/66071494)
-* [忍龙2的动作设计和战斗体验至今没有任何一个游戏比得过吧？【ps4吧】_百度贴吧](https://tieba.baidu.com/p/4943159195?red_tag=1903705776)
-* [实例综述：动作游戏的战斗系统设计-GameRes游资网](http://bbs.gameres.com/thread_466339.html)
-* [【视频】这个游戏的战斗系统或许可以媲美忍龙 ，难度也是很高【忍者龙剑传吧】_百度贴吧](https://tieba.baidu.com/p/5085824495?red_tag=1714894227)
-* [(8 条消息)忍者龙剑传，战神，鬼泣的打击手感有何不同？ - 知乎](https://www.zhihu.com/question/23261204)
-* [忍龙战斗系统详细解读_忍龙热门攻略_40407网页游戏](https://www.40407.com/news/201301/202231.html)
-* [帧同步中，如何网络不好，具体该如何平滑位移-GAD腾讯游戏开发者平台](http://gad.qq.com/question/detail/32699)
-* [MMO技能系统的同步机制分析-GameRes游资网](http://www.gameres.com/729629.html)
-* [(8 条消息)MOBA类游戏是如何解决网络延迟同步的？ - 知乎](https://www.zhihu.com/question/36258781)
-* [(8 条消息)大型多人在线游戏的开发中，如何做到每个玩家动作的实时同步的？ - 知乎](https://www.zhihu.com/question/27765214/answer/175391133)
-* [(8 条消息)MMORPG的战斗在副本中使用帧同步方式的可行性，及是否有先例？ - 知乎](https://www.zhihu.com/question/57896810/answer/214952099)
-* [游戏网络同步——MMO位置同步 - lovemysea的专栏 - CSDN博客](http://blog.csdn.net/lovemysea/article/details/72825693)
-* [MMO技能系统的同步机制分析 - Bill Yuan - 博客园](https://www.cnblogs.com/sevenyuan/p/6678317.html)
-* [实时pvp（皇室战争）网络同步研究 - CSDN博客](http://blog.csdn.net/langresser_king/article/details/51330543)
-* [Blender Documentation Contents — Blender 2.79.0 855d2955c49 - API documentation](https://docs.blender.org/api/2.79/)
-* [素描的诀窍 (豆瓣)](https://book.douban.com/subject/1154707/)
-* [千人千面如何炼成 技术讲解捏脸系统设计原理-新浪天涯明月刀专区](http://games.sina.com.cn/o/z/wuxia/2015-10-15/fxivsch3599438.shtml)
-* [uhlik/bpy: blender python scripts](https://github.com/uhlik/bpy)
-* [剑三（95版本）和天刀的战斗数值体系架构-GameRes游资网](http://www.gameres.com/674240.html)
-* [天涯明月刀 技术 战斗系统_百度搜索](https://www.baidu.com/s?wd=%E5%A4%A9%E6%B6%AF%E6%98%8E%E6%9C%88%E5%88%80%20%E6%8A%80%E6%9C%AF%20%E6%88%98%E6%96%97%E7%B3%BB%E7%BB%9F&pn=40&oq=%E5%A4%A9%E6%B6%AF%E6%98%8E%E6%9C%88%E5%88%80%20%E6%8A%80%E6%9C%AF%20%E6%88%98%E6%96%97%E7%B3%BB%E7%BB%9F&ie=utf-8&rsv_idx=1&rsv_pq=b91a102100005961&rsv_t=f991BKmg5J9LA2p%2BZ6AeCQVG4SOMVQUP3AcD0kfREJrK5sG2AVLk8u%2BkFu8&rsv_page=1)
-* [鬼泣 技术 战斗系统_百度搜索](https://www.baidu.com/s?wd=%E9%AC%BC%E6%B3%A3%20%E6%8A%80%E6%9C%AF%20%E6%88%98%E6%96%97%E7%B3%BB%E7%BB%9F&pn=30&oq=%E9%AC%BC%E6%B3%A3%20%E6%8A%80%E6%9C%AF%20%E6%88%98%E6%96%97%E7%B3%BB%E7%BB%9F&ie=utf-8&rsv_pq=91116ec70001f0dc&rsv_t=544eTrjKSBo5BOWeoJok%2Bp6J9HPvzismB4bGfCglyBsMr5EYi8x32RZrlmU&rsv_page=1)
-* [忍龙 战斗系统 反推_百度搜索](https://www.baidu.com/s?ie=UTF-8&wd=%E5%BF%8D%E9%BE%99%20%E6%88%98%E6%96%97%E7%B3%BB%E7%BB%9F%20%E5%8F%8D%E6%8E%A8)
-* [反推技术贴：鬼泣等冷兵器动作游戏打击感设计思路探寻-GameRes游资网](http://www.gameres.com/456213.html)
-* [【玩家思维】ARPG的战斗系统博弈设计-GAD腾讯游戏开发者平台](http://gad.qq.com/article/detail/21832)
-* [6-24 晨星计划笔记-GAD腾讯游戏开发者平台](http://gad.qq.com/article/detail/28964)
-* [搜索页面](http://gad.qq.com/search/index?word=%E6%88%98%E6%96%97%E7%B3%BB%E7%BB%9F)
-* [动作游戏战斗系统设计综述-GAD腾讯游戏开发者平台](http://gad.qq.com/article/detail/13063)
-* [从《暗黑》3 开始：动作游戏战斗系统浅析-GAD腾讯游戏开发者平台](http://gad.qq.com/article/detail/10518)
-* [尽管搞砸了地图，但《异度神剑2》却做出了一套比音游还爽快的战斗系统-GAD腾讯游戏开发者平台](http://gad.qq.com/article/detail/38201)
-* [动作游戏的设计语法，强烈推荐游戏动画师们好好看看-GAD腾讯游戏开发者平台](http://gad.qq.com/article/detail/11915#)
-* [论打击感的本质（1）——力的理论及应用-GAD腾讯游戏开发者平台](http://gad.qq.com/article/detail/30811#)
-* [《天涯明月刀》服务器端3D引擎设计与开发-GAD腾讯游戏开发者平台](http://gad.qq.com/article/detail/10014#)
-
-
-游戏技能设计
-http://blog.csdn.net/mooke/article/details/9771545
-https://www.zhihu.com/question/29545727
-http://www.gameres.com/472405.html
-https://www.cnblogs.com/sundayofit/p/7995474.html
-https://wenku.baidu.com/view/2d6596134693daef5ff73daa.html
-http://bbs.gameres.com/forum.php?mod=viewthread&tid=485662
-https://www.zhihu.com/question/37954118
-http://bbs.gameres.com/thread_485421.html
-http://www.360doc.com/content/16/0902/18/16163490_587830473.shtml
-https://www.cnblogs.com/GameDeveloper/archive/2013/01/21/2869257.html
-https://www.cnblogs.com/gcczhongduan/p/4669824.html
-http://gamerboom.com/archives/86733
-http://www.sohu.com/a/112852986_483399
-http://blog.csdn.net/blizmax6/article/details/6682677
-http://gamerboom.com/archives/59080
-http://bbs.3dmgame.com/thread-4402456-1-1.html
-http://bbs.csdn.net/topics/390806898
-http://tieba.baidu.com/p/4871080830
-https://zhuanlan.zhihu.com/p/26104183
-http://blog.sina.com.cn/s/blog_4ab4aa810100h13g.html
-https://max.book118.com/html/2017/0321/96288909.shtm
-http://gad.qq.com/article/detail/23887
-http://developer.51cto.com/art/201507/486052.htm
-http://www.anyv.net/index.php/article-685076
-https://www.zhihu.com/question/35087902
-http://www.360doc.com/content/16/0902/18/16163490_587830473.shtml
-http://gad.qq.com/article/detail/33829
-http://gad.qq.com/article/detail/34805
